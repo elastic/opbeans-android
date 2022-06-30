@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import co.elastic.apm.opbeans.R
@@ -48,6 +49,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun initListAdapter() {
         productListAdapter = ProductListAdapter()
         productList.layoutManager = LinearLayoutManager(requireContext())
+        val dividerItemDecoration = DividerItemDecoration(
+            requireContext(),
+            LinearLayoutManager.VERTICAL
+        )
+        dividerItemDecoration.setDrawable(resources.getDrawable(R.drawable.list_item_divider, null))
+        productList.addItemDecoration(dividerItemDecoration)
         productList.adapter = productListAdapter
     }
 
