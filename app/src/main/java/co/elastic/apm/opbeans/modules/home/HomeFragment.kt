@@ -2,6 +2,7 @@ package co.elastic.apm.opbeans.modules.home
 
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -23,6 +24,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var loadingContainer: View
     private lateinit var productList: RecyclerView
     private lateinit var productListAdapter: ProductListAdapter
+    private lateinit var errorDescription: TextView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,7 +36,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 when (it) {
                     is HomeState.ProductsLoaded -> populateProductList(it.products)
                     is HomeState.Loading -> showLoading()
-                    else -> showError()
+                    is HomeState.Error -> showError(it.e)
                 }
             }
         }
@@ -51,6 +53,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         errorContainer = view.findViewById(R.id.error_container)
         loadingContainer = view.findViewById(R.id.loading_container)
         productList = view.findViewById(R.id.product_list)
+        errorDescription = view.findViewById(R.id.error_description)
     }
 
     private fun populateProductList(products: List<Product>) {
@@ -70,7 +73,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         productList.visibility = View.INVISIBLE
     }
 
-    private fun showError() {
+    private fun showError(e: Exception) {
+        errorDescription.text = e.message ?: ""
         errorContainer.visibility = View.VISIBLE
         loadingContainer.visibility = View.INVISIBLE
         productList.visibility = View.INVISIBLE

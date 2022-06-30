@@ -24,7 +24,7 @@ class HomeViewModel @Inject constructor(private val productRepository: ProductRe
                 val products = productRepository.getProducts()
                 internalState.update { HomeState.ProductsLoaded(products) }
             } catch (e: Exception) {
-                internalState.update { HomeState.Error }
+                internalState.update { HomeState.Error(e) }
             }
         }
     }

@@ -4,6 +4,6 @@ import co.elastic.apm.opbeans.app.data.models.Product
 
 sealed class HomeState {
     object Loading : HomeState()
-    object Error : HomeState()
+    class Error(val e: Exception) : HomeState()
     class ProductsLoaded(val products: List<Product>) : HomeState()
 }
