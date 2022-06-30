@@ -5,5 +5,6 @@ data class Product(
     val sku: String,
     val name: String,
     val stock: Int,
-    val type: String
+    val type: String,
+    val imageUrl: String
 )

@@ -1,5 +1,6 @@
 package co.elastic.apm.opbeans.app.data.source
 
+import co.elastic.apm.opbeans.BuildConfig
 import co.elastic.apm.opbeans.app.data.models.Product
 import co.elastic.apm.opbeans.app.data.remote.OpBeansService
 import co.elastic.apm.opbeans.app.data.remote.models.RemoteProduct
@@ -21,7 +22,8 @@ class RemoteProductSource @Inject constructor(private val opBeansService: OpBean
             remoteProduct.sku,
             remoteProduct.name,
             remoteProduct.stock,
-            remoteProduct.typeName
+            remoteProduct.typeName,
+            "${BuildConfig.BASE_URL}/images/products/${remoteProduct.sku}.jpg"
         )
     }
 }

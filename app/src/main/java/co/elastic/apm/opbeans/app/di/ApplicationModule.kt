@@ -1,5 +1,6 @@
 package co.elastic.apm.opbeans.app.di
 
+import co.elastic.apm.opbeans.BuildConfig
 import co.elastic.apm.opbeans.app.data.remote.OpBeansService
 import dagger.Module
 import dagger.Provides
@@ -17,7 +18,7 @@ class ApplicationModule {
     @Singleton
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:3000/api/")
+            .baseUrl("${BuildConfig.BASE_URL}/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
