@@ -11,9 +11,11 @@ import co.elastic.apm.opbeans.app.data.models.Product
 import co.elastic.apm.opbeans.modules.home.ui.HomeState
 import co.elastic.apm.opbeans.modules.home.ui.HomeViewModel
 import co.elastic.apm.opbeans.modules.home.ui.products.ProductListAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private val viewModel: HomeViewModel by viewModels()
