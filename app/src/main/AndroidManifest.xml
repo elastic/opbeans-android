@@ -4,7 +4,7 @@
     package="co.elastic.apm.opbeans">
 
     <application
-        android:name=".OpBeansApplication"
+        android:name=".app.OpBeansApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"

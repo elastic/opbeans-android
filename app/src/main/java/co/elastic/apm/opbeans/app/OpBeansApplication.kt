@@ -1,4 +1,4 @@
-package co.elastic.apm.opbeans
+package co.elastic.apm.opbeans.app
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
