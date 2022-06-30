@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="co.elastic.apm.opbeans">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".app.OpBeansApplication"
         android:allowBackup="true"
