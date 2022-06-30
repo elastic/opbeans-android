@@ -1,5 +1,6 @@
 package co.elastic.apm.opbeans.app.di
 
+import co.elastic.apm.opbeans.app.data.remote.OpBeansService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,5 +18,11 @@ class ApplicationModule {
         return Retrofit.Builder()
             .baseUrl("http://localhost:3000/api/")
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideOpBeansService(retrofit: Retrofit): OpBeansService {
+        return retrofit.create(OpBeansService::class.java)
     }
 }
