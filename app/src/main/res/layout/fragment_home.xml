@@ -15,8 +15,9 @@
         android:gravity="center">
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:layout_width="48dp"
-            android:layout_height="48dp" />
+            android:layout_width="@dimen/circular_progress_size"
+            android:layout_height="@dimen/circular_progress_size"
+            android:indeterminate="true" />
     </LinearLayout>
 
     <LinearLayout
