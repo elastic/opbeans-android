@@ -3,14 +3,15 @@ package co.elastic.apm.opbeans.modules.orders.data.cases
 import co.elastic.apm.opbeans.app.data.models.Order
 import co.elastic.apm.opbeans.app.data.repository.OrderRepository
 import co.elastic.apm.opbeans.modules.orders.data.models.OrderStateItem
-import dagger.hilt.android.scopes.FragmentScoped
+import dagger.hilt.android.scopes.ViewModelScoped
 import java.text.SimpleDateFormat
 import java.util.Locale
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-@FragmentScoped
-class OrderStateItemCase(private val orderRepository: OrderRepository) {
+@ViewModelScoped
+class OrderStateItemCase @Inject constructor(private val orderRepository: OrderRepository) {
 
     companion object {
         private val displayDateFormat =

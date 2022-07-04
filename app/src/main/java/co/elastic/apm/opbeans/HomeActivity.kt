@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import co.elastic.apm.opbeans.modules.customers.CustomersFragment
+import co.elastic.apm.opbeans.modules.orders.OrdersFragment
 import co.elastic.apm.opbeans.modules.products.ProductsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,6 +18,7 @@ class HomeActivity : AppCompatActivity() {
     companion object {
         private const val PRODUCTS_TAG = "products_fragment_tag"
         private const val CUSTOMERS_TAG = "customers_fragment_tag"
+        private const val ORDERS_TAG = "orders_fragment_tag"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,9 +34,18 @@ class HomeActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.products_item -> showProducts()
                 R.id.customers_item -> showCustomers()
+                R.id.orders_item -> showOrders()
                 else -> false
             }
         }
+    }
+
+    private fun showOrders(): Boolean {
+        showFragment(ORDERS_TAG) {
+            OrdersFragment()
+        }
+
+        return true
     }
 
     private fun showProducts(): Boolean {

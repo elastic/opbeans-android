@@ -13,9 +13,11 @@ import co.elastic.apm.opbeans.modules.orders.data.models.OrderStateItem
 import co.elastic.apm.opbeans.modules.orders.ui.OrdersState
 import co.elastic.apm.opbeans.modules.orders.ui.OrdersViewModel
 import co.elastic.apm.opbeans.modules.orders.ui.list.OrderListAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class OrdersFragment : Fragment(R.layout.fragment_orders) {
 
     private val viewModel: OrdersViewModel by viewModels()
