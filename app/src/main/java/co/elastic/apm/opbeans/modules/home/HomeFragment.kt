@@ -1,8 +1,14 @@
 package co.elastic.apm.opbeans.modules.home
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -19,9 +25,10 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(R.layout.fragment_home) {
+class HomeFragment : Fragment(R.layout.fragment_home), MenuProvider {
 
     private val viewModel: HomeViewModel by viewModels()
+    private val menuHost: MenuHost by lazy { requireActivity() }
     private lateinit var errorContainer: View
     private lateinit var loadingContainer: View
     private lateinit var productList: RecyclerView
@@ -32,6 +39,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
         initViews(view)
         initListAdapter()
+        initMenu()
 
         lifecycleScope.launch {
             viewModel.state.collectLatest {
@@ -44,6 +52,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
         viewModel.fetchProducts()
+    }
+
+    private fun initMenu() {
+        menuHost.addMenuProvider(this, viewLifecycleOwner)
     }
 
     private fun initListAdapter() {
@@ -87,5 +99,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         errorContainer.visibility = View.VISIBLE
         loadingContainer.visibility = View.INVISIBLE
         productList.visibility = View.INVISIBLE
+    }
+
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.home_menu, menu)
+    }
+
+    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        when (menuItem.itemId) {
+            R.id.shopping_cart -> Toast.makeText(requireContext(), "Yay!", Toast.LENGTH_SHORT)
+                .show()
+        }
+
+        return true
     }
 }

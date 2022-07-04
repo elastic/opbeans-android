@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Opbeans Coffee</string>
     <string name="generic_error_message">Something unexpected happened</string>
+    <string name="menu_title_shopping_cart">Shopping Cart</string>
 </resources>
