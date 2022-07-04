@@ -15,8 +15,6 @@ class RemoteOrderSource @Inject constructor(private val opBeansService: OpBeansS
 
     companion object {
         private val remoteDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US)
-        private val displayDateFormat =
-            SimpleDateFormat("h:mm a '|' d MMM yyyy", Locale.getDefault())
     }
 
     suspend fun getOrders(): List<Order> = withContext(Dispatchers.IO) {
@@ -30,8 +28,7 @@ class RemoteOrderSource @Inject constructor(private val opBeansService: OpBeansS
         return Order(
             remoteOrder.id,
             remoteOrder.customerName,
-            date,
-            displayDateFormat.format(date)
+            date
         )
     }
 }
