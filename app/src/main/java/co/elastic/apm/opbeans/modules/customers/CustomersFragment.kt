@@ -13,9 +13,11 @@ import co.elastic.apm.opbeans.app.ui.LoadableList
 import co.elastic.apm.opbeans.modules.customers.ui.CustomerState
 import co.elastic.apm.opbeans.modules.customers.ui.CustomersViewModel
 import co.elastic.apm.opbeans.modules.customers.ui.list.CustomerListAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class CustomersFragment : Fragment(R.layout.fragment_customers) {
 
     private val viewModel: CustomersViewModel by viewModels()
