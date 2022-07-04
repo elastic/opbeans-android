@@ -4,6 +4,6 @@ import co.elastic.apm.opbeans.app.data.models.Customer
 
 sealed class CustomerState {
     object Loading : CustomerState()
-    class FinishedLoading(val customers: Customer) : CustomerState()
+    class FinishedLoading(val customers: List<Customer>) : CustomerState()
     class ErrorLoading(val exception: Exception) : CustomerState()
 }
