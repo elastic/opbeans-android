@@ -1,6 +1,7 @@
 package co.elastic.apm.opbeans.app.data.remote
 
 import co.elastic.apm.opbeans.app.data.remote.models.RemoteCustomer
+import co.elastic.apm.opbeans.app.data.remote.models.RemoteOrder
 import co.elastic.apm.opbeans.app.data.remote.models.RemoteProduct
 import retrofit2.http.GET
 
@@ -11,4 +12,7 @@ interface OpBeansService {
 
     @GET("customers")
     suspend fun getCustomers(): List<RemoteCustomer>
+
+    @GET("orders")
+    suspend fun getOrders(): List<RemoteOrder>
 }
