@@ -102,7 +102,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), MenuProvider {
     }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(R.menu.home_menu, menu)
+        menuInflater.inflate(R.menu.home_options_menu, menu)
     }
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
