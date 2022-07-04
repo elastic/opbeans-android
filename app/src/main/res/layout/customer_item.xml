@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
     android:layout_marginStart="15dp"
+    android:layout_marginTop="5dp"
     android:layout_marginEnd="15dp"
+    android:layout_marginBottom="5dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -21,6 +21,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
+            android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="@dimen/customer_item_primary_text_size"
             tools:text="Some text" />
@@ -31,6 +32,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical|end"
+            android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="@dimen/customer_item_primary_text_size"
             tools:text="Some text" />
@@ -49,6 +51,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
+            android:maxLines="1"
             android:textSize="@dimen/customer_item_secondary_text_size"
             tools:text="Some text" />
 
@@ -58,6 +61,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical|end"
+            android:maxLines="1"
             android:textSize="@dimen/customer_item_secondary_text_size"
             tools:text="Some text" />
 
