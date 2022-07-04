@@ -1,4 +1,4 @@
-package co.elastic.apm.opbeans.modules.home.ui
+package co.elastic.apm.opbeans.modules.products.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,20 +11,20 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val productRepository: ProductRepository) :
+class ProductsViewModel @Inject constructor(private val productRepository: ProductRepository) :
     ViewModel() {
 
-    private val internalState: MutableStateFlow<HomeState> = MutableStateFlow(HomeState.Loading)
+    private val internalState: MutableStateFlow<ProductsState> = MutableStateFlow(ProductsState.Loading)
     val state = internalState.asStateFlow()
 
     fun fetchProducts() {
         viewModelScope.launch {
             try {
-                internalState.update { HomeState.Loading }
+                internalState.update { ProductsState.Loading }
                 val products = productRepository.getProducts()
-                internalState.update { HomeState.ProductsLoaded(products) }
+                internalState.update { ProductsState.ProductsLoaded(products) }
             } catch (e: Exception) {
-                internalState.update { HomeState.Error(e) }
+                internalState.update { ProductsState.Error(e) }
             }
         }
     }

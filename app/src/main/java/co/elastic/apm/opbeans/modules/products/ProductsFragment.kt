@@ -1,4 +1,4 @@
-package co.elastic.apm.opbeans.modules.home
+package co.elastic.apm.opbeans.modules.products
 
 import android.os.Bundle
 import android.view.Menu
@@ -16,17 +16,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.data.models.Product
 import co.elastic.apm.opbeans.app.ui.LoadableList
-import co.elastic.apm.opbeans.modules.home.ui.HomeState
-import co.elastic.apm.opbeans.modules.home.ui.HomeViewModel
-import co.elastic.apm.opbeans.modules.home.ui.products.ProductListAdapter
+import co.elastic.apm.opbeans.modules.products.ui.ProductsState
+import co.elastic.apm.opbeans.modules.products.ui.ProductsViewModel
+import co.elastic.apm.opbeans.modules.products.ui.products.ProductListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(R.layout.fragment_home), MenuProvider {
+class ProductsFragment : Fragment(R.layout.fragment_products), MenuProvider {
 
-    private val viewModel: HomeViewModel by viewModels()
+    private val viewModel: ProductsViewModel by viewModels()
     private val menuHost: MenuHost by lazy { requireActivity() }
     private lateinit var productList: LoadableList
     private lateinit var productListAdapter: ProductListAdapter
@@ -40,9 +40,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), MenuProvider {
         lifecycleScope.launch {
             viewModel.state.collectLatest {
                 when (it) {
-                    is HomeState.ProductsLoaded -> populateProductList(it.products)
-                    is HomeState.Loading -> productList.showLoading()
-                    is HomeState.Error -> productList.showError(it.e)
+                    is ProductsState.ProductsLoaded -> populateProductList(it.products)
+                    is ProductsState.Loading -> productList.showLoading()
+                    is ProductsState.Error -> productList.showError(it.e)
                 }
             }
         }

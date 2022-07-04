@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.data.models.Customer
 import co.elastic.apm.opbeans.app.ui.LoadableList
-import co.elastic.apm.opbeans.modules.customers.ui.CustomerState
+import co.elastic.apm.opbeans.modules.customers.ui.CustomersState
 import co.elastic.apm.opbeans.modules.customers.ui.CustomersViewModel
 import co.elastic.apm.opbeans.modules.customers.ui.list.CustomerListAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,9 +32,9 @@ class CustomersFragment : Fragment(R.layout.fragment_customers) {
         lifecycleScope.launch {
             viewModel.state.collectLatest {
                 when (it) {
-                    is CustomerState.Loading -> list.showLoading()
-                    is CustomerState.ErrorLoading -> list.showError(it.exception)
-                    is CustomerState.FinishedLoading -> populateList(it.customers)
+                    is CustomersState.Loading -> list.showLoading()
+                    is CustomersState.ErrorLoading -> list.showError(it.exception)
+                    is CustomersState.FinishedLoading -> populateList(it.customers)
                 }
             }
         }

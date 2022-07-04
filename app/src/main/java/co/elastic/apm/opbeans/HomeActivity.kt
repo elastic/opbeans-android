@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import co.elastic.apm.opbeans.modules.customers.CustomersFragment
-import co.elastic.apm.opbeans.modules.home.HomeFragment
+import co.elastic.apm.opbeans.modules.products.ProductsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,7 +39,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun showProducts(): Boolean {
         showFragment(PRODUCTS_TAG) {
-            HomeFragment()
+            ProductsFragment()
         }
 
         return true

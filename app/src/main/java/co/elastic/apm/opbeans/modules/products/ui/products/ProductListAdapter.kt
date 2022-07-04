@@ -1,4 +1,4 @@
-package co.elastic.apm.opbeans.modules.home.ui.products
+package co.elastic.apm.opbeans.modules.products.ui.products
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil

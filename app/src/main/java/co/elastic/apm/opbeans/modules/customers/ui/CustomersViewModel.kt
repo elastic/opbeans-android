@@ -14,18 +14,18 @@ import javax.inject.Inject
 class CustomersViewModel @Inject constructor(private val customerRepository: CustomerRepository) :
     ViewModel() {
 
-    private val internalState: MutableStateFlow<CustomerState> =
-        MutableStateFlow(CustomerState.Loading)
+    private val internalState: MutableStateFlow<CustomersState> =
+        MutableStateFlow(CustomersState.Loading)
     val state = internalState.asStateFlow()
 
     fun fetchCustomers() {
         viewModelScope.launch {
             try {
-                internalState.update { CustomerState.Loading }
+                internalState.update { CustomersState.Loading }
                 val customers = customerRepository.getCustomers()
-                internalState.update { CustomerState.FinishedLoading(customers) }
+                internalState.update { CustomersState.FinishedLoading(customers) }
             } catch (e: Exception) {
-                internalState.update { CustomerState.ErrorLoading(e) }
+                internalState.update { CustomersState.ErrorLoading(e) }
             }
         }
     }
