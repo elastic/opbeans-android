@@ -14,7 +14,9 @@ import kotlinx.coroutines.withContext
 class RemoteOrderSource @Inject constructor(private val opBeansService: OpBeansService) {
 
     companion object {
-        private val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US)
+        private val remoteDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US)
+        private val displayDateFormat =
+            SimpleDateFormat("h:mm a '|' d MMM yyyy", Locale.getDefault())
     }
 
     suspend fun getOrders(): List<Order> = withContext(Dispatchers.IO) {
@@ -24,10 +26,12 @@ class RemoteOrderSource @Inject constructor(private val opBeansService: OpBeansS
     }
 
     private fun remoteToOrder(remoteOrder: RemoteOrder): Order {
+        val date = remoteDateFormat.parse(remoteOrder.createdAt)!!
         return Order(
             remoteOrder.id,
             remoteOrder.customerName,
-            dateFormat.parse(remoteOrder.createdAt)!!
+            date,
+            displayDateFormat.format(date)
         )
     }
 }
