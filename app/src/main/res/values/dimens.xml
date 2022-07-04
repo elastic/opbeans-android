@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="circular_progress_size">48dp</dimen>
+    <dimen name="customer_item_primary_text_size">17sp</dimen>
+    <dimen name="customer_item_secondary_text_size">13sp</dimen>
 </resources>
