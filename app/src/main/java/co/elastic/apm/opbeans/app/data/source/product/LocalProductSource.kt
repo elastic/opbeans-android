@@ -3,7 +3,7 @@ package co.elastic.apm.opbeans.app.data.source.product
 import co.elastic.apm.opbeans.app.data.local.AppDatabase
 import co.elastic.apm.opbeans.app.data.local.entities.ProductEntity
 import co.elastic.apm.opbeans.app.data.models.Product
-import co.elastic.apm.opbeans.app.data.source.product.helpers.ImageUrlBuilder
+import co.elastic.apm.opbeans.app.data.source.product.helpers.ProductEntityMapper.toProduct
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
@@ -26,7 +26,7 @@ class LocalProductSource @Inject constructor(private val appDatabase: AppDatabas
     }
 
     private fun localListToProducts(localList: List<ProductEntity>): List<Product> {
-        return localList.map { localToProduct(it) }
+        return localList.map { it.toProduct() }
     }
 
     private fun productToEntity(product: Product): ProductEntity {
@@ -36,17 +36,6 @@ class LocalProductSource @Inject constructor(private val appDatabase: AppDatabas
             product.name,
             product.stock,
             product.type
-        )
-    }
-
-    private fun localToProduct(productEntity: ProductEntity): Product {
-        return Product(
-            productEntity.id,
-            productEntity.sku,
-            productEntity.name,
-            productEntity.stock,
-            productEntity.typeName,
-            ImageUrlBuilder.build(productEntity.sku)
         )
     }
 }
