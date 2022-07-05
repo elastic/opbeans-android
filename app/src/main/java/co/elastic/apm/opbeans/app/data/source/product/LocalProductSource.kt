@@ -6,18 +6,37 @@ import co.elastic.apm.opbeans.app.data.models.Product
 import co.elastic.apm.opbeans.app.data.source.product.helpers.ImageUrlBuilder
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 @Singleton
 class LocalProductSource @Inject constructor(private val appDatabase: AppDatabase) {
 
     private val productDao by lazy { appDatabase.productDao() }
 
-    suspend fun getProducts(): List<Product> = withContext(Dispatchers.IO) {
-        productDao.getAll().map {
-            localToProduct(it)
+    fun getProducts(): Flow<List<Product>> {
+        return productDao.getAll().map {
+            localListToProducts(it)
         }
+    }
+
+    suspend fun storeProducts(products: List<Product>) {
+        val entities = products.map { productToEntity(it) }
+        productDao.saveAll(entities)
+    }
+
+    private fun localListToProducts(localList: List<ProductEntity>): List<Product> {
+        return localList.map { localToProduct(it) }
+    }
+
+    private fun productToEntity(product: Product): ProductEntity {
+        return ProductEntity(
+            product.id,
+            product.sku,
+            product.name,
+            product.stock,
+            product.type
+        )
     }
 
     private fun localToProduct(productEntity: ProductEntity): Product {
