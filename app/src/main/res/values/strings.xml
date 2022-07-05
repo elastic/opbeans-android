@@ -5,4 +5,5 @@
     <string name="bottom_menu_title_products">Products</string>
     <string name="bottom_menu_title_orders">Orders</string>
     <string name="bottom_menu_title_customers">Customers</string>
+    <string name="error_message_products_request">Failed to fetch products: %s</string>
 </resources>

@@ -1,6 +1,6 @@
 package co.elastic.apm.opbeans.app.di
 
-import android.content.Context
+import android.app.Application
 import androidx.room.Room
 import co.elastic.apm.opbeans.BuildConfig
 import co.elastic.apm.opbeans.app.data.local.AppDatabase
@@ -34,9 +34,9 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideAppDatabase(applicationContext: Context): AppDatabase {
+    fun provideAppDatabase(application: Application): AppDatabase {
         return Room.databaseBuilder(
-            applicationContext,
+            application,
             AppDatabase::class.java, "opbeans-database"
         ).build()
     }

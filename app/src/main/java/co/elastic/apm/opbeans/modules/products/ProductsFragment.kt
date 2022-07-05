@@ -16,9 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.data.models.Product
 import co.elastic.apm.opbeans.app.ui.LoadableList
-import co.elastic.apm.opbeans.modules.products.ui.ProductsState
 import co.elastic.apm.opbeans.modules.products.ui.ProductsViewModel
 import co.elastic.apm.opbeans.modules.products.ui.products.ProductListAdapter
+import co.elastic.apm.opbeans.modules.products.ui.state.NetworkRequestState
+import co.elastic.apm.opbeans.modules.products.ui.state.ProductsState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -38,16 +39,28 @@ class ProductsFragment : Fragment(R.layout.fragment_products), MenuProvider {
         initMenu()
 
         lifecycleScope.launch {
-            viewModel.state.collectLatest {
+            viewModel.products.collectLatest {
                 when (it) {
                     is ProductsState.ProductsLoaded -> populateProductList(it.products)
                     is ProductsState.Loading -> productList.showLoading()
                     is ProductsState.Error -> productList.showError(it.e)
                 }
             }
+            viewModel.networkRequestState.collectLatest {
+                if (it is NetworkRequestState.Failed) {
+                    showNetworkErrorMessage(it.e)
+                }
+            }
         }
+    }
 
-        viewModel.fetchProducts()
+    private fun showNetworkErrorMessage(e: Throwable) {
+        val message = getString(R.string.error_message_products_request, e.message)
+        Toast.makeText(
+            requireContext(),
+            message,
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     private fun initMenu() {

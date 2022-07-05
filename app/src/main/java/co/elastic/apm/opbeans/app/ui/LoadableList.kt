@@ -40,7 +40,7 @@ class LoadableList @JvmOverloads constructor(
         list.visibility = View.INVISIBLE
     }
 
-    fun showError(e: Exception) {
+    fun showError(e: Throwable) {
         errorDescription.text = e.message ?: ""
         errorContainer.visibility = View.VISIBLE
         loadingContainer.visibility = View.INVISIBLE
