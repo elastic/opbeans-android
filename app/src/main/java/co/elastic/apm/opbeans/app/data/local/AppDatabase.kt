@@ -2,9 +2,12 @@ package co.elastic.apm.opbeans.app.data.local
 
 import androidx.room.Database
 import co.elastic.apm.opbeans.app.data.local.dao.CartItemDao
+import co.elastic.apm.opbeans.app.data.local.dao.ProductDao
 import co.elastic.apm.opbeans.app.data.local.entities.CartItemEntity
+import co.elastic.apm.opbeans.app.data.local.entities.ProductEntity
 
-@Database(entities = [CartItemEntity::class], version = 1)
+@Database(entities = [CartItemEntity::class, ProductEntity::class], version = 1)
 abstract class AppDatabase {
     abstract fun cartItemDao(): CartItemDao
+    abstract fun productDao(): ProductDao
 }
