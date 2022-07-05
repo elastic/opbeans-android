@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import co.elastic.apm.opbeans.app.data.local.entities.CartItemEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CartItemDao {
@@ -12,5 +13,5 @@ interface CartItemDao {
     suspend fun insert(cartItemEntity: CartItemEntity): Long
 
     @Query("SELECT * FROM cart_item ORDER BY created_at DESC")
-    suspend fun getAll(): List<CartItemEntity>
+    fun getAll(): Flow<List<CartItemEntity>>
 }
