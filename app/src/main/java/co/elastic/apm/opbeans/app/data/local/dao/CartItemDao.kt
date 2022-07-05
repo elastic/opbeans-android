@@ -9,8 +9,8 @@ import co.elastic.apm.opbeans.app.data.local.entities.CartItemEntity
 interface CartItemDao {
 
     @Insert
-    suspend fun save(cartItemEntity: CartItemEntity)
+    suspend fun insert(cartItemEntity: CartItemEntity): Long
 
     @Query("SELECT * FROM cart_item ORDER BY created_at DESC")
-    suspend fun getItems(): List<CartItemEntity>
+    suspend fun getAll(): List<CartItemEntity>
 }
