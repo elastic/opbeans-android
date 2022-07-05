@@ -1,4 +1,4 @@
-package co.elastic.apm.opbeans.app.data.source
+package co.elastic.apm.opbeans.app.data.source.product
 
 import co.elastic.apm.opbeans.BuildConfig
 import co.elastic.apm.opbeans.app.data.models.Product

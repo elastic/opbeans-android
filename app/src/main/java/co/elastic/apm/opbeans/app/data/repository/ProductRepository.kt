@@ -1,7 +1,7 @@
 package co.elastic.apm.opbeans.app.data.repository
 
 import co.elastic.apm.opbeans.app.data.models.Product
-import co.elastic.apm.opbeans.app.data.source.RemoteProductSource
+import co.elastic.apm.opbeans.app.data.source.product.RemoteProductSource
 import javax.inject.Inject
 import javax.inject.Singleton
 
