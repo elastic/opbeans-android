@@ -17,4 +17,7 @@ interface CartItemDao {
     @Transaction
     @Query("SELECT * FROM cart_item ORDER BY created_at DESC")
     fun getAllWithProducts(): Flow<List<CartItemAndProduct>>
+
+    @Query("SELECT * FROM cart_item WHERE product_id = :productId")
+    fun getCartItemWithProduct(productId: Int): CartItemAndProduct?
 }
