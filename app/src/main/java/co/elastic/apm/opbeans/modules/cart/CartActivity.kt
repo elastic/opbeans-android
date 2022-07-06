@@ -1,5 +1,7 @@
 package co.elastic.apm.opbeans.modules.cart
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -24,6 +26,13 @@ class CartActivity : AppCompatActivity() {
     private lateinit var list: LoadableList
     private lateinit var adapter: CartListAdapter
     private lateinit var emptyContainer: View
+
+    companion object {
+        fun launch(context: Context) {
+            val intent = Intent(context, CartActivity::class.java)
+            context.startActivity(intent)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

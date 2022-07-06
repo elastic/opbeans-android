@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import co.elastic.apm.opbeans.modules.cart.CartActivity
 import co.elastic.apm.opbeans.modules.customers.CustomersFragment
 import co.elastic.apm.opbeans.modules.orders.OrdersFragment
 import co.elastic.apm.opbeans.modules.products.ProductsFragment
@@ -117,8 +117,7 @@ class HomeActivity : AppCompatActivity(), MenuProvider {
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
-            R.id.shopping_cart -> Toast.makeText(this, "Yay!", Toast.LENGTH_SHORT)
-                .show()
+            R.id.shopping_cart -> CartActivity.launch(this)
         }
 
         return true
