@@ -1,6 +1,7 @@
 package co.elastic.apm.opbeans.app.data.repository
 
 import co.elastic.apm.opbeans.app.data.models.Product
+import co.elastic.apm.opbeans.app.data.models.ProductDetail
 import co.elastic.apm.opbeans.app.data.source.product.LocalProductSource
 import co.elastic.apm.opbeans.app.data.source.product.RemoteProductSource
 import javax.inject.Inject
@@ -19,7 +20,7 @@ class ProductRepository @Inject constructor(
         return localProductSource.getProducts()
     }
 
-    suspend fun getProductById(id: Int): Product {
+    suspend fun getProductById(id: Int): ProductDetail {
         return remoteProductSource.getProductById(id)
     }
 

@@ -1,9 +1,9 @@
 package co.elastic.apm.opbeans.modules.productdetail.ui
 
-import co.elastic.apm.opbeans.app.data.models.Product
+import co.elastic.apm.opbeans.app.data.models.ProductDetail
 
 sealed class ProductDetailState {
     object Loading : ProductDetailState()
-    class FinishedLoading(val product: Product) : ProductDetailState()
+    class FinishedLoading(val product: ProductDetail) : ProductDetailState()
     class ErrorLoading(val e: Throwable) : ProductDetailState()
 }

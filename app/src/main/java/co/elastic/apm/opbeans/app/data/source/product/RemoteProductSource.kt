@@ -1,8 +1,10 @@
 package co.elastic.apm.opbeans.app.data.source.product
 
 import co.elastic.apm.opbeans.app.data.models.Product
+import co.elastic.apm.opbeans.app.data.models.ProductDetail
 import co.elastic.apm.opbeans.app.data.remote.OpBeansService
 import co.elastic.apm.opbeans.app.data.remote.models.RemoteProduct
+import co.elastic.apm.opbeans.app.data.remote.models.RemoteProductDetail
 import co.elastic.apm.opbeans.app.data.source.product.helpers.ImageUrlBuilder
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -18,8 +20,8 @@ class RemoteProductSource @Inject constructor(private val opBeansService: OpBean
         }
     }
 
-    suspend fun getProductById(id: Int): Product {
-        return remoteToProduct(opBeansService.getProductById(id))
+    suspend fun getProductById(id: Int): ProductDetail = withContext(Dispatchers.IO) {
+        remoteToProductDetail(opBeansService.getProductById(id))
     }
 
     private fun remoteToProduct(remoteProduct: RemoteProduct): Product {
@@ -28,6 +30,17 @@ class RemoteProductSource @Inject constructor(private val opBeansService: OpBean
             remoteProduct.sku,
             remoteProduct.name,
             remoteProduct.stock,
+            remoteProduct.typeName,
+            ImageUrlBuilder.build(remoteProduct.sku)
+        )
+    }
+
+    private fun remoteToProductDetail(remoteProduct: RemoteProductDetail): ProductDetail {
+        return ProductDetail(
+            remoteProduct.id,
+            remoteProduct.sku,
+            remoteProduct.name,
+            remoteProduct.description,
             remoteProduct.typeName,
             ImageUrlBuilder.build(remoteProduct.sku)
         )
