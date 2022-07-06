@@ -46,7 +46,7 @@ class CartActivity : AppCompatActivity(), MenuProvider {
         initOptionsMenu()
 
         lifecycleScope.launch {
-            viewModel.cartState.collectLatest {
+            viewModel.cartItemsLoadState.collectLatest {
                 when (it) {
                     is CartItemsLoadState.Loading -> list.showLoading()
                     is CartItemsLoadState.ErrorLoading -> list.showError(it.e)
