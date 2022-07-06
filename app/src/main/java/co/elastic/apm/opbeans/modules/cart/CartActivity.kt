@@ -33,6 +33,7 @@ class CartActivity : AppCompatActivity(), MenuProvider {
     private lateinit var adapter: CartListAdapter
     private lateinit var emptyContainer: View
     private lateinit var checkoutProgressIndicator: View
+    private var checkoutOption: MenuItem? = null
 
     companion object {
         fun launch(context: Context) {
@@ -56,14 +57,25 @@ class CartActivity : AppCompatActivity(), MenuProvider {
         lifecycleScope.launch {
             viewModel.cartCheckoutState.collectLatest {
                 when (it) {
-                    is CartCheckoutState.Started -> showCheckoutProgress()
-                    is CartCheckoutState.Finished -> hideCheckoutProgress()
-                    is CartCheckoutState.Error -> showCheckoutErrorMessage(it.e)
+                    is CartCheckoutState.Started -> onCheckoutStarted()
+                    is CartCheckoutState.Finished -> onCheckoutFinished()
+                    is CartCheckoutState.Error -> onCheckoutFailed(it)
                     is CartCheckoutState.NoItemsToCheckout -> showNoItemsToCheckoutMessage()
-                    else -> hideCheckoutProgress()
+                    else -> onCheckoutFinished()
                 }
             }
         }
+    }
+
+    private fun onCheckoutFailed(it: CartCheckoutState.Error) {
+        checkoutOption?.isEnabled = true
+        hideCheckoutProgress()
+        showCheckoutErrorMessage(it.e)
+    }
+
+    private fun onCheckoutStarted() {
+        checkoutOption?.isEnabled = false
+        showCheckoutProgress()
     }
 
     private fun showNoItemsToCheckoutMessage() {
@@ -71,8 +83,12 @@ class CartActivity : AppCompatActivity(), MenuProvider {
     }
 
     private fun showCheckoutErrorMessage(e: Throwable) {
-        hideCheckoutProgress()
         showToastMessage("Error while checking out: ${e.message}")
+    }
+
+    private fun onCheckoutFinished() {
+        checkoutOption?.isEnabled = true
+        hideCheckoutProgress()
     }
 
     private fun showToastMessage(message: String) {
@@ -143,6 +159,7 @@ class CartActivity : AppCompatActivity(), MenuProvider {
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.cart_options_menu, menu)
+        checkoutOption = menu.findItem(R.id.cart_checkout_option)
     }
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
