@@ -20,4 +20,7 @@ interface CartItemDao {
 
     @Query("SELECT * FROM cart_item WHERE product_id = :productId")
     suspend fun getCartItemWithProduct(productId: Int): CartItemAndProduct?
+
+    @Query("DELETE from cart_item")
+    suspend fun deleteAll()
 }

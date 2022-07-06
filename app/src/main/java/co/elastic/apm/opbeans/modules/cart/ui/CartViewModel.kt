@@ -24,6 +24,6 @@ class CartViewModel @Inject constructor(private val cartItemRepository: CartItem
         )
 
     fun doCheckout() {
-        cartItemRepository.removeItems()
+        cartItemRepository.deleteAll()
     }
 }

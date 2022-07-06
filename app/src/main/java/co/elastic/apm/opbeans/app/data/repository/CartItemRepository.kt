@@ -16,4 +16,8 @@ class CartItemRepository @Inject constructor(private val localCartItemSource: Lo
     suspend fun addItem(productId: Int) {
         localCartItemSource.addItem(productId)
     }
+
+    suspend fun deleteAll() {
+        localCartItemSource.deleteAll()
+    }
 }

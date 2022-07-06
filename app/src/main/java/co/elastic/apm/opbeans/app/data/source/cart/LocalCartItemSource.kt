@@ -31,6 +31,10 @@ class LocalCartItemSource @Inject constructor(private val appDatabase: AppDataba
         cartItemDao.insert(CartItemEntity(0, productId, 1, Date().time))
     }
 
+    suspend fun deleteAll() {
+        cartItemDao.deleteAll()
+    }
+
     private suspend fun verifyProductNotInCart(productId: Int) {
         val existingCartItemForProduct = cartItemDao.getCartItemWithProduct(productId)
         if (existingCartItemForProduct != null) {
