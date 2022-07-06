@@ -45,6 +45,10 @@ class CartViewModel @Inject constructor(
     }
 
     fun doCheckout() {
+        if (cartItems.isEmpty()) {
+            internalCartCheckoutState.update { CartCheckoutState.NoItemsToCheckout }
+            return
+        }
         viewModelScope.launch {
             try {
                 internalCartCheckoutState.update { CartCheckoutState.Started }

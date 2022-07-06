@@ -59,15 +59,24 @@ class CartActivity : AppCompatActivity(), MenuProvider {
                     is CartCheckoutState.Started -> showCheckoutProgress()
                     is CartCheckoutState.Finished -> hideCheckoutProgress()
                     is CartCheckoutState.Error -> showCheckoutErrorMessage(it.e)
+                    is CartCheckoutState.NoItemsToCheckout -> showNoItemsToCheckoutMessage()
                     else -> hideCheckoutProgress()
                 }
             }
         }
     }
 
+    private fun showNoItemsToCheckoutMessage() {
+        showToastMessage("There are no items to checkout")
+    }
+
     private fun showCheckoutErrorMessage(e: Throwable) {
         hideCheckoutProgress()
-        Toast.makeText(this, "Error while checking out: ${e.message}", Toast.LENGTH_LONG).show()
+        showToastMessage("Error while checking out: ${e.message}")
+    }
+
+    private fun showToastMessage(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
     private fun showCheckoutProgress() {
