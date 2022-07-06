@@ -26,6 +26,7 @@
         </activity>
 
         <activity android:name=".modules.cart.CartActivity" />
+        <activity android:name=".modules.productdetail.ProductDetailActivity" />
     </application>
 
 </manifest>

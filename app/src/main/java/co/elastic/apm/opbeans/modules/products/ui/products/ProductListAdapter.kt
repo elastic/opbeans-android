@@ -5,14 +5,19 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import co.elastic.apm.opbeans.app.data.models.Product
 
-class ProductListAdapter() : ListAdapter<Product, ProductViewHolder>(diffCallback) {
+class ProductListAdapter(private val onItemClick: (Int) -> Unit) :
+    ListAdapter<Product, ProductViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         return ProductViewHolder.create(parent)
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        holder.setData(getItem(position))
+        val product = getItem(position)
+        holder.setData(product)
+        holder.itemView.setOnClickListener {
+            onItemClick.invoke(product.id)
+        }
     }
 
     companion object {

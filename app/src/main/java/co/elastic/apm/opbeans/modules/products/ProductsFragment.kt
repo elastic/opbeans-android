@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.data.models.Product
 import co.elastic.apm.opbeans.app.ui.LoadableList
+import co.elastic.apm.opbeans.modules.productdetail.ProductDetailActivity
 import co.elastic.apm.opbeans.modules.products.ui.ProductsViewModel
 import co.elastic.apm.opbeans.modules.products.ui.products.ProductListAdapter
 import co.elastic.apm.opbeans.modules.products.ui.state.NetworkRequestState
@@ -57,7 +58,7 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
     }
 
     private fun initListAdapter() {
-        productListAdapter = ProductListAdapter()
+        productListAdapter = ProductListAdapter(::onItemClicked)
         productList.getList().layoutManager = LinearLayoutManager(requireContext())
         val dividerItemDecoration = DividerItemDecoration(
             requireContext(),
@@ -66,6 +67,10 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
         dividerItemDecoration.setDrawable(resources.getDrawable(R.drawable.list_item_divider, null))
         productList.getList().addItemDecoration(dividerItemDecoration)
         productList.getList().adapter = productListAdapter
+    }
+
+    private fun onItemClicked(productId: Int) {
+        ProductDetailActivity.launch(requireContext(), productId)
     }
 
     private fun initViews(view: View) {
