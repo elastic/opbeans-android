@@ -10,7 +10,7 @@ import javax.inject.Singleton
 class OrderRepository @Inject constructor(private val remoteOrderSource: RemoteOrderSource) {
 
     suspend fun createOrder(customerId: Int, items: List<CartItem>) {
-
+        remoteOrderSource.createOrder(customerId, items)
     }
 
     suspend fun getOrders(): List<Order> {
