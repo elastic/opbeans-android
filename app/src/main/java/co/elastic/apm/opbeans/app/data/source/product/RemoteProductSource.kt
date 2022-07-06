@@ -18,6 +18,10 @@ class RemoteProductSource @Inject constructor(private val opBeansService: OpBean
         }
     }
 
+    suspend fun getProductById(id: Int): Product {
+        return remoteToProduct(opBeansService.getProductById(id))
+    }
+
     private fun remoteToProduct(remoteProduct: RemoteProduct): Product {
         return Product(
             remoteProduct.id,

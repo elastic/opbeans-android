@@ -19,6 +19,10 @@ class ProductRepository @Inject constructor(
         return localProductSource.getProducts()
     }
 
+    suspend fun getProductById(id: Int): Product {
+        return remoteProductSource.getProductById(id)
+    }
+
     suspend fun fetchRemoteProducts() = withContext(Dispatchers.IO) {
         val remoteProducts = remoteProductSource.getProducts()
         localProductSource.storeProducts(remoteProducts)
