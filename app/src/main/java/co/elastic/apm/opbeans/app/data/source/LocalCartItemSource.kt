@@ -22,14 +22,14 @@ class LocalCartItemSource @Inject constructor(private val appDatabase: AppDataba
         }
     }
 
+    suspend fun addItem(productId: Int) {
+        cartItemDao.insert(CartItemEntity(0, productId, 1, Date().time))
+    }
+
     private fun entityToCartItem(cartItem: CartItemAndProduct): CartItem {
         return CartItem(
             cartItem.productEntity.toProduct(),
             cartItem.cartItemEntity.amount
         )
-    }
-
-    suspend fun addItem(productId: Int) {
-        cartItemDao.insert(CartItemEntity(0, productId, 1, Date().time))
     }
 }
