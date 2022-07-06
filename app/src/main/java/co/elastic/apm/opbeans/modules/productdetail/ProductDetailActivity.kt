@@ -41,10 +41,12 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
 
     companion object {
         private const val PARAM_PRODUCT_ID = "product_id"
+        private const val PARAM_PRODUCT_NAME = "product_name"
 
-        fun launch(context: Context, productId: Int) {
+        fun launch(context: Context, productId: Int, productName: String) {
             val intent = Intent(context, ProductDetailActivity::class.java)
             intent.putExtra(PARAM_PRODUCT_ID, productId)
+            intent.putExtra(PARAM_PRODUCT_NAME, productName)
             context.startActivity(intent)
         }
     }
@@ -56,6 +58,10 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
         initOptionsMenu()
 
         productId = getProductId()
+        getProductNameOrNull()?.let { name ->
+            supportActionBar?.title = name
+        }
+
 
         lifecycleScope.launch {
             viewModel.state.collectLatest {
@@ -70,6 +76,10 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
         }
 
         viewModel.fetchProduct(productId)
+    }
+
+    private fun getProductNameOrNull(): String? {
+        return intent.getStringExtra(PARAM_PRODUCT_NAME)
     }
 
     private fun initOptionsMenu() {

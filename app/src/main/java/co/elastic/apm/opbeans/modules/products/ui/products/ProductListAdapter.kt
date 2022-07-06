@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import co.elastic.apm.opbeans.app.data.models.Product
 
-class ProductListAdapter(private val onItemClick: (Int) -> Unit) :
+class ProductListAdapter(private val onItemClick: (Int, String) -> Unit) :
     ListAdapter<Product, ProductViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
@@ -16,7 +16,7 @@ class ProductListAdapter(private val onItemClick: (Int) -> Unit) :
         val product = getItem(position)
         holder.setData(product)
         holder.itemView.setOnClickListener {
-            onItemClick.invoke(product.id)
+            onItemClick.invoke(product.id, product.name)
         }
     }
 

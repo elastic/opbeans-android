@@ -69,8 +69,8 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
         productList.getList().adapter = productListAdapter
     }
 
-    private fun onItemClicked(productId: Int) {
-        ProductDetailActivity.launch(requireContext(), productId)
+    private fun onItemClicked(productId: Int, productName: String) {
+        ProductDetailActivity.launch(requireContext(), productId, productName)
     }
 
     private fun initViews(view: View) {
