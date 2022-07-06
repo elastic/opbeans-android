@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.elastic.apm.opbeans.app.data.models.CartItem
 import co.elastic.apm.opbeans.app.data.repository.CartItemRepository
+import co.elastic.apm.opbeans.app.data.repository.OrderRepository
 import co.elastic.apm.opbeans.modules.cart.ui.state.CartCheckoutState
 import co.elastic.apm.opbeans.modules.cart.ui.state.CartItemsLoadState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,8 +21,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class CartViewModel @Inject constructor(private val cartItemRepository: CartItemRepository) :
-    ViewModel() {
+class CartViewModel @Inject constructor(
+    private val cartItemRepository: CartItemRepository,
+    private val orderRepository: OrderRepository
+) : ViewModel() {
 
     private val cartItems = mutableListOf<CartItem>()
     private val internalCartCheckoutState =
@@ -45,6 +48,7 @@ class CartViewModel @Inject constructor(private val cartItemRepository: CartItem
         viewModelScope.launch {
             try {
                 internalCartCheckoutState.update { CartCheckoutState.Started }
+                orderRepository.createOrder(1, cartItems)
                 cartItemRepository.deleteAll()
                 internalCartCheckoutState.update { CartCheckoutState.Finished }
             } catch (e: Throwable) {
