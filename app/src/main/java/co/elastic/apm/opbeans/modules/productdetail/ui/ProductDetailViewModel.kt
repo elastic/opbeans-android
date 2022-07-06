@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.elastic.apm.opbeans.app.data.repository.CartItemRepository
 import co.elastic.apm.opbeans.app.data.repository.ProductRepository
+import co.elastic.apm.opbeans.app.data.source.cart.exceptions.ProductAlreadyInCartException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,7 +36,12 @@ class ProductDetailViewModel @Inject constructor(
 
     fun addProductToCart(productId: Int) {
         viewModelScope.launch {
-            cartItemRepository.addItem(productId)
+            try {
+                cartItemRepository.addItem(productId)
+                internalState.update { ProductDetailState.AddedToCart }
+            } catch (e: ProductAlreadyInCartException) {
+                internalState.update { ProductDetailState.AlreadyInCart }
+            }
         }
     }
 }

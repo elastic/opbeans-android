@@ -4,6 +4,8 @@ import co.elastic.apm.opbeans.app.data.models.ProductDetail
 
 sealed class ProductDetailState {
     object Loading : ProductDetailState()
+    object AddedToCart : ProductDetailState()
+    object AlreadyInCart : ProductDetailState()
     class FinishedLoading(val product: ProductDetail) : ProductDetailState()
     class ErrorLoading(val e: Throwable) : ProductDetailState()
 }

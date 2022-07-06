@@ -31,7 +31,7 @@ class LocalCartItemSource @Inject constructor(private val appDatabase: AppDataba
         cartItemDao.insert(CartItemEntity(0, productId, 1, Date().time))
     }
 
-    private fun verifyProductNotInCart(productId: Int) {
+    private suspend fun verifyProductNotInCart(productId: Int) {
         val existingCartItemForProduct = cartItemDao.getCartItemWithProduct(productId)
         if (existingCartItemForProduct != null) {
             throw ProductAlreadyInCartException(productId)

@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.lifecycleScope
@@ -62,6 +63,8 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
                     is ProductDetailState.Loading -> showLoading()
                     is ProductDetailState.ErrorLoading -> showErrorLoading(it.e)
                     is ProductDetailState.FinishedLoading -> showProductDetail(it.product)
+                    is ProductDetailState.AddedToCart -> showAddToCartSuccessMessage()
+                    is ProductDetailState.AlreadyInCart -> showProductAlreadyInCartMessage()
                 }
             }
         }
@@ -138,7 +141,18 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
 
     private fun addItemToCart() {
         viewModel.addProductToCart(productId)
-        Toast.makeText(this, getString(R.string.product_detail_added_to_cart), Toast.LENGTH_LONG)
+    }
+
+    private fun showProductAlreadyInCartMessage() {
+        showToastMessage(R.string.product_detail_already_added_to_cart)
+    }
+
+    private fun showAddToCartSuccessMessage() {
+        showToastMessage(R.string.product_detail_added_to_cart)
+    }
+
+    private fun showToastMessage(@StringRes stringId: Int) {
+        Toast.makeText(this, getString(stringId), Toast.LENGTH_LONG)
             .show()
     }
 }

@@ -19,5 +19,5 @@ interface CartItemDao {
     fun getAllWithProducts(): Flow<List<CartItemAndProduct>>
 
     @Query("SELECT * FROM cart_item WHERE product_id = :productId")
-    fun getCartItemWithProduct(productId: Int): CartItemAndProduct?
+    suspend fun getCartItemWithProduct(productId: Int): CartItemAndProduct?
 }
