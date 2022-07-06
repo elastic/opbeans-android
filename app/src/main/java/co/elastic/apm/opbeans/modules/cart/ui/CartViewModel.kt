@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.elastic.apm.opbeans.app.data.models.CartItem
 import co.elastic.apm.opbeans.app.data.repository.CartItemRepository
+import co.elastic.apm.opbeans.modules.cart.ui.state.CartItemsLoadState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,13 +20,13 @@ class CartViewModel @Inject constructor(private val cartItemRepository: CartItem
     ViewModel() {
 
     private val cartItems = mutableListOf<CartItem>()
-    val cartState: StateFlow<CartViewState> = cartItemRepository.getAllCartItems()
-        .catch { e -> CartViewState.ErrorLoading(e) }
-        .map { CartViewState.FinishedLoading(it) }
+    val cartState: StateFlow<CartItemsLoadState> = cartItemRepository.getAllCartItems()
+        .catch { e -> CartItemsLoadState.ErrorLoading(e) }
+        .map { CartItemsLoadState.FinishedLoading(it) }
         .onEach { interceptItems(it.items) }
         .stateIn(
             viewModelScope,
-            SharingStarted.WhileSubscribed(5000), CartViewState.Loading
+            SharingStarted.WhileSubscribed(5000), CartItemsLoadState.Loading
         )
 
     private fun interceptItems(items: List<CartItem>) {

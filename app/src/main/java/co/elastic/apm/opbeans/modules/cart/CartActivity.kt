@@ -17,7 +17,7 @@ import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.data.models.CartItem
 import co.elastic.apm.opbeans.app.ui.LoadableList
 import co.elastic.apm.opbeans.modules.cart.ui.CartViewModel
-import co.elastic.apm.opbeans.modules.cart.ui.CartViewState
+import co.elastic.apm.opbeans.modules.cart.ui.state.CartItemsLoadState
 import co.elastic.apm.opbeans.modules.cart.ui.list.CartListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -48,9 +48,9 @@ class CartActivity : AppCompatActivity(), MenuProvider {
         lifecycleScope.launch {
             viewModel.cartState.collectLatest {
                 when (it) {
-                    is CartViewState.Loading -> list.showLoading()
-                    is CartViewState.ErrorLoading -> list.showError(it.e)
-                    is CartViewState.FinishedLoading -> showCartItems(it.items)
+                    is CartItemsLoadState.Loading -> list.showLoading()
+                    is CartItemsLoadState.ErrorLoading -> list.showError(it.e)
+                    is CartItemsLoadState.FinishedLoading -> showCartItems(it.items)
                 }
             }
         }
