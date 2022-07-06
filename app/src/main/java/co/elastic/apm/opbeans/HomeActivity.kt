@@ -1,7 +1,12 @@
 package co.elastic.apm.opbeans
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import co.elastic.apm.opbeans.modules.customers.CustomersFragment
@@ -11,7 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), MenuProvider {
 
     private lateinit var bottomNavigation: BottomNavigationView
 
@@ -25,8 +30,13 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         initViews()
+        initMenu()
         setUpBottomNavigation()
         showProducts()
+    }
+
+    private fun initMenu() {
+        addMenuProvider(this, this)
     }
 
     private fun setUpBottomNavigation() {
@@ -99,5 +109,18 @@ class HomeActivity : AppCompatActivity() {
             transaction.add(R.id.fragment_container, fragment, tag)
             fragment
         }
+    }
+
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.home_options_menu, menu)
+    }
+
+    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        when (menuItem.itemId) {
+            R.id.shopping_cart -> Toast.makeText(this, "Yay!", Toast.LENGTH_SHORT)
+                .show()
+        }
+
+        return true
     }
 }

@@ -1,13 +1,9 @@
 package co.elastic.apm.opbeans.modules.products
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -25,7 +21,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ProductsFragment : Fragment(R.layout.fragment_products), MenuProvider {
+class ProductsFragment : Fragment(R.layout.fragment_products) {
 
     private val viewModel: ProductsViewModel by viewModels()
     private val menuHost: MenuHost by lazy { requireActivity() }
@@ -36,7 +32,6 @@ class ProductsFragment : Fragment(R.layout.fragment_products), MenuProvider {
         super.onViewCreated(view, savedInstanceState)
         initViews(view)
         initListAdapter()
-        initMenu()
 
         lifecycleScope.launch {
             viewModel.products.collectLatest {
@@ -63,10 +58,6 @@ class ProductsFragment : Fragment(R.layout.fragment_products), MenuProvider {
         ).show()
     }
 
-    private fun initMenu() {
-        menuHost.addMenuProvider(this, viewLifecycleOwner)
-    }
-
     private fun initListAdapter() {
         productListAdapter = ProductListAdapter()
         productList.getList().layoutManager = LinearLayoutManager(requireContext())
@@ -86,18 +77,5 @@ class ProductsFragment : Fragment(R.layout.fragment_products), MenuProvider {
     private fun populateProductList(products: List<Product>) {
         productList.showList()
         productListAdapter.submitList(products)
-    }
-
-    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(R.menu.home_options_menu, menu)
-    }
-
-    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-        when (menuItem.itemId) {
-            R.id.shopping_cart -> Toast.makeText(requireContext(), "Yay!", Toast.LENGTH_SHORT)
-                .show()
-        }
-
-        return true
     }
 }
