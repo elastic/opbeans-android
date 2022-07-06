@@ -102,6 +102,10 @@ class CartActivity : AppCompatActivity(), MenuProvider {
     }
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-        TODO("Not yet implemented")
+        when (menuItem.itemId) {
+            R.id.cart_checkout_option -> viewModel.doCheckout()
+        }
+
+        return true
     }
 }

@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 @HiltViewModel
-class CartViewModel @Inject constructor(cartItemRepository: CartItemRepository) :
+class CartViewModel @Inject constructor(private val cartItemRepository: CartItemRepository) :
     ViewModel() {
 
     val cartState: StateFlow<CartViewState> = cartItemRepository.getAllCartItems()
@@ -22,4 +22,8 @@ class CartViewModel @Inject constructor(cartItemRepository: CartItemRepository) 
             viewModelScope,
             SharingStarted.WhileSubscribed(5000), CartViewState.Loading
         )
+
+    fun doCheckout() {
+        cartItemRepository.removeItems()
+    }
 }
