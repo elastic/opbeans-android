@@ -6,10 +6,10 @@ import co.elastic.apm.opbeans.app.data.local.entities.CartItemEntity
 import co.elastic.apm.opbeans.app.data.local.entities.ProductEntity
 
 data class CartItemAndProduct(
-    @Embedded val productEntity: ProductEntity,
+    @Embedded val cartItemEntity: CartItemEntity,
     @Relation(
-        parentColumn = "id",
-        entityColumn = "product_id"
+        parentColumn = "product_id",
+        entityColumn = "id"
     )
-    val cartItemEntity: CartItemEntity
+    val productEntity: ProductEntity
 )
