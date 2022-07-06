@@ -3,9 +3,13 @@ package co.elastic.apm.opbeans.modules.cart
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,7 +24,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CartActivity : AppCompatActivity() {
+class CartActivity : AppCompatActivity(), MenuProvider {
 
     private val viewModel: CartViewModel by viewModels()
     private lateinit var list: LoadableList
@@ -39,6 +43,7 @@ class CartActivity : AppCompatActivity() {
         setContentView(R.layout.activity_cart)
         initViews()
         initList()
+        initOptionsMenu()
 
         lifecycleScope.launch {
             viewModel.cartState.collectLatest {
@@ -86,5 +91,17 @@ class CartActivity : AppCompatActivity() {
         list.visibility = View.VISIBLE
         emptyContainer.visibility = View.INVISIBLE
         list.showList()
+    }
+
+    private fun initOptionsMenu() {
+        addMenuProvider(this, this)
+    }
+
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.cart_options_menu, menu)
+    }
+
+    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        TODO("Not yet implemented")
     }
 }

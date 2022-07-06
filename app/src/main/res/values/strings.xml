@@ -10,4 +10,5 @@
     <string name="product_detail_add_to_cart">Add to cart</string>
     <string name="product_detail_added_to_cart">Product added to your cart!</string>
     <string name="product_detail_already_added_to_cart">This product is already in your cart</string>
+    <string name="cart_checkout_option">Checkout</string>
 </resources>
