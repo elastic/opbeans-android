@@ -43,13 +43,14 @@
             <ImageView
                 android:id="@+id/product_detail_image"
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="200dp"
+                android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="12dp">
+                android:padding="18dp">
 
                 <TextView
                     android:id="@+id/product_detail_title"
