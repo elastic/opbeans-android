@@ -1,6 +1,7 @@
 package co.elastic.apm.opbeans.modules.cart
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -22,6 +23,7 @@ class CartActivity : AppCompatActivity() {
     private val viewModel: CartViewModel by viewModels()
     private lateinit var list: LoadableList
     private lateinit var adapter: CartListAdapter
+    private lateinit var emptyContainer: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +44,7 @@ class CartActivity : AppCompatActivity() {
 
     private fun initViews() {
         list = findViewById(R.id.cart_items_list)
+        emptyContainer = findViewById(R.id.cart_empty_container)
     }
 
     private fun initList() {
@@ -57,7 +60,22 @@ class CartActivity : AppCompatActivity() {
     }
 
     private fun showCartItems(items: List<CartItem>) {
+        if (items.isNotEmpty()) {
+            showList()
+            adapter.submitList(items)
+        } else {
+            showEmptyCart()
+        }
+    }
+
+    private fun showEmptyCart() {
+        emptyContainer.visibility = View.VISIBLE
+        list.visibility = View.INVISIBLE
+    }
+
+    private fun showList() {
+        list.visibility = View.VISIBLE
+        emptyContainer.visibility = View.INVISIBLE
         list.showList()
-        adapter.submitList(items)
     }
 }
