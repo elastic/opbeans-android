@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
@@ -17,8 +18,9 @@ import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.data.models.CartItem
 import co.elastic.apm.opbeans.app.ui.LoadableList
 import co.elastic.apm.opbeans.modules.cart.ui.CartViewModel
-import co.elastic.apm.opbeans.modules.cart.ui.state.CartItemsLoadState
 import co.elastic.apm.opbeans.modules.cart.ui.list.CartListAdapter
+import co.elastic.apm.opbeans.modules.cart.ui.state.CartCheckoutState
+import co.elastic.apm.opbeans.modules.cart.ui.state.CartItemsLoadState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -30,6 +32,7 @@ class CartActivity : AppCompatActivity(), MenuProvider {
     private lateinit var list: LoadableList
     private lateinit var adapter: CartListAdapter
     private lateinit var emptyContainer: View
+    private lateinit var checkoutProgressIndicator: View
 
     companion object {
         fun launch(context: Context) {
@@ -45,6 +48,37 @@ class CartActivity : AppCompatActivity(), MenuProvider {
         initList()
         initOptionsMenu()
 
+        observeCartItems()
+        observeCheckout()
+    }
+
+    private fun observeCheckout() {
+        lifecycleScope.launch {
+            viewModel.cartCheckoutState.collectLatest {
+                when (it) {
+                    is CartCheckoutState.Started -> showCheckoutProgress()
+                    is CartCheckoutState.Finished -> hideCheckoutProgress()
+                    is CartCheckoutState.Error -> showCheckoutErrorMessage(it.e)
+                    else -> hideCheckoutProgress()
+                }
+            }
+        }
+    }
+
+    private fun showCheckoutErrorMessage(e: Throwable) {
+        hideCheckoutProgress()
+        Toast.makeText(this, "Error while checking out: ${e.message}", Toast.LENGTH_LONG).show()
+    }
+
+    private fun showCheckoutProgress() {
+        checkoutProgressIndicator.visibility = View.VISIBLE
+    }
+
+    private fun hideCheckoutProgress() {
+        checkoutProgressIndicator.visibility = View.INVISIBLE
+    }
+
+    private fun observeCartItems() {
         lifecycleScope.launch {
             viewModel.cartItemsLoadState.collectLatest {
                 when (it) {
@@ -59,6 +93,7 @@ class CartActivity : AppCompatActivity(), MenuProvider {
     private fun initViews() {
         list = findViewById(R.id.cart_items_list)
         emptyContainer = findViewById(R.id.cart_empty_container)
+        checkoutProgressIndicator = findViewById(R.id.cart_checkout_progress_indicator)
     }
 
     private fun initList() {
