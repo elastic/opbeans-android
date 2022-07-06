@@ -25,7 +25,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".modules.cart.CartActivity" />
+        <activity
+            android:name=".modules.cart.CartActivity"
+            android:label="@string/activity_cart_title" />
+
         <activity android:name=".modules.productdetail.ProductDetailActivity" />
     </application>
 
