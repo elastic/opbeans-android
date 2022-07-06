@@ -3,11 +3,15 @@ package co.elastic.apm.opbeans.modules.productdetail
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.lifecycle.lifecycleScope
 import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.data.models.ProductDetail
@@ -19,7 +23,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ProductDetailActivity : AppCompatActivity() {
+class ProductDetailActivity : AppCompatActivity(), MenuProvider {
 
     private val viewModel: ProductDetailViewModel by viewModels()
     private lateinit var title: TextView
@@ -46,6 +50,7 @@ class ProductDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_detail)
         initViews()
+        initOptionsMenu()
 
         val productId = getProductId()
 
@@ -60,6 +65,10 @@ class ProductDetailActivity : AppCompatActivity() {
         }
 
         viewModel.fetchProduct(productId)
+    }
+
+    private fun initOptionsMenu() {
+        addMenuProvider(this, this)
     }
 
     private fun initViews() {
@@ -111,5 +120,13 @@ class ProductDetailActivity : AppCompatActivity() {
             throw IllegalArgumentException("No product id available")
         }
         return param
+    }
+
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.product_detail_options_menu, menu)
+    }
+
+    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        TODO("Not yet implemented")
     }
 }
