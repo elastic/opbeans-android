@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
@@ -26,6 +27,7 @@ import kotlinx.coroutines.launch
 class ProductDetailActivity : AppCompatActivity(), MenuProvider {
 
     private val viewModel: ProductDetailViewModel by viewModels()
+    private var productId: Int = -1
     private lateinit var title: TextView
     private lateinit var type: TextView
     private lateinit var description: TextView
@@ -52,7 +54,7 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
         initViews()
         initOptionsMenu()
 
-        val productId = getProductId()
+        productId = getProductId()
 
         lifecycleScope.launch {
             viewModel.state.collectLatest {
@@ -127,6 +129,16 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
     }
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-        TODO("Not yet implemented")
+        when (menuItem.itemId) {
+            R.id.add_to_cart -> addItemToCart()
+        }
+
+        return true
+    }
+
+    private fun addItemToCart() {
+        viewModel.addProductToCart(productId)
+        Toast.makeText(this, getString(R.string.product_detail_added_to_cart), Toast.LENGTH_LONG)
+            .show()
     }
 }

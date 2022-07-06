@@ -8,4 +8,5 @@
     <string name="error_message_products_request">Failed to fetch products: %s</string>
     <string name="cart_empty_message">Your cart is empty</string>
     <string name="product_detail_add_to_cart">Add to cart</string>
+    <string name="product_detail_added_to_cart">Product added to your cart!</string>
 </resources>

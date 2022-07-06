@@ -12,4 +12,8 @@ class CartItemRepository @Inject constructor(private val localCartItemSource: Lo
     fun getAllCartItems(): Flow<List<CartItem>> {
         return localCartItemSource.getAllCartItems()
     }
+
+    suspend fun addItem(productId: Int) {
+        localCartItemSource.addItem(productId)
+    }
 }
