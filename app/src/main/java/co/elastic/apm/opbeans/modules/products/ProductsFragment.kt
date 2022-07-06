@@ -3,7 +3,6 @@ package co.elastic.apm.opbeans.modules.products
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.core.view.MenuHost
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -24,7 +23,6 @@ import kotlinx.coroutines.launch
 class ProductsFragment : Fragment(R.layout.fragment_products) {
 
     private val viewModel: ProductsViewModel by viewModels()
-    private val menuHost: MenuHost by lazy { requireActivity() }
     private lateinit var productList: LoadableList
     private lateinit var productListAdapter: ProductListAdapter
 
