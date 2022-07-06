@@ -3,6 +3,7 @@ package co.elastic.apm.opbeans.modules.productdetail
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -25,6 +26,11 @@ class ProductDetailActivity : AppCompatActivity() {
     private lateinit var type: TextView
     private lateinit var description: TextView
     private lateinit var image: ImageView
+    private lateinit var errorContainer: View
+    private lateinit var loadingContainer: View
+    private lateinit var contentContainer: View
+    private lateinit var errorMessage: TextView
+    private lateinit var containers: List<View>
 
     companion object {
         private const val PARAM_PRODUCT_ID = "product_id"
@@ -61,21 +67,42 @@ class ProductDetailActivity : AppCompatActivity() {
         type = findViewById(R.id.product_detail_type)
         description = findViewById(R.id.product_detail_description)
         image = findViewById(R.id.product_detail_image)
+        contentContainer = findViewById(R.id.product_detail_content)
+        errorContainer = findViewById(R.id.product_detail_error_container)
+        loadingContainer = findViewById(R.id.product_detail_loading_container)
+        errorMessage = findViewById(R.id.product_detail_error_message)
+        containers = listOf(errorContainer, loadingContainer, contentContainer)
     }
 
     private fun showProductDetail(product: ProductDetail) {
+        showContent()
         title.text = product.name
         type.text = product.type
         description.text = product.description
         Glide.with(this).load(product.imageUrl).into(image)
     }
 
+    private fun showContent() {
+        showOnly(contentContainer)
+    }
+
     private fun showErrorLoading(e: Throwable) {
-        TODO("Not yet implemented")
+        showOnly(errorContainer)
+        errorMessage.text = e.message
     }
 
     private fun showLoading() {
-        TODO("Not yet implemented")
+        showOnly(loadingContainer)
+    }
+
+    private fun showOnly(container: View) {
+        containers.forEach {
+            if (it == container) {
+                it.visibility = View.VISIBLE
+            } else {
+                it.visibility = View.INVISIBLE
+            }
+        }
     }
 
     private fun getProductId(): Int {
