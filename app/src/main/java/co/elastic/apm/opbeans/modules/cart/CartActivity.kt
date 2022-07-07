@@ -62,7 +62,7 @@ class CartActivity : AppCompatActivity(), MenuProvider {
                     is CartCheckoutState.Finished -> onCheckoutFinished()
                     is CartCheckoutState.Error -> onCheckoutFailed(it)
                     is CartCheckoutState.NoItemsToCheckout -> showNoItemsToCheckoutMessage()
-                    else -> onCheckoutFinished()
+                    else -> {}
                 }
             }
         }
@@ -94,6 +94,7 @@ class CartActivity : AppCompatActivity(), MenuProvider {
     private fun onCheckoutFinished() {
         checkoutOption?.isEnabled = true
         hideCheckoutProgress()
+        showToastMessage("Items checked out successfully!")
     }
 
     private fun showToastMessage(message: String) {
