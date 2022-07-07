@@ -31,7 +31,6 @@ class CartActivity : AppCompatActivity(), MenuProvider {
     private val viewModel: CartViewModel by viewModels()
     private lateinit var list: LoadableList
     private lateinit var adapter: CartListAdapter
-    private lateinit var emptyContainer: View
     private lateinit var checkoutProgressIndicator: View
     private var checkoutOption: MenuItem? = null
 
@@ -128,7 +127,6 @@ class CartActivity : AppCompatActivity(), MenuProvider {
 
     private fun initViews() {
         list = findViewById(R.id.cart_items_list)
-        emptyContainer = findViewById(R.id.cart_empty_container)
         checkoutProgressIndicator = findViewById(R.id.cart_checkout_progress_indicator)
     }
 
@@ -152,13 +150,10 @@ class CartActivity : AppCompatActivity(), MenuProvider {
     }
 
     private fun showEmptyCart() {
-        emptyContainer.visibility = View.VISIBLE
-        list.visibility = View.INVISIBLE
+        list.showEmptyMessage(getString(R.string.cart_empty_message))
     }
 
     private fun showList() {
-        list.visibility = View.VISIBLE
-        emptyContainer.visibility = View.INVISIBLE
         list.showList()
     }
 
