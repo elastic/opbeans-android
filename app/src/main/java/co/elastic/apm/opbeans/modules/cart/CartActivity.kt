@@ -166,7 +166,7 @@ class CartActivity : AppCompatActivity(), MenuProvider {
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.cart_checkout_option -> viewModel.doCheckout()
-            android.R.id.home -> finish()
+            android.R.id.home -> onBackPressed()
         }
 
         return true

@@ -149,7 +149,7 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.add_to_cart -> addItemToCart()
-            android.R.id.home -> finish()
+            android.R.id.home -> onBackPressed()
         }
 
         return true
