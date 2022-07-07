@@ -58,9 +58,7 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
         initOptionsMenu()
 
         productId = getProductId()
-        getProductNameOrNull()?.let { name ->
-            supportActionBar?.title = name
-        }
+        setUpToolbar()
 
 
         lifecycleScope.launch {
@@ -76,6 +74,13 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
         }
 
         viewModel.fetchProduct(productId)
+    }
+
+    private fun setUpToolbar() {
+        getProductNameOrNull()?.let { name ->
+            supportActionBar?.title = name
+        }
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun getProductNameOrNull(): String? {
@@ -144,6 +149,7 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.add_to_cart -> addItemToCart()
+            android.R.id.home -> finish()
         }
 
         return true

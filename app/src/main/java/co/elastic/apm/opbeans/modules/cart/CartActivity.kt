@@ -48,6 +48,7 @@ class CartActivity : AppCompatActivity(), MenuProvider {
         initViews()
         initList()
         initOptionsMenu()
+        setUpToolbar()
 
         observeCartItems()
         observeCheckout()
@@ -76,6 +77,10 @@ class CartActivity : AppCompatActivity(), MenuProvider {
     private fun onCheckoutStarted() {
         checkoutOption?.isEnabled = false
         showCheckoutProgress()
+    }
+
+    private fun setUpToolbar() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun showNoItemsToCheckoutMessage() {
@@ -161,6 +166,7 @@ class CartActivity : AppCompatActivity(), MenuProvider {
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.cart_checkout_option -> viewModel.doCheckout()
+            android.R.id.home -> finish()
         }
 
         return true
