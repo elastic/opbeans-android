@@ -20,6 +20,7 @@ import co.elastic.apm.opbeans.app.data.models.ProductDetail
 import co.elastic.apm.opbeans.modules.productdetail.ui.ProductDetailState
 import co.elastic.apm.opbeans.modules.productdetail.ui.ProductDetailViewModel
 import com.bumptech.glide.Glide
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -38,6 +39,7 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
     private lateinit var contentContainer: View
     private lateinit var errorMessage: TextView
     private lateinit var containers: List<View>
+    private lateinit var addToCartButton: FloatingActionButton
 
     companion object {
         private const val PARAM_PRODUCT_ID = "product_id"
@@ -56,10 +58,10 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
         setContentView(R.layout.activity_product_detail)
         initViews()
         initOptionsMenu()
+        initClicks()
 
         productId = getProductId()
         setUpToolbar()
-
 
         lifecycleScope.launch {
             viewModel.state.collectLatest {
@@ -74,6 +76,12 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
         }
 
         viewModel.fetchProduct(productId)
+    }
+
+    private fun initClicks() {
+        addToCartButton.setOnClickListener {
+            addItemToCart()
+        }
     }
 
     private fun setUpToolbar() {
@@ -100,6 +108,7 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
         errorContainer = findViewById(R.id.product_detail_error_container)
         loadingContainer = findViewById(R.id.product_detail_loading_container)
         errorMessage = findViewById(R.id.product_detail_error_message)
+        addToCartButton = findViewById(R.id.add_to_cart_fab)
         containers = listOf(errorContainer, loadingContainer, contentContainer)
     }
 
@@ -143,12 +152,10 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
     }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(R.menu.product_detail_options_menu, menu)
     }
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
-            R.id.add_to_cart -> addItemToCart()
             android.R.id.home -> onBackPressed()
         }
 
