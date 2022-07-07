@@ -11,13 +11,14 @@ import co.elastic.apm.opbeans.modules.cart.ui.state.CartCheckoutState
 import co.elastic.apm.opbeans.modules.cart.ui.state.CartItemsLoadState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -26,21 +27,32 @@ class CartViewModel @Inject constructor(
     private val orderRepository: OrderRepository
 ) : ViewModel() {
 
+    private var fetchListJob: Job? = null
     private val cartItems = mutableListOf<CartItem>()
     private val internalCartCheckoutState = EventFlow<CartCheckoutState>(CartCheckoutState.Idle)
     val cartCheckoutState = internalCartCheckoutState.asSharedFlow()
-    val cartItemsLoadState: StateFlow<CartItemsLoadState> = cartItemRepository.getAllCartItems()
-        .catch { e -> CartItemsLoadState.ErrorLoading(e) }
-        .map { CartItemsLoadState.FinishedLoading(it) }
-        .onEach { interceptItems(it.items) }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000), CartItemsLoadState.Loading
-        )
 
-    private fun interceptItems(items: List<CartItem>) {
-        cartItems.clear()
-        cartItems.addAll(items)
+    private val internalCartItemsLoadState =
+        EventFlow<CartItemsLoadState>(CartItemsLoadState.Loading)
+    val cartItemsLoadState: SharedFlow<CartItemsLoadState> =
+        internalCartItemsLoadState.asSharedFlow()
+            .shareIn(viewModelScope, SharingStarted.WhileSubscribed(5000))
+
+    fun fetchData() {
+        fetchListJob?.cancel()
+        fetchListJob = viewModelScope.launch {
+            try {
+                internalCartItemsLoadState.update { CartItemsLoadState.Loading }
+                cartItemRepository.getAllCartItems()
+                    .catch { e -> CartItemsLoadState.ErrorLoading(e) }
+                    .onEach { interceptItems(it) }
+                    .collectLatest {
+                        internalCartItemsLoadState.update { CartItemsLoadState.FinishedLoading(it) }
+                    }
+            } catch (e: Throwable) {
+                internalCartItemsLoadState.update { CartItemsLoadState.ErrorLoading(e) }
+            }
+        }
     }
 
     fun doCheckout() {
@@ -58,5 +70,10 @@ class CartViewModel @Inject constructor(
                 internalCartCheckoutState.update { CartCheckoutState.Error(e) }
             }
         }
+    }
+
+    private fun interceptItems(items: List<CartItem>) {
+        cartItems.clear()
+        cartItems.addAll(items)
     }
 }

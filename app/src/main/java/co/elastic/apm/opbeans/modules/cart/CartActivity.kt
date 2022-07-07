@@ -52,6 +52,11 @@ class CartActivity : AppCompatActivity(), MenuProvider {
 
         observeCartItems()
         observeCheckout()
+        fetchData()
+    }
+
+    private fun fetchData() {
+        viewModel.fetchData()
     }
 
     private fun observeCheckout() {
@@ -133,6 +138,8 @@ class CartActivity : AppCompatActivity(), MenuProvider {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.addItemDecoration(ListDivider(this))
         recyclerView.adapter = adapter
+
+        list.onRefreshRequested { fetchData() }
     }
 
     private fun showCartItems(items: List<CartItem>) {
