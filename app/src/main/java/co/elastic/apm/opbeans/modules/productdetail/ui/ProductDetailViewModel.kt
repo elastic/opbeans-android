@@ -5,22 +5,21 @@ import androidx.lifecycle.viewModelScope
 import co.elastic.apm.opbeans.app.data.repository.CartItemRepository
 import co.elastic.apm.opbeans.app.data.repository.ProductRepository
 import co.elastic.apm.opbeans.app.data.source.cart.exceptions.ProductAlreadyInCartException
+import co.elastic.apm.opbeans.app.tools.EventFlow
+import co.elastic.apm.opbeans.app.tools.update
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ProductDetailViewModel @Inject constructor(
     private val productRepository: ProductRepository,
     private val cartItemRepository: CartItemRepository
-) :
-    ViewModel() {
+) : ViewModel() {
 
-    private val internalState = MutableStateFlow<ProductDetailState>(ProductDetailState.Loading)
-    val state = internalState.asStateFlow()
+    private val internalState = EventFlow<ProductDetailState>(ProductDetailState.Loading)
+    val state = internalState.asSharedFlow()
 
     fun fetchProduct(productId: Int) {
         viewModelScope.launch {
