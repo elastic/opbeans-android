@@ -6,7 +6,9 @@ import co.elastic.apm.opbeans.app.data.models.Product
 import co.elastic.apm.opbeans.app.data.source.product.helpers.ProductEntityMapper.toProduct
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 @Singleton
@@ -17,7 +19,7 @@ class LocalProductSource @Inject constructor(private val appDatabase: AppDatabas
     fun getProducts(): Flow<List<Product>> {
         return productDao.getAll().map {
             localListToProducts(it)
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     suspend fun storeProducts(products: List<Product>) {

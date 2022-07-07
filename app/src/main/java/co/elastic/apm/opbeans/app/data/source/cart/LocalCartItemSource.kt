@@ -9,7 +9,9 @@ import co.elastic.apm.opbeans.app.data.source.product.helpers.ProductEntityMappe
 import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 @Singleton
@@ -20,7 +22,7 @@ class LocalCartItemSource @Inject constructor(private val appDatabase: AppDataba
     fun getAllCartItems(): Flow<List<CartItem>> {
         return cartItemDao.getAllWithProducts().map { list ->
             list.map { entityToCartItem(it) }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     /**
