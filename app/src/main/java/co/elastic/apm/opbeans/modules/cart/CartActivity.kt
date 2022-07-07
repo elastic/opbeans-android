@@ -84,17 +84,17 @@ class CartActivity : AppCompatActivity(), MenuProvider {
     }
 
     private fun showNoItemsToCheckoutMessage() {
-        showToastMessage("There are no items to checkout")
+        showToastMessage(getString(R.string.cart_no_items_to_checkout_message))
     }
 
     private fun showCheckoutErrorMessage(e: Throwable) {
-        showToastMessage("Error while checking out: ${e.message}")
+        showToastMessage(getString(R.string.cart_error_checking_out_message, e.message))
     }
 
     private fun onCheckoutFinished() {
         checkoutOption?.isEnabled = true
         hideCheckoutProgress()
-        showToastMessage("Items checked out successfully!")
+        showToastMessage(getString(R.string.cart_items_checked_out_success_message))
     }
 
     private fun showToastMessage(message: String) {
