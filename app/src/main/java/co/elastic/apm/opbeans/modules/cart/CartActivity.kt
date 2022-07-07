@@ -12,10 +12,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.data.models.CartItem
+import co.elastic.apm.opbeans.app.ui.ListDivider
 import co.elastic.apm.opbeans.app.ui.LoadableList
 import co.elastic.apm.opbeans.modules.cart.ui.CartViewModel
 import co.elastic.apm.opbeans.modules.cart.ui.list.CartListAdapter
@@ -123,14 +123,10 @@ class CartActivity : AppCompatActivity(), MenuProvider {
 
     private fun initList() {
         adapter = CartListAdapter()
-        list.getList().layoutManager = LinearLayoutManager(this)
-        val dividerItemDecoration = DividerItemDecoration(
-            this,
-            LinearLayoutManager.VERTICAL
-        )
-        dividerItemDecoration.setDrawable(resources.getDrawable(R.drawable.list_item_divider, null))
-        list.getList().addItemDecoration(dividerItemDecoration)
-        list.getList().adapter = adapter
+        val recyclerView = list.getList()
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.addItemDecoration(ListDivider(this))
+        recyclerView.adapter = adapter
     }
 
     private fun showCartItems(items: List<CartItem>) {

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.data.models.Customer
+import co.elastic.apm.opbeans.app.ui.ListDivider
 import co.elastic.apm.opbeans.app.ui.LoadableList
 import co.elastic.apm.opbeans.modules.customers.ui.CustomersState
 import co.elastic.apm.opbeans.modules.customers.ui.CustomersViewModel
@@ -46,12 +47,7 @@ class CustomersFragment : Fragment(R.layout.fragment_customers) {
         adapter = CustomerListAdapter()
         val list = list.getList()
         list.layoutManager = LinearLayoutManager(requireContext())
-        val dividerItemDecoration = DividerItemDecoration(
-            requireContext(),
-            LinearLayoutManager.VERTICAL
-        )
-        dividerItemDecoration.setDrawable(resources.getDrawable(R.drawable.list_item_divider, null))
-        list.addItemDecoration(dividerItemDecoration)
+        list.addItemDecoration(ListDivider(requireContext()))
         list.adapter = adapter
     }
 

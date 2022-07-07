@@ -6,10 +6,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.data.models.Product
+import co.elastic.apm.opbeans.app.ui.ListDivider
 import co.elastic.apm.opbeans.app.ui.LoadableList
 import co.elastic.apm.opbeans.modules.productdetail.ProductDetailActivity
 import co.elastic.apm.opbeans.modules.products.ui.ProductsViewModel
@@ -59,14 +59,10 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
 
     private fun initListAdapter() {
         productListAdapter = ProductListAdapter(::onItemClicked)
-        productList.getList().layoutManager = LinearLayoutManager(requireContext())
-        val dividerItemDecoration = DividerItemDecoration(
-            requireContext(),
-            LinearLayoutManager.VERTICAL
-        )
-        dividerItemDecoration.setDrawable(resources.getDrawable(R.drawable.list_item_divider, null))
-        productList.getList().addItemDecoration(dividerItemDecoration)
-        productList.getList().adapter = productListAdapter
+        val recyclerView = productList.getList()
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.addItemDecoration(ListDivider(requireContext()))
+        recyclerView.adapter = productListAdapter
     }
 
     private fun onItemClicked(productId: Int, productName: String) {

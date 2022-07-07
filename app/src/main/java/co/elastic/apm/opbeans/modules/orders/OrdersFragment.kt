@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.elastic.apm.opbeans.R
+import co.elastic.apm.opbeans.app.ui.ListDivider
 import co.elastic.apm.opbeans.app.ui.LoadableList
 import co.elastic.apm.opbeans.modules.orders.data.models.OrderStateItem
 import co.elastic.apm.opbeans.modules.orders.ui.OrdersState
@@ -51,12 +52,7 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
         adapter = OrderListAdapter()
         val list = list.getList()
         list.layoutManager = LinearLayoutManager(requireContext())
-        val dividerItemDecoration = DividerItemDecoration(
-            requireContext(),
-            LinearLayoutManager.VERTICAL
-        )
-        dividerItemDecoration.setDrawable(resources.getDrawable(R.drawable.list_item_divider, null))
-        list.addItemDecoration(dividerItemDecoration)
+        list.addItemDecoration(ListDivider(requireContext()))
         list.adapter = adapter
     }
 
