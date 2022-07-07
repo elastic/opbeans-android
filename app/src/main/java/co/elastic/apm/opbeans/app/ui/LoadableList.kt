@@ -7,15 +7,16 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import co.elastic.apm.opbeans.R
 
 class LoadableList @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
+    private val swipeToRefresh: SwipeRefreshLayout
     private val list: RecyclerView
     private val errorContainer: View
-    private val loadingContainer: View
     private val errorDescription: TextView
 
     init {
@@ -23,7 +24,7 @@ class LoadableList @JvmOverloads constructor(
         list = findViewById(R.id.list)
         errorContainer = findViewById(R.id.error_container)
         errorDescription = findViewById(R.id.error_description)
-        loadingContainer = findViewById(R.id.loading_container)
+        swipeToRefresh = findViewById(R.id.swipe_to_refresh)
     }
 
     fun getList(): RecyclerView = list
@@ -31,11 +32,11 @@ class LoadableList @JvmOverloads constructor(
     fun showList() {
         list.visibility = View.VISIBLE
         errorContainer.visibility = View.INVISIBLE
-        loadingContainer.visibility = View.INVISIBLE
+        swipeToRefresh.isRefreshing = false
     }
 
     fun showLoading() {
-        loadingContainer.visibility = View.VISIBLE
+        swipeToRefresh.isRefreshing = true
         errorContainer.visibility = View.INVISIBLE
         list.visibility = View.INVISIBLE
     }
@@ -43,7 +44,13 @@ class LoadableList @JvmOverloads constructor(
     fun showError(e: Throwable) {
         errorDescription.text = e.message ?: ""
         errorContainer.visibility = View.VISIBLE
-        loadingContainer.visibility = View.INVISIBLE
+        swipeToRefresh.isRefreshing = false
         list.visibility = View.INVISIBLE
+    }
+
+    fun onRefreshRequested(action: () -> Unit) {
+        swipeToRefresh.setOnRefreshListener {
+            action.invoke()
+        }
     }
 }
