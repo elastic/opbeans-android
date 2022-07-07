@@ -30,7 +30,7 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews(view)
-        initListAdapter()
+        initList()
 
         lifecycleScope.launch {
             viewModel.products.collectLatest {
@@ -40,12 +40,21 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
                     is ProductsState.Error -> productList.showError(it.e)
                 }
             }
+        }
+        lifecycleScope.launch {
             viewModel.networkRequestState.collectLatest {
-                if (it is NetworkRequestState.Failed) {
-                    showNetworkErrorMessage(it.e)
+                when (it) {
+                    is NetworkRequestState.Running -> productList.showLoading()
+                    is NetworkRequestState.Failed -> onNetworkRequestFailed(it)
+                    is NetworkRequestState.Successful -> productList.hideLoading()
                 }
             }
         }
+    }
+
+    private fun onNetworkRequestFailed(it: NetworkRequestState.Failed) {
+        productList.hideLoading()
+        showNetworkErrorMessage(it.e)
     }
 
     private fun showNetworkErrorMessage(e: Throwable) {
@@ -57,12 +66,14 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
         ).show()
     }
 
-    private fun initListAdapter() {
+    private fun initList() {
         productListAdapter = ProductListAdapter(::onItemClicked)
         val recyclerView = productList.getList()
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.addItemDecoration(ListDivider(requireContext()))
         recyclerView.adapter = productListAdapter
+
+        productList.onRefreshRequested { viewModel.fetchProducts() }
     }
 
     private fun onItemClicked(productId: Int, productName: String) {

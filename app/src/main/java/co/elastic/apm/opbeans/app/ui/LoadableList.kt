@@ -31,14 +31,8 @@ class LoadableList @JvmOverloads constructor(
 
     fun showList() {
         list.visibility = View.VISIBLE
-        swipeToRefresh.isRefreshing = false
         emptyListContainer.visibility = View.INVISIBLE
-    }
-
-    fun showLoading() {
-        swipeToRefresh.isRefreshing = true
-        list.visibility = View.INVISIBLE
-        emptyListContainer.visibility = View.INVISIBLE
+        hideLoading()
     }
 
     fun showError(e: Throwable) {
@@ -55,6 +49,14 @@ class LoadableList @JvmOverloads constructor(
         emptyListMessage.text = message
         emptyListContainer.visibility = View.VISIBLE
         list.visibility = View.INVISIBLE
+        hideLoading()
+    }
+
+    fun showLoading() {
+        swipeToRefresh.isRefreshing = true
+    }
+
+    fun hideLoading() {
         swipeToRefresh.isRefreshing = false
     }
 }

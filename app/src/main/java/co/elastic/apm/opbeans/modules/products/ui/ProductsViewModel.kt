@@ -36,7 +36,7 @@ class ProductsViewModel @Inject constructor(private val productRepository: Produ
         fetchProducts()
     }
 
-    private fun fetchProducts() {
+    fun fetchProducts() {
         viewModelScope.launch {
             try {
                 internalNetworkRequestState.update { NetworkRequestState.Running }
