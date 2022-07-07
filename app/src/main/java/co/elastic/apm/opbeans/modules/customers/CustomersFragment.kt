@@ -5,7 +5,6 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.data.models.Customer
@@ -28,7 +27,7 @@ class CustomersFragment : Fragment(R.layout.fragment_customers) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews(view)
-        initListAdapter()
+        initList()
 
         lifecycleScope.launch {
             viewModel.state.collectLatest {
@@ -43,12 +42,14 @@ class CustomersFragment : Fragment(R.layout.fragment_customers) {
         viewModel.fetchCustomers()
     }
 
-    private fun initListAdapter() {
+    private fun initList() {
         adapter = CustomerListAdapter()
-        val list = list.getList()
-        list.layoutManager = LinearLayoutManager(requireContext())
-        list.addItemDecoration(ListDivider(requireContext()))
-        list.adapter = adapter
+        val recyclerView = list.getList()
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.addItemDecoration(ListDivider(requireContext()))
+        recyclerView.adapter = adapter
+
+        list.onRefreshRequested { viewModel.fetchCustomers() }
     }
 
     private fun populateList(customers: List<Customer>) {
