@@ -81,6 +81,7 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
     }
 
     private fun onScreenLoadedSuccessfully(screenItem: AccountStateScreenItem) {
+        showOnly(contentContainer)
         val customer = screenItem.customer
         userName.text = customer.fullName
         userEmail.text = customer.email
