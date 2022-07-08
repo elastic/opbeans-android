@@ -2,6 +2,7 @@ package co.elastic.apm.opbeans.app.data.repository
 
 import co.elastic.apm.opbeans.app.data.models.CartItem
 import co.elastic.apm.opbeans.app.data.models.Order
+import co.elastic.apm.opbeans.app.data.models.OrderDetail
 import co.elastic.apm.opbeans.app.data.source.order.LocalOrderSource
 import co.elastic.apm.opbeans.app.data.source.order.RemoteOrderSource
 import javax.inject.Inject
@@ -17,6 +18,10 @@ class OrderRepository @Inject constructor(
 
     suspend fun createOrder(customerId: Int, items: List<CartItem>) {
         remoteOrderSource.createOrder(customerId, items)
+    }
+
+    suspend fun getOrderDetails(orderId: Int): OrderDetail {
+        return remoteOrderSource.getOrderDetails(orderId)
     }
 
     suspend fun getSetOfOrders(offset: Int, amount: Int): List<Order> {
