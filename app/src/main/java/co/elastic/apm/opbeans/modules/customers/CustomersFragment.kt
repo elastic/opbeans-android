@@ -36,7 +36,7 @@ class CustomersFragment : Fragment(R.layout.fragment_customers) {
                 when (it) {
                     is CustomersNetworkState.Loading -> list.showLoading()
                     is CustomersNetworkState.ErrorLoading -> onNetworkError(it)
-                    is CustomersNetworkState.FinishedLoading -> list.hideLoading()
+                    is CustomersNetworkState.FinishedLoading -> onNetworkRequestFinished()
                 }
             }
         }
@@ -52,6 +52,11 @@ class CustomersFragment : Fragment(R.layout.fragment_customers) {
     private fun onNetworkError(error: CustomersNetworkState.ErrorLoading) {
         list.hideLoading()
         showToast(getString(R.string.generic_error_message, error.exception.message))
+    }
+
+    private fun onNetworkRequestFinished() {
+        list.hideLoading()
+        adapter.refresh()
     }
 
     private fun initList() {

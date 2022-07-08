@@ -36,7 +36,7 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
                 when (it) {
                     is OrdersNetworkState.Loading -> list.showLoading()
                     is OrdersNetworkState.ErrorLoading -> onNetworkError(it)
-                    is OrdersNetworkState.FinishedLoading -> list.hideLoading()
+                    is OrdersNetworkState.FinishedLoading -> onNetworkRequestFinished()
                 }
             }
         }
@@ -53,6 +53,11 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
     private fun onNetworkError(error: OrdersNetworkState.ErrorLoading) {
         list.hideLoading()
         showToast(getString(R.string.generic_error_message, error.exception.message))
+    }
+
+    private fun onNetworkRequestFinished() {
+        list.hideLoading()
+        adapter.refresh()
     }
 
     private fun populateList(orders: PagingData<OrderStateItem>) {
