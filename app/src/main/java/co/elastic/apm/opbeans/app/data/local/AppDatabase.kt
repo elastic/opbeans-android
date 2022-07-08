@@ -3,6 +3,7 @@ package co.elastic.apm.opbeans.app.data.local
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import co.elastic.apm.opbeans.app.data.local.dao.CartItemDao
+import co.elastic.apm.opbeans.app.data.local.dao.CustomerDao
 import co.elastic.apm.opbeans.app.data.local.dao.OrderDao
 import co.elastic.apm.opbeans.app.data.local.dao.ProductDao
 import co.elastic.apm.opbeans.app.data.local.entities.CartItemEntity
@@ -19,4 +20,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun cartItemDao(): CartItemDao
     abstract fun productDao(): ProductDao
     abstract fun orderDao(): OrderDao
+    abstract fun customerDao(): CustomerDao
 }
