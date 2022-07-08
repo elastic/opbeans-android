@@ -15,4 +15,5 @@
     <string name="cart_no_items_to_checkout_message">There are no items to checkout</string>
     <string name="cart_items_checked_out_success_message">Items checked out successfully!</string>
     <string name="cart_error_checking_out_message">Error while checking out: %s</string>
+    <string name="bottom_menu_title_my_account">My account</string>
 </resources>
