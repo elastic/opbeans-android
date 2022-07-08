@@ -54,7 +54,7 @@ class AccountViewModel @Inject constructor(
                 internalState.update { AccountState.LoadingScreen }
                 ensureOrdersLoaded()
                 val numUsers = getAmountOfCustomers()
-                val userOffset = Random.nextInt(0, numUsers - 1)
+                val userOffset = Random(System.currentTimeMillis()).nextInt(0, numUsers - 1)
                 val users = customerRepository.getSetOfCustomers(userOffset, 1)
                 internalState.update {
                     AccountState.FinishedLoadingScreen(
