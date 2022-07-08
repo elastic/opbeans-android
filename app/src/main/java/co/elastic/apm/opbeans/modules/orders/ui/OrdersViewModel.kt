@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import co.elastic.apm.opbeans.app.data.repository.OrderRepository
 import co.elastic.apm.opbeans.modules.orders.data.cases.OrderStateItemCase
 import co.elastic.apm.opbeans.modules.orders.data.paging.OrdersPagingSource
@@ -29,7 +30,8 @@ class OrdersViewModel @Inject constructor(
     val orders =
         Pager(PagingConfig(pageSize = 10, initialLoadSize = 10, enablePlaceholders = false)) {
             OrdersPagingSource(orderStateItemCase)
-        }.flow.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), PagingData.empty())
+        }.flow.cachedIn(viewModelScope)
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), PagingData.empty())
 
     fun fetchOrders() {
         viewModelScope.launch {
