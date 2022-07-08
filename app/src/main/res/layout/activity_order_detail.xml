@@ -37,7 +37,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end"
-            android:text="@string/order_detail_total_title"
             android:textSize="17sp" />
     </LinearLayout>
 
