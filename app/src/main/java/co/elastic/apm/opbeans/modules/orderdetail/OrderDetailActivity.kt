@@ -33,6 +33,7 @@ class OrderDetailActivity : AppCompatActivity() {
 
         fun launch(context: Context, orderId: Int) {
             val intent = Intent(context, OrderDetailActivity::class.java)
+            intent.putExtra(PARAM_ORDER_ID, orderId)
             context.startActivity(intent)
         }
     }
