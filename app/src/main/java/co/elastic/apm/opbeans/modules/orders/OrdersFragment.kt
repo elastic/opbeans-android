@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.elastic.apm.opbeans.R
+import co.elastic.apm.opbeans.app.tools.showToast
 import co.elastic.apm.opbeans.app.ui.ListDivider
 import co.elastic.apm.opbeans.app.ui.LoadableList
 import co.elastic.apm.opbeans.modules.orders.data.models.OrderStateItem
@@ -33,7 +34,7 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
             viewModel.state.collectLatest {
                 when (it) {
                     is OrdersNetworkState.Loading -> list.showLoading()
-                    is OrdersNetworkState.ErrorLoading -> list.showError(it.exception)
+                    is OrdersNetworkState.ErrorLoading -> onNetworkError(it)
                     is OrdersNetworkState.FinishedLoading -> list.hideLoading()
                 }
             }
@@ -46,6 +47,11 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
         }
 
         viewModel.fetchOrders()
+    }
+
+    private fun onNetworkError(error: OrdersNetworkState.ErrorLoading) {
+        list.hideLoading()
+        showToast(getString(R.string.generic_error_message, error.exception.message))
     }
 
     private fun populateList(orders: List<OrderStateItem>) {
