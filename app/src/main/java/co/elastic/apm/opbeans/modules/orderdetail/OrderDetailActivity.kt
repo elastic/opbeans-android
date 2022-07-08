@@ -3,9 +3,13 @@ package co.elastic.apm.opbeans.modules.orderdetail
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.elastic.apm.opbeans.R
@@ -20,7 +24,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class OrderDetailActivity : AppCompatActivity() {
+class OrderDetailActivity : AppCompatActivity(), MenuProvider {
 
     private val viewModel: OrderDetailViewModel by viewModels()
     private lateinit var list: LoadableList
@@ -44,7 +48,7 @@ class OrderDetailActivity : AppCompatActivity() {
         initViews()
         initList()
         setOrderId()
-        setToolbarTitle()
+        setUpToolbar()
 
         lifecycleScope.launch {
             viewModel.state.collectLatest {
@@ -59,8 +63,10 @@ class OrderDetailActivity : AppCompatActivity() {
         viewModel.fetchOrderDetail(orderId)
     }
 
-    private fun setToolbarTitle() {
+    private fun setUpToolbar() {
         supportActionBar?.title = getString(R.string.order_detail_title, orderId)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        addMenuProvider(this, this)
     }
 
     private fun setOrderId() {
@@ -89,5 +95,17 @@ class OrderDetailActivity : AppCompatActivity() {
         total.text = value.totalPrice
         list.showList()
         adapter.submitList(value.products)
+    }
+
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+    }
+
+    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        if (menuItem.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+
+        return false
     }
 }
