@@ -5,5 +5,7 @@ data class Customer(
     val fullName: String,
     val companyName: String,
     val email: String,
+    val city: String,
+    val country: String,
     val location: String
 )

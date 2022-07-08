@@ -6,11 +6,12 @@ import co.elastic.apm.opbeans.app.data.local.dao.CartItemDao
 import co.elastic.apm.opbeans.app.data.local.dao.OrderDao
 import co.elastic.apm.opbeans.app.data.local.dao.ProductDao
 import co.elastic.apm.opbeans.app.data.local.entities.CartItemEntity
+import co.elastic.apm.opbeans.app.data.local.entities.CustomerEntity
 import co.elastic.apm.opbeans.app.data.local.entities.OrderEntity
 import co.elastic.apm.opbeans.app.data.local.entities.ProductEntity
 
 @Database(
-    entities = [CartItemEntity::class, ProductEntity::class, OrderEntity::class],
+    entities = [CartItemEntity::class, ProductEntity::class, OrderEntity::class, CustomerEntity::class],
     version = 1,
     exportSchema = false
 )
