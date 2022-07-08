@@ -79,7 +79,7 @@
                     android:id="@+id/account_user_email"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="bottom|end"
+                    android:gravity="bottom"
                     android:textSize="13sp"
                     tools:text="some@email.com" />
             </LinearLayout>
