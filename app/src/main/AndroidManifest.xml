@@ -30,6 +30,7 @@
             android:label="@string/activity_cart_title" />
 
         <activity android:name=".modules.productdetail.ProductDetailActivity" />
+        <activity android:name=".modules.orderdetail.OrderDetailActivity" />
     </application>
 
 </manifest>
