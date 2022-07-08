@@ -2,7 +2,7 @@ package co.elastic.apm.opbeans.app.data.repository
 
 import co.elastic.apm.opbeans.app.data.models.CartItem
 import co.elastic.apm.opbeans.app.data.models.Order
-import co.elastic.apm.opbeans.app.data.source.RemoteOrderSource
+import co.elastic.apm.opbeans.app.data.source.order.RemoteOrderSource
 import javax.inject.Inject
 import javax.inject.Singleton
 

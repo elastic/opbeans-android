@@ -1,4 +1,4 @@
-package co.elastic.apm.opbeans.app.data.source
+package co.elastic.apm.opbeans.app.data.source.order
 
 import co.elastic.apm.opbeans.app.data.models.CartItem
 import co.elastic.apm.opbeans.app.data.models.Order
