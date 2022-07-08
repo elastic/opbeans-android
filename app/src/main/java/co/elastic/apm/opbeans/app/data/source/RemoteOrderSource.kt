@@ -41,6 +41,7 @@ class RemoteOrderSource @Inject constructor(private val opBeansService: OpBeansS
         }
         return Order(
             remoteOrder.id,
+            remoteOrder.customerId,
             remoteOrder.customerName,
             date
         )
