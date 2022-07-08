@@ -9,14 +9,13 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.lifecycleScope
 import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.data.models.ProductDetail
+import co.elastic.apm.opbeans.app.tools.showToast
 import co.elastic.apm.opbeans.modules.productdetail.ui.ProductDetailState
 import co.elastic.apm.opbeans.modules.productdetail.ui.ProductDetailViewModel
 import com.bumptech.glide.Glide
@@ -167,15 +166,10 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
     }
 
     private fun showProductAlreadyInCartMessage() {
-        showToastMessage(R.string.product_detail_already_added_to_cart)
+        showToast(getString(R.string.product_detail_already_added_to_cart))
     }
 
     private fun showAddToCartSuccessMessage() {
-        showToastMessage(R.string.product_detail_added_to_cart)
-    }
-
-    private fun showToastMessage(@StringRes stringId: Int) {
-        Toast.makeText(this, getString(stringId), Toast.LENGTH_LONG)
-            .show()
+        showToast(getString(R.string.product_detail_added_to_cart))
     }
 }

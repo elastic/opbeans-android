@@ -7,7 +7,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
@@ -15,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.data.models.CartItem
+import co.elastic.apm.opbeans.app.tools.showToast
 import co.elastic.apm.opbeans.app.ui.ListDivider
 import co.elastic.apm.opbeans.app.ui.LoadableList
 import co.elastic.apm.opbeans.modules.cart.ui.CartViewModel
@@ -88,21 +88,17 @@ class CartActivity : AppCompatActivity(), MenuProvider {
     }
 
     private fun showNoItemsToCheckoutMessage() {
-        showToastMessage(getString(R.string.cart_no_items_to_checkout_message))
+        showToast(getString(R.string.cart_no_items_to_checkout_message))
     }
 
     private fun showCheckoutErrorMessage(e: Throwable) {
-        showToastMessage(getString(R.string.cart_error_checking_out_message, e.message))
+        showToast(getString(R.string.cart_error_checking_out_message, e.message))
     }
 
     private fun onCheckoutFinished() {
         checkoutOption?.isEnabled = true
         hideCheckoutProgress()
-        showToastMessage(getString(R.string.cart_items_checked_out_success_message))
-    }
-
-    private fun showToastMessage(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        showToast(getString(R.string.cart_items_checked_out_success_message))
     }
 
     private fun showCheckoutProgress() {
