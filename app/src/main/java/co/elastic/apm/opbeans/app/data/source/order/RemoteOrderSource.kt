@@ -2,12 +2,18 @@ package co.elastic.apm.opbeans.app.data.source.order
 
 import co.elastic.apm.opbeans.app.data.models.CartItem
 import co.elastic.apm.opbeans.app.data.models.Order
+import co.elastic.apm.opbeans.app.data.models.OrderDetail
+import co.elastic.apm.opbeans.app.data.models.OrderedProduct
 import co.elastic.apm.opbeans.app.data.remote.OpBeansService
 import co.elastic.apm.opbeans.app.data.remote.body.CreateOrderBody
 import co.elastic.apm.opbeans.app.data.remote.body.OrderLine
 import co.elastic.apm.opbeans.app.data.remote.models.RemoteOrder
+import co.elastic.apm.opbeans.app.data.remote.models.RemoteOrderDetail
+import co.elastic.apm.opbeans.app.data.remote.models.RemoteOrderedProduct
+import co.elastic.apm.opbeans.app.data.source.product.helpers.ImageUrlBuilder
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -33,17 +39,47 @@ class RemoteOrderSource @Inject constructor(private val opBeansService: OpBeansS
         }
     }
 
+    suspend fun getOrderDetails(orderId: Int): OrderDetail = withContext(Dispatchers.IO) {
+        remoteToOrderDetail(opBeansService.getOrderById(orderId))
+    }
+
+    private fun remoteToOrderDetail(remoteOrder: RemoteOrderDetail): OrderDetail {
+        return OrderDetail(
+            remoteOrder.id,
+            remoteOrder.customerId,
+            parseRemoteDate(remoteOrder.createdAt),
+            remoteOrder.products.map { remoteToOrderedProduct(it) }
+        )
+    }
+
+    private fun remoteToOrderedProduct(remoteOrderedProduct: RemoteOrderedProduct): OrderedProduct {
+        return OrderedProduct(
+            remoteOrderedProduct.amount,
+            remoteOrderedProduct.id,
+            remoteOrderedProduct.sku,
+            remoteOrderedProduct.name,
+            remoteOrderedProduct.description,
+            remoteOrderedProduct.stock,
+            remoteOrderedProduct.sellingPrice,
+            ImageUrlBuilder.build(remoteOrderedProduct.sku)
+        )
+    }
+
     private fun remoteToOrder(remoteOrder: RemoteOrder): Order {
-        val date = try {
-            remoteDateFormat.parse(remoteOrder.createdAt)!!
-        } catch (e: ParseException) {
-            utcDateFormat.parse(remoteOrder.createdAt)!!
-        }
         return Order(
             remoteOrder.id,
             remoteOrder.customerId,
             remoteOrder.customerName,
-            date
+            parseRemoteDate(remoteOrder.createdAt)
         )
+    }
+
+    private fun parseRemoteDate(remoteDate: String): Date {
+        val date = try {
+            remoteDateFormat.parse(remoteDate)!!
+        } catch (e: ParseException) {
+            utcDateFormat.parse(remoteDate)!!
+        }
+        return date
     }
 }
