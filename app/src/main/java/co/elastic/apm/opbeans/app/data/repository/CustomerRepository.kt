@@ -23,4 +23,8 @@ class CustomerRepository @Inject constructor(
         val remoteCustomers = remoteCustomerSource.getCustomers()
         localCustomerSource.saveAll(remoteCustomers)
     }
+
+    suspend fun getAmountOfCustomers(): Int {
+        return localCustomerSource.getAmountOfCustomers()
+    }
 }

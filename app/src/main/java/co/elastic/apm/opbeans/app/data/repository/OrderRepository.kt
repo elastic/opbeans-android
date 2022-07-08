@@ -32,4 +32,12 @@ class OrderRepository @Inject constructor(
         val remoteOrders = remoteOrderSource.getOrders()
         localOrderSource.saveAll(remoteOrders)
     }
+
+    suspend fun getCustomerOrders(customerId: Int): List<Order> {
+        return localOrderSource.getCustomerOrders(customerId)
+    }
+
+    suspend fun getTotalAmountOfOrders(): Int {
+        return localOrderSource.getTotalAmountOfOrders()
+    }
 }

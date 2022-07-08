@@ -14,4 +14,7 @@ interface CustomerDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAll(customers: List<CustomerEntity>)
+
+    @Query("SELECT COUNT(id) from customer")
+    suspend fun getCustomerRowCount(): Int
 }

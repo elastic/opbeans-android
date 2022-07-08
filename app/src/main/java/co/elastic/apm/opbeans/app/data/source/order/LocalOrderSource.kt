@@ -32,6 +32,10 @@ class LocalOrderSource @Inject constructor(private val appDatabase: AppDatabase)
         orderDao.insertAll(orders.map { order -> orderToEntity(order) })
     }
 
+    suspend fun getCustomerOrders(customerId: Int): List<Order> = withContext(Dispatchers.IO) {
+        orderDao.getCustomerOrders(customerId).map { entityToOrder(it) }
+    }
+
     private fun orderToEntity(order: Order): OrderEntity {
         return OrderEntity(
             order.id,
@@ -48,5 +52,9 @@ class LocalOrderSource @Inject constructor(private val appDatabase: AppDatabase)
             orderEntity.customerName,
             Date(orderEntity.createdAt)
         )
+    }
+
+    suspend fun getTotalAmountOfOrders(): Int {
+        return orderDao.getOrderRowCount()
     }
 }

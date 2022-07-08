@@ -45,4 +45,8 @@ class LocalCustomerSource @Inject constructor(appDatabase: AppDatabase) {
             customer.country
         )
     }
+
+    suspend fun getAmountOfCustomers(): Int {
+        return customerDao.getCustomerRowCount()
+    }
 }
