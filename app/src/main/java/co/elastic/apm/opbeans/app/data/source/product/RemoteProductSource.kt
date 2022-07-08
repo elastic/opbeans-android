@@ -42,6 +42,8 @@ class RemoteProductSource @Inject constructor(private val opBeansService: OpBean
             remoteProduct.name,
             remoteProduct.description,
             remoteProduct.typeName,
+            remoteProduct.stock,
+            remoteProduct.sellingPrice,
             ImageUrlBuilder.build(remoteProduct.sku)
         )
     }
