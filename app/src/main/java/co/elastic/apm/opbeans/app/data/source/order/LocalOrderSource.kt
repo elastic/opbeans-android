@@ -23,6 +23,11 @@ class LocalOrderSource @Inject constructor(private val appDatabase: AppDatabase)
             .flowOn(Dispatchers.IO)
     }
 
+    suspend fun getSetOfOrders(offset: Int, amount: Int): List<Order> =
+        withContext(Dispatchers.IO) {
+            orderDao.getSetOfOrders(offset, amount).map { entityToOrder(it) }
+        }
+
     suspend fun saveAll(orders: List<Order>) = withContext(Dispatchers.IO) {
         orderDao.insertAll(orders.map { order -> orderToEntity(order) })
     }

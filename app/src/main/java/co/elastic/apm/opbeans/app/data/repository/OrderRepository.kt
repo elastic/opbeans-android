@@ -24,6 +24,10 @@ class OrderRepository @Inject constructor(
         return localOrderSource.getOrders()
     }
 
+    suspend fun getSetOfOrders(offset: Int, amount: Int): List<Order> {
+        return localOrderSource.getSetOfOrders(offset, amount)
+    }
+
     suspend fun fetchOrders() = withContext(Dispatchers.IO) {
         val remoteOrders = remoteOrderSource.getOrders()
         localOrderSource.saveAll(remoteOrders)

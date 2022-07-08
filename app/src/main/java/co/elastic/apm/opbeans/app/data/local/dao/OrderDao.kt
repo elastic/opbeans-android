@@ -18,4 +18,7 @@ interface OrderDao {
 
     @Insert
     suspend fun insert(order: OrderEntity)
+
+    @Query("SELECT * FROM orders ORDER BY created_at DESC LIMIT :offset, :amount")
+    suspend fun getSetOfOrders(offset: Int, amount: Int): List<OrderEntity>
 }

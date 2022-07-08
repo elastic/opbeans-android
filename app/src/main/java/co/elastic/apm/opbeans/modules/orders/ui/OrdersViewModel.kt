@@ -2,8 +2,12 @@ package co.elastic.apm.opbeans.modules.orders.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import co.elastic.apm.opbeans.app.data.repository.OrderRepository
 import co.elastic.apm.opbeans.modules.orders.data.cases.OrderStateItemCase
+import co.elastic.apm.opbeans.modules.orders.data.paging.OrdersPagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,8 +26,10 @@ class OrdersViewModel @Inject constructor(
     private val internalState: MutableStateFlow<OrdersNetworkState> =
         MutableStateFlow(OrdersNetworkState.Loading)
     val state = internalState.asStateFlow()
-    val orders = orderStateItemCase.orders
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    val orders =
+        Pager(PagingConfig(pageSize = 10, initialLoadSize = 10, enablePlaceholders = false)) {
+            OrdersPagingSource(orderStateItemCase)
+        }.flow.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), PagingData.empty())
 
     fun fetchOrders() {
         viewModelScope.launch {

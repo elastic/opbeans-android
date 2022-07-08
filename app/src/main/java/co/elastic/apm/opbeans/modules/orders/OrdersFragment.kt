@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.tools.showToast
@@ -54,9 +55,11 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
         showToast(getString(R.string.generic_error_message, error.exception.message))
     }
 
-    private fun populateList(orders: List<OrderStateItem>) {
+    private fun populateList(orders: PagingData<OrderStateItem>) {
         list.showList()
-        adapter.submitList(orders)
+        viewLifecycleOwner.lifecycleScope.launch {
+            adapter.submitData(orders)
+        }
     }
 
     private fun initList() {
