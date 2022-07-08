@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 @Singleton
 class LocalOrderSource @Inject constructor(private val appDatabase: AppDatabase) {
@@ -20,6 +21,19 @@ class LocalOrderSource @Inject constructor(private val appDatabase: AppDatabase)
         return orderDao.getOrders()
             .map { list -> list.map { entityToOrder(it) } }
             .flowOn(Dispatchers.IO)
+    }
+
+    suspend fun saveAll(orders: List<Order>) = withContext(Dispatchers.IO) {
+        orderDao.insertAll(orders.map { order -> orderToEntity(order) })
+    }
+
+    private fun orderToEntity(order: Order): OrderEntity {
+        return OrderEntity(
+            order.id,
+            order.customerId,
+            order.customerName,
+            order.createdAt.time
+        )
     }
 
     private fun entityToOrder(orderEntity: OrderEntity): Order {
