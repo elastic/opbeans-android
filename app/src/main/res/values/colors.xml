@@ -10,6 +10,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="transparent_white">#A6FFFFFF</color>
     <color name="brown">#795548</color>
+    <color name="transparent_brown">#80795548</color>
     <color name="light_primary">#D7CCC8</color>
     <color name="dark_brown">#5D4037</color>
     <color name="blue_gray">#607D8B</color>
