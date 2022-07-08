@@ -23,5 +23,5 @@ class OrdersPagingSource(private val orderStateItemCase: OrderStateItemCase) :
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, OrderStateItem>): Int? = state.anchorPosition
+    override fun getRefreshKey(state: PagingState<Int, OrderStateItem>): Int = 0
 }

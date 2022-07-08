@@ -23,5 +23,5 @@ class CustomerPagingSource(private val customerRepository: CustomerRepository) :
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, Customer>): Int? = state.anchorPosition
+    override fun getRefreshKey(state: PagingState<Int, Customer>): Int = 0
 }
