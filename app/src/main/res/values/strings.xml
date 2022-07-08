@@ -17,4 +17,5 @@
     <string name="cart_error_checking_out_message">Error while checking out: %s</string>
     <string name="bottom_menu_title_my_account">My account</string>
     <string name="account_my_orders_title">My orders</string>
+    <string name="order_detail_total_title">Total:</string>
 </resources>
