@@ -23,7 +23,7 @@ class OrderViewHolder private constructor(itemView: View) : RecyclerView.ViewHol
     }
 
     fun setData(order: OrderStateItem) {
-        orderId.text = order.id
+        orderId.text = order.displayId
         customerName.text = order.customerName
         orderDate.text = order.date
     }

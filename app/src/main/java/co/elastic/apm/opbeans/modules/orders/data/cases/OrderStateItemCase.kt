@@ -23,6 +23,7 @@ class OrderStateItemCase @Inject constructor(private val orderRepository: OrderR
 
     private fun orderToOrderStateItem(order: Order): OrderStateItem {
         return OrderStateItem(
+            order.id,
             "#${order.id}",
             order.customerName,
             displayDateFormat.format(order.createdAt)

@@ -5,14 +5,19 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import co.elastic.apm.opbeans.modules.orders.data.models.OrderStateItem
 
-class OrderListAdapter : PagingDataAdapter<OrderStateItem, OrderViewHolder>(diffCallback) {
+class OrderListAdapter(private val onItemClick: (Int) -> Unit) :
+    PagingDataAdapter<OrderStateItem, OrderViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderViewHolder {
         return OrderViewHolder.create(parent)
     }
 
     override fun onBindViewHolder(holder: OrderViewHolder, position: Int) {
-        holder.setData(getItem(position)!!)
+        val order = getItem(position)!!
+        holder.setData(order)
+        holder.itemView.setOnClickListener {
+            onItemClick.invoke(order.id)
+        }
     }
 
     companion object {
@@ -22,7 +27,7 @@ class OrderListAdapter : PagingDataAdapter<OrderStateItem, OrderViewHolder>(diff
                 oldItem: OrderStateItem,
                 newItem: OrderStateItem
             ): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem.displayId == newItem.displayId
             }
 
             override fun areContentsTheSame(

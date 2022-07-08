@@ -66,7 +66,7 @@ class OrderDetailActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        list = findViewById(R.id.list)
+        list = findViewById(R.id.orders_list)
         total = findViewById(R.id.order_detail_total)
     }
 

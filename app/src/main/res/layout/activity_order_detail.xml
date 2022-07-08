@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <co.elastic.apm.opbeans.app.ui.LoadableList
-        android:id="@+id/list"
+        android:id="@+id/orders_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

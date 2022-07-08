@@ -5,10 +5,13 @@ import co.elastic.apm.opbeans.app.data.models.OrderedProduct
 import co.elastic.apm.opbeans.app.data.repository.OrderRepository
 import co.elastic.apm.opbeans.modules.orderdetail.data.OrderDetailStateItem
 import co.elastic.apm.opbeans.modules.orderdetail.data.OrderedProductSateItem
+import dagger.hilt.android.scopes.ViewModelScoped
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class OrderDetailStateUseCase(private val orderRepository: OrderRepository) {
+@ViewModelScoped
+class OrderDetailStateUseCase @Inject constructor(private val orderRepository: OrderRepository) {
 
     suspend fun getOrderDetail(orderId: Int): OrderDetailStateItem = withContext(Dispatchers.IO) {
         orderToStateItem(orderRepository.getOrderDetails(orderId))

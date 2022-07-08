@@ -11,6 +11,7 @@ import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.tools.showToast
 import co.elastic.apm.opbeans.app.ui.ListDivider
 import co.elastic.apm.opbeans.app.ui.LoadableList
+import co.elastic.apm.opbeans.modules.orderdetail.OrderDetailActivity
 import co.elastic.apm.opbeans.modules.orders.data.models.OrderStateItem
 import co.elastic.apm.opbeans.modules.orders.ui.OrdersNetworkState
 import co.elastic.apm.opbeans.modules.orders.ui.OrdersViewModel
@@ -68,13 +69,17 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
     }
 
     private fun initList() {
-        adapter = OrderListAdapter()
+        adapter = OrderListAdapter(::onOrderItemClicked)
         val recyclerView = list.getList()
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.addItemDecoration(ListDivider(requireContext()))
         recyclerView.adapter = adapter
 
         list.onRefreshRequested { viewModel.fetchOrders() }
+    }
+
+    private fun onOrderItemClicked(orderId: Int) {
+        OrderDetailActivity.launch(requireContext(), orderId)
     }
 
     private fun initViews(view: View) {
