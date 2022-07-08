@@ -5,12 +5,14 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.data.models.Customer
+import co.elastic.apm.opbeans.app.tools.showToast
 import co.elastic.apm.opbeans.app.ui.ListDivider
 import co.elastic.apm.opbeans.app.ui.LoadableList
-import co.elastic.apm.opbeans.modules.customers.ui.CustomersState
+import co.elastic.apm.opbeans.modules.customers.ui.CustomersNetworkState
 import co.elastic.apm.opbeans.modules.customers.ui.CustomersViewModel
 import co.elastic.apm.opbeans.modules.customers.ui.list.CustomerListAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,14 +34,24 @@ class CustomersFragment : Fragment(R.layout.fragment_customers) {
         lifecycleScope.launch {
             viewModel.state.collectLatest {
                 when (it) {
-                    is CustomersState.Loading -> list.showLoading()
-                    is CustomersState.ErrorLoading -> list.showError(it.exception)
-                    is CustomersState.FinishedLoading -> populateList(it.customers)
+                    is CustomersNetworkState.Loading -> list.showLoading()
+                    is CustomersNetworkState.ErrorLoading -> onNetworkError(it)
+                    is CustomersNetworkState.FinishedLoading -> list.hideLoading()
                 }
+            }
+        }
+        lifecycleScope.launch {
+            viewModel.customers.collectLatest {
+                populateList(it)
             }
         }
 
         viewModel.fetchCustomers()
+    }
+
+    private fun onNetworkError(error: CustomersNetworkState.ErrorLoading) {
+        list.hideLoading()
+        showToast(getString(R.string.generic_error_message, error.exception.message))
     }
 
     private fun initList() {
@@ -52,9 +64,11 @@ class CustomersFragment : Fragment(R.layout.fragment_customers) {
         list.onRefreshRequested { viewModel.fetchCustomers() }
     }
 
-    private fun populateList(customers: List<Customer>) {
+    private fun populateList(customers: PagingData<Customer>) {
         list.showList()
-        adapter.submitList(customers)
+        viewLifecycleOwner.lifecycleScope.launch {
+            adapter.submitData(customers)
+        }
     }
 
     private fun initViews(view: View) {
