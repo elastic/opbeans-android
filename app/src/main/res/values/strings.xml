@@ -19,4 +19,5 @@
     <string name="account_my_orders_title">My orders</string>
     <string name="order_detail_total_title">Total:</string>
     <string name="order_detail_title">Order #%d</string>
+    <string name="account_no_orders_available">You have no orders</string>
 </resources>
