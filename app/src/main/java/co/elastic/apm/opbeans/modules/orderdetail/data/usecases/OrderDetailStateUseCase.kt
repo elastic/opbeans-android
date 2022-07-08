@@ -8,7 +8,7 @@ import co.elastic.apm.opbeans.modules.orderdetail.data.OrderedProductSateItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class OrderedProductStateUseCase(private val orderRepository: OrderRepository) {
+class OrderDetailStateUseCase(private val orderRepository: OrderRepository) {
 
     suspend fun getOrderDetail(orderId: Int): OrderDetailStateItem = withContext(Dispatchers.IO) {
         orderToStateItem(orderRepository.getOrderDetails(orderId))
@@ -17,8 +17,15 @@ class OrderedProductStateUseCase(private val orderRepository: OrderRepository) {
     private fun orderToStateItem(orderDetails: OrderDetail): OrderDetailStateItem {
         return OrderDetailStateItem(
             orderDetails.id,
-            orderDetails.products.map { orderedProductToStateItem(it) }
+            orderDetails.products.map { orderedProductToStateItem(it) },
+            String.format("$%d", calculateTotalPrice(orderDetails.products))
         )
+    }
+
+    private fun calculateTotalPrice(products: List<OrderedProduct>): Int {
+        var price = 0
+        products.forEach { price += it.sellingPrice }
+        return price
     }
 
     private fun orderedProductToStateItem(orderedProduct: OrderedProduct): OrderedProductSateItem {
