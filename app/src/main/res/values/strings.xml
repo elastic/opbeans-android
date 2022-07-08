@@ -16,4 +16,5 @@
     <string name="cart_items_checked_out_success_message">Items checked out successfully!</string>
     <string name="cart_error_checking_out_message">Error while checking out: %s</string>
     <string name="bottom_menu_title_my_account">My account</string>
+    <string name="account_my_orders_title">My orders</string>
 </resources>

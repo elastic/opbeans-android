@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import co.elastic.apm.opbeans.modules.account.AccountFragment
 import co.elastic.apm.opbeans.modules.cart.CartActivity
 import co.elastic.apm.opbeans.modules.customers.CustomersFragment
 import co.elastic.apm.opbeans.modules.orders.OrdersFragment
@@ -24,6 +25,7 @@ class HomeActivity : AppCompatActivity(), MenuProvider {
         private const val PRODUCTS_TAG = "products_fragment_tag"
         private const val CUSTOMERS_TAG = "customers_fragment_tag"
         private const val ORDERS_TAG = "orders_fragment_tag"
+        private const val ACCOUNT_TAG = "account_fragment_tag"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,9 +47,18 @@ class HomeActivity : AppCompatActivity(), MenuProvider {
                 R.id.products_item -> showProducts()
                 R.id.customers_item -> showCustomers()
                 R.id.orders_item -> showOrders()
+                R.id.account_item -> showMyAccount()
                 else -> false
             }
         }
+    }
+
+    private fun showMyAccount(): Boolean {
+        showFragment(ACCOUNT_TAG) {
+            AccountFragment()
+        }
+
+        return true
     }
 
     private fun showOrders(): Boolean {
