@@ -44,6 +44,7 @@ class OrderDetailActivity : AppCompatActivity() {
         initViews()
         initList()
         setOrderId()
+        setToolbarTitle()
 
         lifecycleScope.launch {
             viewModel.state.collectLatest {
@@ -56,6 +57,10 @@ class OrderDetailActivity : AppCompatActivity() {
         }
 
         viewModel.fetchOrderDetail(orderId)
+    }
+
+    private fun setToolbarTitle() {
+        supportActionBar?.title = getString(R.string.order_detail_title, orderId)
     }
 
     private fun setOrderId() {
