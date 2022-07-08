@@ -10,7 +10,7 @@ import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.ui.ListDivider
 import co.elastic.apm.opbeans.app.ui.LoadableList
 import co.elastic.apm.opbeans.modules.orders.data.models.OrderStateItem
-import co.elastic.apm.opbeans.modules.orders.ui.OrdersState
+import co.elastic.apm.opbeans.modules.orders.ui.OrdersNetworkState
 import co.elastic.apm.opbeans.modules.orders.ui.OrdersViewModel
 import co.elastic.apm.opbeans.modules.orders.ui.list.OrderListAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,10 +32,16 @@ class OrdersFragment : Fragment(R.layout.fragment_orders) {
         lifecycleScope.launch {
             viewModel.state.collectLatest {
                 when (it) {
-                    is OrdersState.Loading -> list.showLoading()
-                    is OrdersState.ErrorLoading -> list.showError(it.exception)
-                    is OrdersState.FinishedLoading -> populateList(it.orders)
+                    is OrdersNetworkState.Loading -> list.showLoading()
+                    is OrdersNetworkState.ErrorLoading -> list.showError(it.exception)
+                    is OrdersNetworkState.FinishedLoading -> list.hideLoading()
                 }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.orders.collectLatest {
+                populateList(it)
             }
         }
 

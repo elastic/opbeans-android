@@ -8,21 +8,21 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 @ViewModelScoped
-class OrderStateItemCase @Inject constructor(private val orderRepository: OrderRepository) {
+class OrderStateItemCase @Inject constructor(orderRepository: OrderRepository) {
 
     companion object {
         private val displayDateFormat =
             SimpleDateFormat("h:mm a '|' d MMM yyyy", Locale.getDefault())
     }
 
-    suspend fun getOrderStateItems(): List<OrderStateItem> = withContext(Dispatchers.IO) {
-        orderRepository.getOrders().map {
-            orderToOrderStateItem(it)
-        }
-    }
+    val orders: Flow<List<OrderStateItem>> = orderRepository.getOrders()
+        .map { list -> list.map { orderToOrderStateItem(it) } }
+        .flowOn(Dispatchers.IO)
 
     private fun orderToOrderStateItem(order: Order): OrderStateItem {
         return OrderStateItem(
