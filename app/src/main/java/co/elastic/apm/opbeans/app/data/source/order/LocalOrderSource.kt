@@ -32,9 +32,10 @@ class LocalOrderSource @Inject constructor(private val appDatabase: AppDatabase)
         orderDao.insertAll(orders.map { order -> orderToEntity(order) })
     }
 
-    suspend fun getCustomerOrders(customerId: Int): List<Order> = withContext(Dispatchers.IO) {
-        orderDao.getCustomerOrders(customerId).map { entityToOrder(it) }
-    }
+    suspend fun getCustomerOrders(customerId: Int, offset: Int, amount: Int): List<Order> =
+        withContext(Dispatchers.IO) {
+            orderDao.getCustomerOrders(customerId, offset, amount).map { entityToOrder(it) }
+        }
 
     private fun orderToEntity(order: Order): OrderEntity {
         return OrderEntity(

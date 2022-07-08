@@ -6,11 +6,15 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import co.elastic.apm.opbeans.R
+import co.elastic.apm.opbeans.app.ui.ListDivider
 import co.elastic.apm.opbeans.app.ui.LoadableList
 import co.elastic.apm.opbeans.modules.account.data.AccountStateScreenItem
 import co.elastic.apm.opbeans.modules.account.state.AccountState
 import co.elastic.apm.opbeans.modules.account.ui.AccountViewModel
+import co.elastic.apm.opbeans.modules.orderdetail.OrderDetailActivity
+import co.elastic.apm.opbeans.modules.orders.ui.list.OrderListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -27,11 +31,13 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
     private lateinit var companyAndLocation: TextView
     private lateinit var userEmail: TextView
     private lateinit var list: LoadableList
+    private lateinit var adapter: OrderListAdapter
     private lateinit var containers: List<View>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews(view)
+        initList()
 
         lifecycleScope.launch {
             viewModel.state.collectLatest {
@@ -42,6 +48,8 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
                 }
             }
         }
+
+        viewModel.fetchScreen()
     }
 
     private fun initViews(view: View) {
@@ -56,17 +64,38 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
         containers = listOf(loadingContainer, errorContainer, contentContainer)
     }
 
+    private fun initList() {
+        adapter = OrderListAdapter(::onOrderItemClicked)
+        val recyclerView = list.getList()
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.addItemDecoration(ListDivider(requireContext()))
+        recyclerView.adapter = adapter
+
+        list.onRefreshRequested {
+            adapter.refresh()
+        }
+    }
+
+    private fun onOrderItemClicked(orderId: Int) {
+        OrderDetailActivity.launch(requireContext(), orderId)
+    }
+
     private fun onScreenLoadedSuccessfully(screenItem: AccountStateScreenItem) {
         val customer = screenItem.customer
         userName.text = customer.fullName
         userEmail.text = customer.email
         companyAndLocation.text = "${customer.companyName} / ${customer.location}"
 
-        fetchOrders()
+        list.showList()
+        attachOrdersToList()
     }
 
-    private fun fetchOrders() {
-        viewModel.fetchOrders()
+    private fun attachOrdersToList() {
+        lifecycleScope.launch {
+            viewModel.orders.collectLatest {
+                adapter.submitData(it)
+            }
+        }
     }
 
     private fun showScreenLoadError(e: Throwable) {

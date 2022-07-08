@@ -33,8 +33,8 @@ class OrderRepository @Inject constructor(
         localOrderSource.saveAll(remoteOrders)
     }
 
-    suspend fun getCustomerOrders(customerId: Int): List<Order> {
-        return localOrderSource.getCustomerOrders(customerId)
+    suspend fun getCustomerOrders(customerId: Int, offset: Int, amount: Int): List<Order> {
+        return localOrderSource.getCustomerOrders(customerId, offset, amount)
     }
 
     suspend fun getTotalAmountOfOrders(): Int {

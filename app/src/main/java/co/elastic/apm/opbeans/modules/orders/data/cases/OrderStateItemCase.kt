@@ -21,6 +21,15 @@ class OrderStateItemCase @Inject constructor(private val orderRepository: OrderR
             .map { orderToOrderStateItem(it) }
     }
 
+    suspend fun getCustomerSetOfOrders(
+        customerId: Int,
+        offset: Int,
+        amount: Int
+    ): List<OrderStateItem> {
+        return orderRepository.getCustomerOrders(customerId, offset, amount)
+            .map { orderToOrderStateItem(it) }
+    }
+
     private fun orderToOrderStateItem(order: Order): OrderStateItem {
         return OrderStateItem(
             order.id,
