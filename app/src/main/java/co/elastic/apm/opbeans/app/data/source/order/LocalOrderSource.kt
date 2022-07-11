@@ -7,21 +7,12 @@ import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 @Singleton
 class LocalOrderSource @Inject constructor(private val appDatabase: AppDatabase) {
 
     private val orderDao by lazy { appDatabase.orderDao() }
-
-    fun getOrders(): Flow<List<Order>> {
-        return orderDao.getOrders()
-            .map { list -> list.map { entityToOrder(it) } }
-            .flowOn(Dispatchers.IO)
-    }
 
     suspend fun getSetOfOrders(offset: Int, amount: Int): List<Order> =
         withContext(Dispatchers.IO) {
