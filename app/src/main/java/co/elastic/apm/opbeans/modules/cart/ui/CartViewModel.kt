@@ -65,7 +65,7 @@ class CartViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 internalCartCheckoutState.update { CartCheckoutState.Started }
-                orderRepository.createOrder(authManager.getUser().id, cartItems)
+                orderRepository.createOrder(authManager.getUser(), cartItems)
                 cartItemRepository.deleteAll()
                 internalCartCheckoutState.update { CartCheckoutState.Finished }
             } catch (e: Throwable) {

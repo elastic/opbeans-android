@@ -1,10 +1,12 @@
 package co.elastic.apm.opbeans.app.data.repository
 
 import co.elastic.apm.opbeans.app.data.models.CartItem
+import co.elastic.apm.opbeans.app.data.models.Customer
 import co.elastic.apm.opbeans.app.data.models.Order
 import co.elastic.apm.opbeans.app.data.models.OrderDetail
 import co.elastic.apm.opbeans.app.data.source.order.LocalOrderSource
 import co.elastic.apm.opbeans.app.data.source.order.RemoteOrderSource
+import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
@@ -16,8 +18,9 @@ class OrderRepository @Inject constructor(
     private val localOrderSource: LocalOrderSource
 ) {
 
-    suspend fun createOrder(customerId: Int, items: List<CartItem>) {
-        remoteOrderSource.createOrder(customerId, items)
+    suspend fun createOrder(customer: Customer, items: List<CartItem>) {
+        val result = remoteOrderSource.createOrder(customer.id, items)
+        localOrderSource.saveOrder(Order(result.orderId, customer.id, customer.fullName, Date()))
     }
 
     suspend fun getOrderDetails(orderId: Int): OrderDetail {
