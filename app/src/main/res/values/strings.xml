@@ -8,8 +8,7 @@
     <string name="error_message_products_request">Failed to fetch products: %s</string>
     <string name="cart_empty_message">Your cart is empty</string>
     <string name="product_detail_add_to_cart">Add to cart</string>
-    <string name="product_detail_added_to_cart">Product added to your cart!</string>
-    <string name="product_detail_already_added_to_cart">This product is already in your cart</string>
+    <string name="product_detail_added_to_cart">+1 product added to your cart!</string>
     <string name="cart_checkout_option">Checkout</string>
     <string name="activity_cart_title">Shopping cart</string>
     <string name="cart_no_items_to_checkout_message">There are no items to checkout</string>

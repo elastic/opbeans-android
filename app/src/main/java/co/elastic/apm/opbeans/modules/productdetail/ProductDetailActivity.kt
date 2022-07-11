@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
@@ -69,7 +70,6 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
                     is ProductDetailState.ErrorLoading -> showErrorLoading(it.e)
                     is ProductDetailState.FinishedLoading -> showProductDetail(it.product)
                     is ProductDetailState.AddedToCart -> showAddToCartSuccessMessage()
-                    is ProductDetailState.AlreadyInCart -> showProductAlreadyInCartMessage()
                 }
             }
         }
@@ -165,11 +165,7 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
         viewModel.addProductToCart(productId)
     }
 
-    private fun showProductAlreadyInCartMessage() {
-        showToast(getString(R.string.product_detail_already_added_to_cart))
-    }
-
     private fun showAddToCartSuccessMessage() {
-        showToast(getString(R.string.product_detail_added_to_cart))
+        showToast(getString(R.string.product_detail_added_to_cart), Toast.LENGTH_SHORT)
     }
 }

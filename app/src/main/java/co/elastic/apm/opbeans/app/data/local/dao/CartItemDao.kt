@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import co.elastic.apm.opbeans.app.data.local.entities.CartItemEntity
 import co.elastic.apm.opbeans.app.data.local.relationships.CartItemAndProduct
 import kotlinx.coroutines.flow.Flow
@@ -24,4 +25,7 @@ interface CartItemDao {
 
     @Query("DELETE from cart_item")
     suspend fun deleteAll()
+
+    @Update
+    suspend fun update(cartItemEntity: CartItemEntity)
 }
