@@ -7,6 +7,10 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import java.text.SimpleDateFormat
 import java.util.Locale
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 @ViewModelScoped
 class OrderStateItemCase @Inject constructor(private val orderRepository: OrderRepository) {
@@ -19,6 +23,12 @@ class OrderStateItemCase @Inject constructor(private val orderRepository: OrderR
     suspend fun getSetOfOrders(offset: Int, amount: Int): List<OrderStateItem> {
         return orderRepository.getSetOfOrders(offset, amount)
             .map { orderToOrderStateItem(it) }
+    }
+
+    fun getAllCustomerOrders(customerId: Int): Flow<List<OrderStateItem>> {
+        return orderRepository.getAllCustomerOrders(customerId)
+            .map { list -> list.map { orderToOrderStateItem(it) } }
+            .flowOn(Dispatchers.IO)
     }
 
     private fun orderToOrderStateItem(order: Order): OrderStateItem {

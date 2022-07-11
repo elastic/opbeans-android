@@ -8,6 +8,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
@@ -32,6 +33,7 @@ class LocalOrderSource @Inject constructor(private val appDatabase: AppDatabase)
     fun getAllCustomerOrders(customerId: Int): Flow<List<Order>> {
         return orderDao.getAllCustomerOrders(customerId)
             .map { list -> list.map { entityToOrder(it) } }
+            .flowOn(Dispatchers.IO)
     }
 
     private fun orderToEntity(order: Order): OrderEntity {

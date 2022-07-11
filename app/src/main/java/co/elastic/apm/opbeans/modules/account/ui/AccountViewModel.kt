@@ -2,15 +2,10 @@ package co.elastic.apm.opbeans.modules.account.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import co.elastic.apm.opbeans.app.auth.AuthManager
 import co.elastic.apm.opbeans.app.data.models.Customer
 import co.elastic.apm.opbeans.app.data.repository.OrderRepository
 import co.elastic.apm.opbeans.modules.account.data.AccountStateScreenItem
-import co.elastic.apm.opbeans.modules.account.data.paging.AccountOrdersPagingSource
 import co.elastic.apm.opbeans.modules.account.state.AccountState
 import co.elastic.apm.opbeans.modules.orders.data.cases.OrderStateItemCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,7 +22,7 @@ import kotlinx.coroutines.launch
 class AccountViewModel @Inject constructor(
     private val authManager: AuthManager,
     private val orderRepository: OrderRepository,
-    private val orderStateItemCase: OrderStateItemCase
+    orderStateItemCase: OrderStateItemCase
 ) : ViewModel() {
 
     private var user: Customer? = null
@@ -41,11 +36,8 @@ class AccountViewModel @Inject constructor(
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), AccountState.LoadingScreen)
 
-    val orders =
-        Pager(PagingConfig(pageSize = 10, initialLoadSize = 10, enablePlaceholders = false)) {
-            AccountOrdersPagingSource(orderStateItemCase, user!!.id)
-        }.flow.cachedIn(viewModelScope)
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), PagingData.empty())
+    val orders = orderStateItemCase.getAllCustomerOrders(user!!.id)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     fun fetchScreen() {
         viewModelScope.launch {
