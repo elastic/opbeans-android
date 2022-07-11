@@ -36,8 +36,10 @@ class AccountViewModel @Inject constructor(
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), AccountState.LoadingScreen)
 
-    val orders = orderStateItemCase.getAllCustomerOrders(user!!.id)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    val orders by lazy {
+        orderStateItemCase.getAllCustomerOrders(user!!.id)
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    }
 
     fun fetchScreen() {
         viewModelScope.launch {

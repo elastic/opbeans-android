@@ -6,9 +6,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.CombinedLoadStates
-import androidx.paging.LoadState
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.ui.ListDivider
@@ -16,9 +13,9 @@ import co.elastic.apm.opbeans.app.ui.LoadableList
 import co.elastic.apm.opbeans.modules.account.data.AccountStateScreenItem
 import co.elastic.apm.opbeans.modules.account.state.AccountState
 import co.elastic.apm.opbeans.modules.account.ui.AccountViewModel
+import co.elastic.apm.opbeans.modules.account.ui.list.AccountOrderListAdapter
 import co.elastic.apm.opbeans.modules.orderdetail.OrderDetailActivity
 import co.elastic.apm.opbeans.modules.orders.data.models.OrderStateItem
-import co.elastic.apm.opbeans.modules.orders.ui.list.OrderListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -35,7 +32,7 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
     private lateinit var companyAndLocation: TextView
     private lateinit var userEmail: TextView
     private lateinit var list: LoadableList
-    private lateinit var adapter: OrderListAdapter
+    private lateinit var adapter: AccountOrderListAdapter
     private lateinit var containers: List<View>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,26 +66,15 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
     }
 
     private fun initList() {
-        adapter = OrderListAdapter(::onOrderItemClicked)
+        adapter = AccountOrderListAdapter(::onOrderItemClicked)
         val recyclerView = list.getList()
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.addItemDecoration(ListDivider(requireContext()))
         recyclerView.adapter = adapter
 
         list.onRefreshRequested {
-            adapter.refresh()
+            list.hideLoading()
         }
-        adapter.addLoadStateListener {
-            if (isEmpty(it)) {
-                list.showEmptyMessage(getString(R.string.account_no_orders_available))
-            } else {
-                list.showList()
-            }
-        }
-    }
-
-    private fun isEmpty(loadStates: CombinedLoadStates): Boolean {
-        return loadStates.source.refresh is LoadState.NotLoading && loadStates.append.endOfPaginationReached && adapter.itemCount < 1
     }
 
     private fun onOrderItemClicked(orderId: Int) {
@@ -114,9 +100,14 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
         }
     }
 
-    private suspend fun submitOrderListData(it: PagingData<OrderStateItem>) {
+    private fun submitOrderListData(it: List<OrderStateItem>) {
         list.hideLoading()
-        adapter.submitData(it)
+        if (it.isEmpty()) {
+            list.showEmptyMessage(getString(R.string.account_no_orders_available))
+        } else {
+            list.showList()
+            adapter.submitList(it)
+        }
     }
 
     private fun showScreenLoadError(e: Throwable) {
