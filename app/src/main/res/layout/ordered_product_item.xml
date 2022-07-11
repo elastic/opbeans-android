@@ -22,7 +22,7 @@
         android:layout_marginStart="10dp"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingEnd="50dp">
+        android:paddingEnd="30dp">
 
         <TextView
             android:id="@+id/product_title"
