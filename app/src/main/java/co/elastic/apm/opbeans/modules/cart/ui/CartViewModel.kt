@@ -2,6 +2,7 @@ package co.elastic.apm.opbeans.modules.cart.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.elastic.apm.opbeans.app.auth.AuthManager
 import co.elastic.apm.opbeans.app.data.models.CartItem
 import co.elastic.apm.opbeans.app.data.repository.CartItemRepository
 import co.elastic.apm.opbeans.app.data.repository.OrderRepository
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
+    private val authManager: AuthManager,
     private val cartItemRepository: CartItemRepository,
     private val orderRepository: OrderRepository
 ) : ViewModel() {
@@ -63,7 +65,7 @@ class CartViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 internalCartCheckoutState.update { CartCheckoutState.Started }
-                orderRepository.createOrder(1, cartItems)
+                orderRepository.createOrder(authManager.getUser().id, cartItems)
                 cartItemRepository.deleteAll()
                 internalCartCheckoutState.update { CartCheckoutState.Finished }
             } catch (e: Throwable) {
