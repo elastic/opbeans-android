@@ -2,6 +2,7 @@ package co.elastic.apm.opbeans.modules.account
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -34,11 +35,13 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
     private lateinit var list: LoadableList
     private lateinit var adapter: AccountOrderListAdapter
     private lateinit var containers: List<View>
+    private lateinit var retry: Button
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews(view)
         initList()
+        initRetryOption()
 
         lifecycleScope.launch {
             viewModel.state.collectLatest {
@@ -62,6 +65,7 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
         userEmail = view.findViewById(R.id.account_user_email)
         errorMessage = view.findViewById(R.id.account_error_message)
         list = view.findViewById(R.id.account_orders_list)
+        retry = view.findViewById(R.id.account_retry_button)
         containers = listOf(loadingContainer, errorContainer, contentContainer)
     }
 
@@ -74,6 +78,12 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
 
         list.onRefreshRequested {
             list.hideLoading()
+        }
+    }
+
+    private fun initRetryOption() {
+        retry.setOnClickListener {
+            viewModel.fetchScreen()
         }
     }
 
