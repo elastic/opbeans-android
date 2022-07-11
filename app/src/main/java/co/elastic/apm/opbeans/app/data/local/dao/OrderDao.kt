@@ -22,8 +22,8 @@ interface OrderDao {
     @Query("SELECT * FROM orders ORDER BY created_at DESC LIMIT :offset, :amount")
     suspend fun getSetOfOrders(offset: Int, amount: Int): List<OrderEntity>
 
-    @Query("SELECT * FROM orders WHERE customer_id = :customerId ORDER BY created_at DESC LIMIT :offset, :amount")
-    suspend fun getCustomerOrders(customerId: Int, offset: Int, amount: Int): List<OrderEntity>
+    @Query("SELECT * FROM orders WHERE customer_id = :customerId ORDER BY created_at DESC")
+    fun getAllCustomerOrders(customerId: Int): Flow<List<OrderEntity>>
 
     @Query("SELECT COUNT(id) from orders")
     suspend fun getOrderRowCount(): Int

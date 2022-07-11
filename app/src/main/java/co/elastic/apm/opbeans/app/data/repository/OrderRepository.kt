@@ -10,6 +10,7 @@ import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 @Singleton
@@ -36,8 +37,8 @@ class OrderRepository @Inject constructor(
         localOrderSource.saveAll(remoteOrders)
     }
 
-    suspend fun getCustomerOrders(customerId: Int, offset: Int, amount: Int): List<Order> {
-        return localOrderSource.getCustomerOrders(customerId, offset, amount)
+    fun getAllCustomerOrders(customerId: Int): Flow<List<Order>> {
+        return localOrderSource.getAllCustomerOrders(customerId)
     }
 
     suspend fun getTotalAmountOfOrders(): Int {

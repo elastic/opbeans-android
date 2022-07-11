@@ -7,6 +7,8 @@ import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 @Singleton
@@ -27,10 +29,10 @@ class LocalOrderSource @Inject constructor(private val appDatabase: AppDatabase)
         orderDao.insertAll(orders.map { order -> orderToEntity(order) })
     }
 
-    suspend fun getCustomerOrders(customerId: Int, offset: Int, amount: Int): List<Order> =
-        withContext(Dispatchers.IO) {
-            orderDao.getCustomerOrders(customerId, offset, amount).map { entityToOrder(it) }
-        }
+    fun getAllCustomerOrders(customerId: Int): Flow<List<Order>> {
+        return orderDao.getAllCustomerOrders(customerId)
+            .map { list -> list.map { entityToOrder(it) } }
+    }
 
     private fun orderToEntity(order: Order): OrderEntity {
         return OrderEntity(
