@@ -20,4 +20,5 @@
     <string name="order_detail_title">Order #%d</string>
     <string name="account_no_orders_available">You have no orders</string>
     <string name="account_retry_button_text">RETRY</string>
+    <string name="product_detail_retry_text">RETRY</string>
 </resources>

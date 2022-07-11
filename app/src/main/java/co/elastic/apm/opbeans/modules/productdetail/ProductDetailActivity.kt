@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -40,6 +41,7 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
     private lateinit var errorMessage: TextView
     private lateinit var containers: List<View>
     private lateinit var addToCartButton: FloatingActionButton
+    private lateinit var retry: Button
 
     companion object {
         private const val PARAM_PRODUCT_ID = "product_id"
@@ -81,6 +83,9 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
         addToCartButton.setOnClickListener {
             addItemToCart()
         }
+        retry.setOnClickListener {
+            viewModel.fetchProduct(productId)
+        }
     }
 
     private fun setUpToolbar() {
@@ -108,6 +113,7 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
         loadingContainer = findViewById(R.id.product_detail_loading_container)
         errorMessage = findViewById(R.id.product_detail_error_message)
         addToCartButton = findViewById(R.id.add_to_cart_fab)
+        retry = findViewById(R.id.product_retry_button)
         containers = listOf(errorContainer, loadingContainer, contentContainer)
     }
 
