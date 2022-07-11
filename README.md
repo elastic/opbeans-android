@@ -8,5 +8,5 @@ This app points to your localhost endpoint by default, which you can change in t
 file `app/build.gradle`
 by setting a new value to the `BASE_URL` buildConfigField defined within the `android.defaultConfig`
 block. The endpoint you'll find there by default is `"http://10.0.2.2:3000"`, where `10.0.2.2` is an
-alias that Android emulators define for their host machines (e.g. it's your dev machine's localhost)
-. More info [here](https://developer.android.com/studio/run/emulator-networking#networkaddresses).
+alias that Android emulators define for their host machines (it's your dev machine's localhost).
+More info [here](https://developer.android.com/studio/run/emulator-networking#networkaddresses).
