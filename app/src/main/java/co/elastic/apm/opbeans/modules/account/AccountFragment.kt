@@ -81,12 +81,14 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
         adapter.addLoadStateListener {
             if (isEmpty(it)) {
                 list.showEmptyMessage(getString(R.string.account_no_orders_available))
+            } else {
+                list.showList()
             }
         }
     }
 
     private fun isEmpty(loadStates: CombinedLoadStates): Boolean {
-        return loadStates.append is LoadState.NotLoading && loadStates.append.endOfPaginationReached
+        return loadStates.source.refresh is LoadState.NotLoading && loadStates.append.endOfPaginationReached && adapter.itemCount < 1
     }
 
     private fun onOrderItemClicked(orderId: Int) {
