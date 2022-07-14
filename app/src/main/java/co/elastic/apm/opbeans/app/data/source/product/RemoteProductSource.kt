@@ -10,6 +10,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.HttpException
+import retrofit2.Response
 
 @Singleton
 class RemoteProductSource @Inject constructor(private val opBeansService: OpBeansService) {
@@ -20,8 +24,23 @@ class RemoteProductSource @Inject constructor(private val opBeansService: OpBean
         }
     }
 
-    suspend fun getProductById(id: Int): ProductDetail = withContext(Dispatchers.IO) {
-        remoteToProductDetail(opBeansService.getProductById(id))
+    fun getProductById(id: Int, callback: (Result<ProductDetail>) -> Unit) {
+        opBeansService.getProductById(id).enqueue(object : Callback<RemoteProductDetail> {
+            override fun onResponse(
+                call: Call<RemoteProductDetail>,
+                response: Response<RemoteProductDetail>
+            ) {
+                if (response.isSuccessful) {
+                    callback.invoke(Result.success(remoteToProductDetail(response.body()!!)))
+                } else {
+                    callback.invoke(Result.failure(HttpException(response)))
+                }
+            }
+
+            override fun onFailure(call: Call<RemoteProductDetail>, t: Throwable) {
+                callback.invoke(Result.failure(t))
+            }
+        })
     }
 
     private fun remoteToProduct(remoteProduct: RemoteProduct): Product {

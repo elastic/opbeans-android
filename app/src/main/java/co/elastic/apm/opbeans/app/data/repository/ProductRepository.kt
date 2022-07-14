@@ -20,8 +20,8 @@ class ProductRepository @Inject constructor(
         return localProductSource.getProducts()
     }
 
-    suspend fun getProductById(id: Int): ProductDetail {
-        return remoteProductSource.getProductById(id)
+    fun getProductById(id: Int, callback: (Result<ProductDetail>) -> Unit) {
+        return remoteProductSource.getProductById(id, callback)
     }
 
     suspend fun fetchRemoteProducts() = withContext(Dispatchers.IO) {

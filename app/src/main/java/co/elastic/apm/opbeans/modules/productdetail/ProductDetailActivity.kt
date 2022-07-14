@@ -14,17 +14,14 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
-import androidx.lifecycle.lifecycleScope
 import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.data.models.ProductDetail
 import co.elastic.apm.opbeans.app.tools.showToast
-import co.elastic.apm.opbeans.modules.productdetail.ui.ProductDetailState
+import co.elastic.apm.opbeans.modules.productdetail.ui.ProductDetailLoadState
 import co.elastic.apm.opbeans.modules.productdetail.ui.ProductDetailViewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProductDetailActivity : AppCompatActivity(), MenuProvider {
@@ -64,19 +61,15 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
 
         productId = getProductId()
         setUpToolbar()
+        fetchProduct()
+    }
 
-        lifecycleScope.launch {
-            viewModel.state.collectLatest {
-                when (it) {
-                    is ProductDetailState.Loading -> showLoading()
-                    is ProductDetailState.ErrorLoading -> showErrorLoading(it.e)
-                    is ProductDetailState.FinishedLoading -> showProductDetail(it.product)
-                    is ProductDetailState.AddedToCart -> showAddToCartSuccessMessage()
-                }
-            }
+    private fun productLoadCallback(productDetailLoadState: ProductDetailLoadState) {
+        when (productDetailLoadState) {
+            is ProductDetailLoadState.Loading -> showLoading()
+            is ProductDetailLoadState.ErrorLoading -> showErrorLoading(productDetailLoadState.e)
+            is ProductDetailLoadState.FinishedLoading -> showProductDetail(productDetailLoadState.product)
         }
-
-        viewModel.fetchProduct(productId)
     }
 
     private fun initClicks() {
@@ -84,8 +77,12 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
             addItemToCart()
         }
         retry.setOnClickListener {
-            viewModel.fetchProduct(productId)
+            fetchProduct()
         }
+    }
+
+    private fun fetchProduct() {
+        viewModel.fetchProduct(productId, ::productLoadCallback)
     }
 
     private fun setUpToolbar() {
@@ -168,7 +165,9 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
     }
 
     private fun addItemToCart() {
-        viewModel.addProductToCart(productId)
+        viewModel.addProductToCart(productId) {
+            showAddToCartSuccessMessage()
+        }
     }
 
     private fun showAddToCartSuccessMessage() {

@@ -7,6 +7,7 @@ import co.elastic.apm.opbeans.app.data.remote.models.RemoteOrder
 import co.elastic.apm.opbeans.app.data.remote.models.RemoteOrderDetail
 import co.elastic.apm.opbeans.app.data.remote.models.RemoteProduct
 import co.elastic.apm.opbeans.app.data.remote.models.RemoteProductDetail
+import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -24,7 +25,7 @@ interface OpBeansService {
     suspend fun getOrders(): List<RemoteOrder>
 
     @GET("products/{product_id}")
-    suspend fun getProductById(@Path("product_id") id: Int): RemoteProductDetail
+    fun getProductById(@Path("product_id") id: Int): Call<RemoteProductDetail>
 
     @POST("orders")
     suspend fun createOrder(@Body body: CreateOrderBody): CreateOrderResponse
