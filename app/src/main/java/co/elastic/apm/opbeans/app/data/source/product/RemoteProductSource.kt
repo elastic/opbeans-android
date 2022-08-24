@@ -6,14 +6,14 @@ import co.elastic.apm.opbeans.app.data.remote.OpBeansService
 import co.elastic.apm.opbeans.app.data.remote.models.RemoteProduct
 import co.elastic.apm.opbeans.app.data.remote.models.RemoteProductDetail
 import co.elastic.apm.opbeans.app.data.source.product.helpers.ImageUrlBuilder
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.HttpException
 import retrofit2.Response
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @Singleton
 class RemoteProductSource @Inject constructor(private val opBeansService: OpBeansService) {
