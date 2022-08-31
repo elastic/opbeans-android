@@ -3,6 +3,8 @@
 import os
 import subprocess
 
+from jproperties import Properties
+
 
 def run_command(command, from_dir=os.getcwd()):
     print("Running command: {}".format(command))
@@ -23,9 +25,35 @@ def build_agent():
     run_command("./gradlew publishToMavenLocal", "./apm-agent-android")
 
 
+def get_agent_version():
+    configs = Properties()
+    with open('apm-agent-android/gradle.properties', 'rb') as properties:
+        configs.load(properties)
+
+    return configs.get("version").data
+
+
+def set_opbeans_agent_version(agent_version):
+    with open('../gradle.properties', 'r+b') as properties:
+        opbeans_prop = Properties()
+        opbeans_prop.load(properties)
+
+        opbeans_prop["agent_version"] = agent_version
+
+        properties.seek(0)
+        properties.truncate(0)
+        opbeans_prop.store(properties)
+
+
+def clean_up():
+    run_command("rm -rf apm-agent-android")
+
+
 def main():
     fetch_agent()
     build_agent()
+    set_opbeans_agent_version(get_agent_version())
+    clean_up()
 
 
 if __name__ == "__main__":
