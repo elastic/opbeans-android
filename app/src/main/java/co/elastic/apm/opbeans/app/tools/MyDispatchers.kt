@@ -7,4 +7,10 @@ object MyDispatchers {
     var Main: CoroutineDispatcher = Dispatchers.Main
     var IO: CoroutineDispatcher = Dispatchers.IO
     var Default: CoroutineDispatcher = Dispatchers.Default
+
+    fun resetAll() {
+        Main = Dispatchers.Main
+        IO = Dispatchers.IO
+        Default = Dispatchers.Default
+    }
 }
