@@ -7,11 +7,11 @@ import co.elastic.apm.opbeans.app.data.models.CartItem
 import co.elastic.apm.opbeans.app.data.repository.CartItemRepository
 import co.elastic.apm.opbeans.app.data.repository.OrderRepository
 import co.elastic.apm.opbeans.app.tools.EventFlow
+import co.elastic.apm.opbeans.app.tools.MyDispatchers
 import co.elastic.apm.opbeans.app.tools.update
 import co.elastic.apm.opbeans.modules.cart.ui.state.CartCheckoutState
 import co.elastic.apm.opbeans.modules.cart.ui.state.CartItemsLoadState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
@@ -42,7 +43,7 @@ class CartViewModel @Inject constructor(
 
     fun fetchData() {
         fetchListJob?.cancel()
-        fetchListJob = viewModelScope.launch {
+        fetchListJob = viewModelScope.launch(MyDispatchers.Main) {
             try {
                 internalCartItemsLoadState.update { CartItemsLoadState.Loading }
                 cartItemRepository.getAllCartItems()
@@ -62,7 +63,7 @@ class CartViewModel @Inject constructor(
             internalCartCheckoutState.update { CartCheckoutState.NoItemsToCheckout }
             return
         }
-        viewModelScope.launch {
+        viewModelScope.launch(MyDispatchers.Main) {
             try {
                 internalCartCheckoutState.update { CartCheckoutState.Started }
                 orderRepository.createOrder(authManager.getUser(), cartItems)

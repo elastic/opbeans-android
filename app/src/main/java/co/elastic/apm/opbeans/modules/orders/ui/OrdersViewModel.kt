@@ -7,16 +7,17 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import co.elastic.apm.opbeans.app.data.repository.OrderRepository
+import co.elastic.apm.opbeans.app.tools.MyDispatchers
 import co.elastic.apm.opbeans.modules.orders.data.cases.OrderStateItemCase
 import co.elastic.apm.opbeans.modules.orders.data.paging.OrdersPagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class OrdersViewModel @Inject constructor(
@@ -34,7 +35,7 @@ class OrdersViewModel @Inject constructor(
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), PagingData.empty())
 
     fun fetchOrders() {
-        viewModelScope.launch {
+        viewModelScope.launch(MyDispatchers.Main) {
             try {
                 internalState.update { OrdersNetworkState.Loading }
                 orderRepository.fetchOrders()

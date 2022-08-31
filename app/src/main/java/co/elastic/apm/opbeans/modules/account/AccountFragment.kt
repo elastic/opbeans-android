@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.elastic.apm.opbeans.R
+import co.elastic.apm.opbeans.app.tools.MyDispatchers
 import co.elastic.apm.opbeans.app.ui.ListDivider
 import co.elastic.apm.opbeans.app.ui.LoadableList
 import co.elastic.apm.opbeans.modules.account.data.AccountStateScreenItem
@@ -43,7 +44,7 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
         initList()
         initRetryOption()
 
-        lifecycleScope.launch {
+        lifecycleScope.launch(MyDispatchers.Main) {
             viewModel.state.collectLatest {
                 when (it) {
                     is AccountState.LoadingScreen -> showOnly(loadingContainer)
@@ -103,7 +104,7 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
     }
 
     private fun attachOrdersToList() {
-        lifecycleScope.launch {
+        lifecycleScope.launch(MyDispatchers.Main) {
             viewModel.orders.collectLatest {
                 submitOrderListData(it)
             }

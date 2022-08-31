@@ -7,15 +7,16 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import co.elastic.apm.opbeans.app.data.repository.CustomerRepository
+import co.elastic.apm.opbeans.app.tools.MyDispatchers
 import co.elastic.apm.opbeans.modules.customers.data.pager.CustomerPagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class CustomersViewModel @Inject constructor(private val customerRepository: CustomerRepository) :
@@ -31,7 +32,7 @@ class CustomersViewModel @Inject constructor(private val customerRepository: Cus
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), PagingData.empty())
 
     fun fetchCustomers() {
-        viewModelScope.launch {
+        viewModelScope.launch(MyDispatchers.Main) {
             try {
                 internalState.update { CustomersNetworkState.Loading }
                 customerRepository.fetchCustomers()

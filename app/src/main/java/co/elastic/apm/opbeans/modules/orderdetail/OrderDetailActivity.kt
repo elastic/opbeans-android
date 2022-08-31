@@ -13,6 +13,7 @@ import androidx.core.view.MenuProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.elastic.apm.opbeans.R
+import co.elastic.apm.opbeans.app.tools.MyDispatchers
 import co.elastic.apm.opbeans.app.ui.ListDivider
 import co.elastic.apm.opbeans.app.ui.LoadableList
 import co.elastic.apm.opbeans.modules.orderdetail.data.OrderDetailStateItem
@@ -50,7 +51,7 @@ class OrderDetailActivity : AppCompatActivity(), MenuProvider {
         setOrderId()
         setUpToolbar()
 
-        lifecycleScope.launch {
+        lifecycleScope.launch(MyDispatchers.Main) {
             viewModel.state.collectLatest {
                 when (it) {
                     is OrderDetailState.Loading -> list.showLoading()

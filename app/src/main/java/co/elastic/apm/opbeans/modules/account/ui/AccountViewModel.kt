@@ -5,11 +5,11 @@ import androidx.lifecycle.viewModelScope
 import co.elastic.apm.opbeans.app.auth.AuthManager
 import co.elastic.apm.opbeans.app.data.models.Customer
 import co.elastic.apm.opbeans.app.data.repository.OrderRepository
+import co.elastic.apm.opbeans.app.tools.MyDispatchers
 import co.elastic.apm.opbeans.modules.account.data.AccountStateScreenItem
 import co.elastic.apm.opbeans.modules.account.state.AccountState
 import co.elastic.apm.opbeans.modules.orders.data.cases.OrderStateItemCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class AccountViewModel @Inject constructor(
@@ -42,7 +43,7 @@ class AccountViewModel @Inject constructor(
     }
 
     fun fetchScreen() {
-        viewModelScope.launch {
+        viewModelScope.launch(MyDispatchers.Main) {
             try {
                 internalState.update { AccountState.LoadingScreen }
                 ensureOrdersLoaded()

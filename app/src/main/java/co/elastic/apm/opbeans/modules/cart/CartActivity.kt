@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.data.models.CartItem
+import co.elastic.apm.opbeans.app.tools.MyDispatchers
 import co.elastic.apm.opbeans.app.tools.showToast
 import co.elastic.apm.opbeans.app.ui.ListDivider
 import co.elastic.apm.opbeans.app.ui.LoadableList
@@ -59,7 +60,7 @@ class CartActivity : AppCompatActivity(), MenuProvider {
     }
 
     private fun observeCheckout() {
-        lifecycleScope.launch {
+        lifecycleScope.launch(MyDispatchers.Main) {
             viewModel.cartCheckoutState.collectLatest {
                 when (it) {
                     is CartCheckoutState.Started -> onCheckoutStarted()
@@ -110,7 +111,7 @@ class CartActivity : AppCompatActivity(), MenuProvider {
     }
 
     private fun observeCartItems() {
-        lifecycleScope.launch {
+        lifecycleScope.launch(MyDispatchers.Main) {
             viewModel.cartItemsLoadState.collectLatest {
                 when (it) {
                     is CartItemsLoadState.Loading -> list.showLoading()

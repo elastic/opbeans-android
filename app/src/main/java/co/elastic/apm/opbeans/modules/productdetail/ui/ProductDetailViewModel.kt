@@ -4,9 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.elastic.apm.opbeans.app.data.repository.CartItemRepository
 import co.elastic.apm.opbeans.app.data.repository.ProductRepository
+import co.elastic.apm.opbeans.app.tools.MyDispatchers
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class ProductDetailViewModel @Inject constructor(
@@ -26,7 +27,7 @@ class ProductDetailViewModel @Inject constructor(
     }
 
     fun addProductToCart(productId: Int, callback: () -> Unit) {
-        viewModelScope.launch {
+        viewModelScope.launch(MyDispatchers.Main) {
             cartItemRepository.addOrUpdateItem(productId)
             callback.invoke()
         }
