@@ -3,7 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'dagger.hilt.android.plugin'
     id 'kotlin-kapt'
-    id 'co.elastic.apm.android'
+    id 'co.elastic.apm.android' version "${agent_version}"
 }
 
 android {

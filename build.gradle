@@ -8,7 +8,6 @@ buildscript {
     }
     dependencies {
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
-        classpath "co.elastic.apm:android-plugin:0.0.1-SNAPSHOT"
     }
 }
 plugins {
