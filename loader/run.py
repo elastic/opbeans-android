@@ -1,3 +1,5 @@
+# DO NOT RUN IT DIRECTLY, run the "run_loader.sh" file instead, which is located in the root
+# dir of this project.
 import os
 import subprocess
 
@@ -21,5 +23,10 @@ def build_agent():
     run_command("./gradlew publishToMavenLocal", "./apm-agent-android")
 
 
-fetch_agent()
-build_agent()
+def main():
+    fetch_agent()
+    build_agent()
+
+
+if __name__ == "__main__":
+    main()
