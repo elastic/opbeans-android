@@ -1,5 +1,8 @@
 cd "loader" || exit
 python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-python -m run
+venv/bin/pip install -r requirements.txt
+venv/bin/python -m run
+
+#Clean up
+rm -rf "venv"
+cd ..
