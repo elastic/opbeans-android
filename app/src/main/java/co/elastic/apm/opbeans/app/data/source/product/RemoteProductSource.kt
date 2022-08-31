@@ -6,7 +6,7 @@ import co.elastic.apm.opbeans.app.data.remote.OpBeansService
 import co.elastic.apm.opbeans.app.data.remote.models.RemoteProduct
 import co.elastic.apm.opbeans.app.data.remote.models.RemoteProductDetail
 import co.elastic.apm.opbeans.app.data.source.product.helpers.ImageUrlBuilder
-import kotlinx.coroutines.Dispatchers
+import co.elastic.apm.opbeans.app.tools.MyDispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,7 +18,7 @@ import javax.inject.Singleton
 @Singleton
 class RemoteProductSource @Inject constructor(private val opBeansService: OpBeansService) {
 
-    suspend fun getProducts(): List<Product> = withContext(Dispatchers.IO) {
+    suspend fun getProducts(): List<Product> = withContext(MyDispatchers.IO) {
         opBeansService.getProducts().map {
             remoteToProduct(it)
         }

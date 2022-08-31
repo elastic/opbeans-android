@@ -4,10 +4,10 @@ import co.elastic.apm.opbeans.app.data.local.AppDatabase
 import co.elastic.apm.opbeans.app.data.local.entities.CustomerEntity
 import co.elastic.apm.opbeans.app.data.models.Customer
 import co.elastic.apm.opbeans.app.data.source.customer.tools.LocationBuilder
+import co.elastic.apm.opbeans.app.tools.MyDispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 @Singleton
 class LocalCustomerSource @Inject constructor(appDatabase: AppDatabase) {
@@ -15,11 +15,11 @@ class LocalCustomerSource @Inject constructor(appDatabase: AppDatabase) {
     private val customerDao by lazy { appDatabase.customerDao() }
 
     suspend fun getSetOfCustomers(offset: Int, amount: Int): List<Customer> =
-        withContext(Dispatchers.IO) {
+        withContext(MyDispatchers.IO) {
             customerDao.getSetOfCustomers(offset, amount).map { entityToCustomer(it) }
         }
 
-    suspend fun saveAll(customers: List<Customer>) = withContext(Dispatchers.IO) {
+    suspend fun saveAll(customers: List<Customer>) = withContext(MyDispatchers.IO) {
         customerDao.insertAll(customers.map { customerToEntity(it) })
     }
 

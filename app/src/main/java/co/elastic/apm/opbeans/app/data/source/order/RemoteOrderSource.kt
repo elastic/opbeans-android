@@ -11,14 +11,14 @@ import co.elastic.apm.opbeans.app.data.remote.models.RemoteOrder
 import co.elastic.apm.opbeans.app.data.remote.models.RemoteOrderDetail
 import co.elastic.apm.opbeans.app.data.remote.models.RemoteOrderedProduct
 import co.elastic.apm.opbeans.app.data.source.product.helpers.ImageUrlBuilder
+import co.elastic.apm.opbeans.app.tools.MyDispatchers
+import kotlinx.coroutines.withContext
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 @Singleton
 class RemoteOrderSource @Inject constructor(private val opBeansService: OpBeansService) {
@@ -28,18 +28,18 @@ class RemoteOrderSource @Inject constructor(private val opBeansService: OpBeansS
         private val utcDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
     }
 
-    suspend fun createOrder(customerId: Int, items: List<CartItem>) = withContext(Dispatchers.IO) {
+    suspend fun createOrder(customerId: Int, items: List<CartItem>) = withContext(MyDispatchers.IO) {
         val lines = items.map { OrderLine(it.product.id, it.amount) }
         opBeansService.createOrder(CreateOrderBody(customerId, lines))
     }
 
-    suspend fun getOrders(): List<Order> = withContext(Dispatchers.IO) {
+    suspend fun getOrders(): List<Order> = withContext(MyDispatchers.IO) {
         opBeansService.getOrders().map {
             remoteToOrder(it)
         }
     }
 
-    suspend fun getOrderDetails(orderId: Int): OrderDetail = withContext(Dispatchers.IO) {
+    suspend fun getOrderDetails(orderId: Int): OrderDetail = withContext(MyDispatchers.IO) {
         remoteToOrderDetail(opBeansService.getOrderById(orderId))
     }
 
