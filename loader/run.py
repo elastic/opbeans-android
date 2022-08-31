@@ -18,8 +18,7 @@ def fetch_agent():
 
 def build_agent():
     print("Building APM Agent")
-    run_command("./gradlew :android-plugin:jar", "./apm-agent-android")
-
+    run_command("./gradlew publishToMavenLocal", "./apm-agent-android")
 
 
 fetch_agent()
