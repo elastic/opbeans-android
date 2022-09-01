@@ -16,8 +16,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import co.elastic.apm.opbeans.utils.BaseRobot
 import co.elastic.apm.opbeans.utils.DispatcherIdlerRule
+import co.elastic.apm.opbeans.utils.EspressoUtils
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.`is`
@@ -99,7 +99,7 @@ class HomeActivityTest {
         )
         actionMenuItemView2.perform(click())
 
-        BaseRobot().waitForView(withId(R.id.empty_list_container))
+        EspressoUtils.waitForView(withId(R.id.empty_list_container))
 
         onView(withId(R.id.empty_list_message)).check(matches(isDisplayed()))
     }
