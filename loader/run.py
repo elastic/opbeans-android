@@ -19,6 +19,9 @@ def fetch_agent():
     print("Fetching APM Agent Android")
     run_command("git clone git@github.com:elastic/apm-agent-android.git")
 
+    # Todo remove after https://github.com/elastic/apm-agent-android/issues/6 is closed:
+    run_command("git checkout plain-asm-instrumented", "apm-agent-android")
+
 
 def build_agent():
     print("Building APM Agent")
