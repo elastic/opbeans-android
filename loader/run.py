@@ -6,13 +6,19 @@ import subprocess
 from jproperties import Properties
 
 
+def log(message, *args):
+    print("[LOADER] - " + message.format(*args))
+
+
 def run_command(command, from_dir=os.getcwd()):
-    print("Running command: {}".format(command))
-    process = subprocess.Popen(command.split(), cwd=from_dir, stdout=subprocess.PIPE)
-    output, error = process.communicate()
-    if error:
-        raise ValueError("Command '{}' failed: {}".format(command, error))
-    return output
+    log("Running command: {}", command)
+    with subprocess.Popen(command.split(), stdout=subprocess.PIPE, cwd=from_dir, bufsize=1,
+                          universal_newlines=True) as p:
+        for line in p.stdout:
+            print(line, end='')
+
+    if p.returncode != 0:
+        raise subprocess.CalledProcessError(p.returncode, p.args)
 
 
 def fetch_agent():
@@ -37,6 +43,7 @@ def get_agent_version():
 
 
 def set_opbeans_agent_version(agent_version):
+    print("Setting agent version: {}".format(agent_version))
     with open('../gradle.properties', 'r+b') as properties:
         opbeans_prop = Properties()
         opbeans_prop.load(properties)
@@ -54,6 +61,7 @@ def run_tests():
 
 
 def clean_up():
+    print("Cleaning up")
     run_command("rm -rf apm-agent-android")
 
 
