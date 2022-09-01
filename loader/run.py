@@ -22,7 +22,7 @@ def run_command(command, from_dir=os.getcwd()):
 
 
 def fetch_agent():
-    print("Fetching APM Agent Android")
+    log("Fetching APM Agent Android")
     run_command("git clone git@github.com:elastic/apm-agent-android.git")
 
     # Todo remove after https://github.com/elastic/apm-agent-android/issues/6 is closed:
@@ -30,7 +30,7 @@ def fetch_agent():
 
 
 def build_agent():
-    print("Building APM Agent")
+    log("Building APM Agent")
     run_command("./gradlew publishToMavenLocal", "./apm-agent-android")
 
 
@@ -43,7 +43,7 @@ def get_agent_version():
 
 
 def set_opbeans_agent_version(agent_version):
-    print("Setting agent version: {}".format(agent_version))
+    log("Setting agent version: {}", agent_version)
     with open('../gradle.properties', 'r+b') as properties:
         opbeans_prop = Properties()
         opbeans_prop.load(properties)
@@ -56,12 +56,12 @@ def set_opbeans_agent_version(agent_version):
 
 
 def run_tests():
-    print("Running UI tests")
+    log("Running UI tests")
     run_command("./gradlew connectedAndroidTest", "..")
 
 
 def clean_up():
-    print("Cleaning up")
+    log("Cleaning up")
     run_command("rm -rf apm-agent-android")
 
 
