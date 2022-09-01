@@ -66,11 +66,13 @@ def clean_up():
 
 
 def main():
-    fetch_agent()
-    build_agent()
-    set_opbeans_agent_version(get_agent_version())
-    run_tests()
-    clean_up()
+    try:
+        fetch_agent()
+        build_agent()
+        set_opbeans_agent_version(get_agent_version())
+        run_tests()
+    finally:
+        clean_up()
 
 
 if __name__ == "__main__":
