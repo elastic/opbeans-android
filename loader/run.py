@@ -48,6 +48,11 @@ def set_opbeans_agent_version(agent_version):
         opbeans_prop.store(properties)
 
 
+def run_tests():
+    print("Running UI tests")
+    run_command("./gradlew connectedAndroidTest", "..")
+
+
 def clean_up():
     run_command("rm -rf apm-agent-android")
 
@@ -56,6 +61,7 @@ def main():
     fetch_agent()
     build_agent()
     set_opbeans_agent_version(get_agent_version())
+    run_tests()
     clean_up()
 
 
