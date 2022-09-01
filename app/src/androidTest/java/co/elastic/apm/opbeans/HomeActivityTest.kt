@@ -31,19 +31,42 @@ class HomeActivityTest {
     val dispatcherIdlerRule = DispatcherIdlerRule()
 
     @Test
+    fun testGoThroughAllBottomMenuItems() {
+        onView(withId(R.id.customers_item)).perform(click())
+        onView(withId(R.id.orders_item)).perform(click())
+        onView(withId(R.id.account_item)).perform(click())
+    }
+
+    @Test
     fun testOneProductCheckout() {
-        onView(withId(R.id.list)).perform(actionOnItemAtPosition<ViewHolder>(0, click()))
+        orderItem(0, 1)
 
-        onView(withId(R.id.add_to_cart_fab)).perform(click())
+        doCheckout()
+    }
 
-        pressBack()
+    @Test
+    fun testMultipleProductsCheckout() {
+        orderItem(0, 1)
+        orderItem(1, 3)
+        orderItem(3, 2)
+        orderItem(4, 5)
+        orderItem(5, 1)
 
+        doCheckout()
+    }
+
+    private fun doCheckout() {
         onView(withId(R.id.shopping_cart)).perform(click())
-
         onView(withId(R.id.cart_checkout_option)).perform(click())
-
         EspressoUtils.waitForView(withId(R.id.empty_list_container))
-
         onView(withId(R.id.empty_list_message)).check(matches(isDisplayed()))
+    }
+
+    private fun orderItem(position: Int, amount: Int) {
+        onView(withId(R.id.list)).perform(actionOnItemAtPosition<ViewHolder>(position, click()))
+        repeat(amount) {
+            onView(withId(R.id.add_to_cart_fab)).perform(click())
+        }
+        pressBack()
     }
 }
