@@ -23,6 +23,7 @@ ext {
     retrofit_version = '2.9.0'
     glide_version = '4.13.2'
     room_version = '2.4.2'
+    espresso_version = '3.4.0'
 }
 
 task clean(type: Delete) {

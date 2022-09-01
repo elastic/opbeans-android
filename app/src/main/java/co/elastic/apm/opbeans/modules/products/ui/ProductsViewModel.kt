@@ -6,7 +6,6 @@ import co.elastic.apm.opbeans.app.data.repository.ProductRepository
 import co.elastic.apm.opbeans.modules.products.ui.state.NetworkRequestState
 import co.elastic.apm.opbeans.modules.products.ui.state.ProductsState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -16,6 +15,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class ProductsViewModel @Inject constructor(private val productRepository: ProductRepository) :

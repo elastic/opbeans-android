@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.data.models.Product
+import co.elastic.apm.opbeans.app.tools.MyDispatchers
 import co.elastic.apm.opbeans.app.ui.ListDivider
 import co.elastic.apm.opbeans.app.ui.LoadableList
 import co.elastic.apm.opbeans.modules.productdetail.ProductDetailActivity
@@ -32,7 +33,7 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
         initViews(view)
         initList()
 
-        lifecycleScope.launch {
+        lifecycleScope.launch(MyDispatchers.Main) {
             viewModel.products.collectLatest {
                 when (it) {
                     is ProductsState.ProductsLoaded -> populateProductList(it.products)
@@ -41,7 +42,7 @@ class ProductsFragment : Fragment(R.layout.fragment_products) {
                 }
             }
         }
-        lifecycleScope.launch {
+        lifecycleScope.launch(MyDispatchers.Main) {
             viewModel.networkRequestState.collectLatest {
                 when (it) {
                     is NetworkRequestState.Running -> productList.showLoading()

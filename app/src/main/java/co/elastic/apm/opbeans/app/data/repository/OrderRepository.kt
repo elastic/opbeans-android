@@ -6,12 +6,12 @@ import co.elastic.apm.opbeans.app.data.models.Order
 import co.elastic.apm.opbeans.app.data.models.OrderDetail
 import co.elastic.apm.opbeans.app.data.source.order.LocalOrderSource
 import co.elastic.apm.opbeans.app.data.source.order.RemoteOrderSource
+import co.elastic.apm.opbeans.app.tools.MyDispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
 
 @Singleton
 class OrderRepository @Inject constructor(
@@ -32,7 +32,7 @@ class OrderRepository @Inject constructor(
         return localOrderSource.getSetOfOrders(offset, amount)
     }
 
-    suspend fun fetchOrders() = withContext(Dispatchers.IO) {
+    suspend fun fetchOrders() = withContext(MyDispatchers.IO) {
         val remoteOrders = remoteOrderSource.getOrders()
         localOrderSource.saveAll(remoteOrders)
     }

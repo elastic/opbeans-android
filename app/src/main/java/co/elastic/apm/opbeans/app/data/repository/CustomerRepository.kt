@@ -3,10 +3,10 @@ package co.elastic.apm.opbeans.app.data.repository
 import co.elastic.apm.opbeans.app.data.models.Customer
 import co.elastic.apm.opbeans.app.data.source.customer.LocalCustomerSource
 import co.elastic.apm.opbeans.app.data.source.customer.RemoteCustomerSource
+import co.elastic.apm.opbeans.app.tools.MyDispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 @Singleton
 class CustomerRepository @Inject constructor(
@@ -15,11 +15,11 @@ class CustomerRepository @Inject constructor(
 ) {
 
     suspend fun getSetOfCustomers(offset: Int, amount: Int): List<Customer> =
-        withContext(Dispatchers.IO) {
+        withContext(MyDispatchers.IO) {
             localCustomerSource.getSetOfCustomers(offset, amount)
         }
 
-    suspend fun fetchCustomers() = withContext(Dispatchers.IO) {
+    suspend fun fetchCustomers() = withContext(MyDispatchers.IO) {
         val remoteCustomers = remoteCustomerSource.getCustomers()
         localCustomerSource.saveAll(remoteCustomers)
     }

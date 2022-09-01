@@ -9,6 +9,7 @@ import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.data.models.Customer
+import co.elastic.apm.opbeans.app.tools.MyDispatchers
 import co.elastic.apm.opbeans.app.tools.showToast
 import co.elastic.apm.opbeans.app.ui.ListDivider
 import co.elastic.apm.opbeans.app.ui.LoadableList
@@ -31,7 +32,7 @@ class CustomersFragment : Fragment(R.layout.fragment_customers) {
         initViews(view)
         initList()
 
-        lifecycleScope.launch {
+        lifecycleScope.launch(MyDispatchers.Main) {
             viewModel.state.collectLatest {
                 when (it) {
                     is CustomersNetworkState.Loading -> list.showLoading()
@@ -40,7 +41,7 @@ class CustomersFragment : Fragment(R.layout.fragment_customers) {
                 }
             }
         }
-        lifecycleScope.launch {
+        lifecycleScope.launch(MyDispatchers.Main) {
             viewModel.customers.collectLatest {
                 populateList(it)
             }
@@ -71,7 +72,7 @@ class CustomersFragment : Fragment(R.layout.fragment_customers) {
 
     private fun populateList(customers: PagingData<Customer>) {
         list.showList()
-        viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch(MyDispatchers.Main) {
             adapter.submitData(customers)
         }
     }
