@@ -1,6 +1,5 @@
 package co.elastic.apm.opbeans
 
-
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
