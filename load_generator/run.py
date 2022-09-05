@@ -1,4 +1,4 @@
-# DO NOT RUN IT DIRECTLY, run the "run_loader.sh" file instead, which is located in the root
+# DO NOT RUN IT DIRECTLY, run the "run_load_generator.sh" file instead, which is located in the root
 # dir of this project.
 import os
 import subprocess
@@ -7,7 +7,7 @@ from jproperties import Properties
 
 
 def log(message, *args):
-    print("[LOADER] - " + message.format(*args))
+    print("[LOAD_GENERATOR] - " + message.format(*args))
 
 
 def run_command(command, from_dir=os.getcwd()):
