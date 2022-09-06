@@ -21,14 +21,6 @@ def run_command(command, from_dir=os.getcwd()):
         raise subprocess.CalledProcessError(p.returncode, p.args)
 
 
-def fetch_agent():
-    log("Fetching APM Agent Android")
-    run_command("git clone git@github.com:elastic/apm-agent-android.git")
-
-    # Todo remove after https://github.com/elastic/apm-agent-android/issues/6 is closed:
-    run_command("git checkout plain-asm-instrumented", "apm-agent-android")
-
-
 def build_agent():
     log("Building APM Agent")
     run_command("./gradlew publishToMavenLocal", "./apm-agent-android")
@@ -44,7 +36,7 @@ def get_agent_version():
 
 def set_opbeans_agent_version(agent_version):
     log("Setting agent version: {}", agent_version)
-    with open('../gradle.properties', 'r+b') as properties:
+    with open('opbeans-android/gradle.properties', 'r+b') as properties:
         opbeans_prop = Properties()
         opbeans_prop.load(properties)
 
@@ -57,22 +49,13 @@ def set_opbeans_agent_version(agent_version):
 
 def run_tests():
     log("Running UI tests")
-    run_command("./gradlew connectedAndroidTest", "..")
-
-
-def clean_up():
-    log("Cleaning up")
-    run_command("rm -rf apm-agent-android")
+    run_command("./gradlew connectedAndroidTest", "./opbeans-android")
 
 
 def main():
-    try:
-        fetch_agent()
-        build_agent()
-        set_opbeans_agent_version(get_agent_version())
-        run_tests()
-    finally:
-        clean_up()
+    build_agent()
+    set_opbeans_agent_version(get_agent_version())
+    run_tests()
 
 
 if __name__ == "__main__":
