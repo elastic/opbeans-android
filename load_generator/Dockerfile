@@ -5,6 +5,8 @@ ARG github_password
 
 WORKDIR /
 
+RUN echo no | avdmanager create avd -n opbeans_emulator --abi google_apis/x86_64 -k "system-images;android-31;google_apis;x86_64"
+
 COPY requirements.txt ./
 
 RUN apt update
@@ -18,6 +20,8 @@ WORKDIR /apm-agent-android
 RUN git checkout plain-asm-instrumented
 
 WORKDIR /
+
+ENV ANDROID_AVD_HOME=/opt/android-sdk-linux/.android/avd
 
 COPY . .
 

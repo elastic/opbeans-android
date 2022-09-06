@@ -12,13 +12,18 @@ def log(message, *args):
 
 def run_command(command, from_dir=os.getcwd()):
     log("Running command: {}", command)
-    with subprocess.Popen(command.split(), stdout=subprocess.PIPE, cwd=from_dir, bufsize=1,
-                          universal_newlines=True) as p:
+    with subprocess.Popen(command, stdout=subprocess.PIPE, cwd=from_dir, bufsize=1,
+                          universal_newlines=True, shell=True) as p:
         for line in p.stdout:
             print(line, end='')
 
     if p.returncode != 0:
         raise subprocess.CalledProcessError(p.returncode, p.args)
+
+
+def start_emulator():
+    log("Starting Android emulator")
+    run_command("emulator -avd opbeans_emulator -no-window -no-audio -no-snapshot -no-boot-anim -gpu swiftshader_indirect -no-accel &")
 
 
 def build_agent():
@@ -53,6 +58,7 @@ def run_tests():
 
 
 def main():
+    start_emulator()
     build_agent()
     set_opbeans_agent_version(get_agent_version())
     run_tests()
