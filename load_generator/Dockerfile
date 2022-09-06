@@ -2,6 +2,9 @@ FROM androidsdk/android-31
 
 ARG github_username
 ARG github_password
+ARG exporter_auth_token
+ARG exporter_endpoint=http://10.0.2.2:8200
+ARG opbeans_endpoint=http://10.0.2.2:3000
 
 WORKDIR /
 
@@ -21,4 +24,4 @@ WORKDIR /
 
 COPY . .
 
-CMD ["python3", "-m", "run"]
+CMD ["python3", "-m", "run", "--exporter-endpoint", "${exporter_endpoint}", "--exporter-auth-token", "${exporter_auth_token}", "--opbeans-endpoint", "${opbeans_endpoint}"]
