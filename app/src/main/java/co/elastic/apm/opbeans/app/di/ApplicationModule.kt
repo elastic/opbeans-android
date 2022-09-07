@@ -31,7 +31,18 @@ class ApplicationModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder().build()
+        return OkHttpClient.Builder()
+            .addInterceptor {
+                val request = if (BuildConfig.OPBEANS_AUTH_TOKEN.isNotEmpty()) {
+                    it.request().newBuilder()
+                        .addHeader("Authorization", "Bearer ${BuildConfig.OPBEANS_AUTH_TOKEN}")
+                        .build()
+                } else {
+                    it.request()
+                }
+
+                it.proceed(request)
+            }.build()
     }
 
     @Provides
