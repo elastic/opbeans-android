@@ -1,5 +1,3 @@
-# DO NOT RUN IT DIRECTLY, run the "run_load_generator.sh" file instead, which is located in the root
-# dir of this project.
 import argparse
 import os
 import subprocess
