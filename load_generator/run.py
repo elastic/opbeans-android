@@ -48,26 +48,41 @@ def set_opbeans_agent_version(agent_version):
         opbeans_prop.store(properties)
 
 
-def run_tests():
+def run_tests(args):
     log("Running UI tests")
-    run_command("./gradlew connectedAndroidTest", "./opbeans-android")
+    command = "./gradlew connectedAndroidTest -Pexporter_endpoint={} -Popbeans_endpoint={}".format(
+        args.exporterEndpoint, args.opbeansEndpoint)
+
+    if args.exporterAuthToken is not None:
+        command = command + " -Pexporter_auth_token={}".format(args.exporterAuthToken)
+    if args.opbeansAuthToken is not None:
+        command = command + " -Popbeans_auth_token={}".format(args.opbeansAuthToken)
+
+    run_command(command, "./opbeans-android")
+
+
+def none_or_str(value):
+    if value == 'None':
+        return None
+    return value
 
 
 def parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument('--exporter-endpoint', dest='exporterEndpoint')
-    parser.add_argument('--exporter-auth-token', dest='exporterAuthToken')
+    parser.add_argument('--exporter-auth-token', dest='exporterAuthToken', type=none_or_str,
+                        default=None)
     parser.add_argument('--opbeans-endpoint', dest='opbeansEndpoint')
-    parser.add_argument('--opbeans-auth-token', dest='opbeansAuthToken')
+    parser.add_argument('--opbeans-auth-token', dest='opbeansAuthToken', type=none_or_str,
+                        default=None)
     return parser.parse_args()
 
 
 def main():
     args = parse_arguments()
-    print('Args: ', args)
     build_agent()
     set_opbeans_agent_version(get_agent_version())
-    run_tests()
+    run_tests(args)
 
 
 if __name__ == "__main__":
