@@ -18,6 +18,8 @@ android {
 
         buildConfigField "String", 'OPBEANS_URL', '"http://10.0.2.2:3000"'
         buildConfigField "String", 'EXPORTER_URL', '"http://10.0.2.2:8200"'
+        buildConfigField "String", 'OPBEANS_AUTH_TOKEN', '""'
+        buildConfigField "String", 'EXPORTER_AUTH_TOKEN', '""'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
