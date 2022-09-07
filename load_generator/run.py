@@ -55,14 +55,16 @@ def run_tests():
 
 def parse_arguments():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--exporter-endpoint')
-    parser.add_argument('--exporter-auth-token')
-    parser.add_argument('--opbeans-endpoint')
+    parser.add_argument('--exporter-endpoint', dest='exporterEndpoint')
+    parser.add_argument('--exporter-auth-token', dest='exporterAuthToken')
+    parser.add_argument('--opbeans-endpoint', dest='opbeansEndpoint')
+    parser.add_argument('--opbeans-auth-token', dest='opbeansAuthToken')
     return parser.parse_args()
 
 
 def main():
     args = parse_arguments()
+    print('Args: ', args)
     build_agent()
     set_opbeans_agent_version(get_agent_version())
     run_tests()
