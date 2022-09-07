@@ -21,11 +21,6 @@ def run_command(command, from_dir=os.getcwd()):
         raise subprocess.CalledProcessError(p.returncode, p.args)
 
 
-def start_emulator():
-    log("Starting Android emulator")
-    run_command("emulator -avd opbeans_emulator -no-window -no-audio -no-snapshot -no-boot-anim -gpu swiftshader_indirect -no-accel &")
-
-
 def build_agent():
     log("Building APM Agent")
     run_command("./gradlew publishToMavenLocal", "./apm-agent-android")
@@ -58,7 +53,6 @@ def run_tests():
 
 
 def main():
-    start_emulator()
     build_agent()
     set_opbeans_agent_version(get_agent_version())
     run_tests()
