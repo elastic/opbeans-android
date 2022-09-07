@@ -16,8 +16,10 @@ android {
         versionCode 1
         versionName "1.0"
 
-        buildConfigField "String", 'BASE_URL', '"http://10.0.2.2:3000"'
-        buildConfigField "String", 'EXPORTER_URL', '"http://10.0.2.2:8200"'
+        buildConfigField "String", 'OPBEANS_URL', "\"${project.properties.getOrDefault("opbeans_endpoint", "http://10.0.2.2:3000")}\""
+        buildConfigField "String", 'EXPORTER_URL', "\"${project.properties.getOrDefault("exporter_endpoint", "http://10.0.2.2:8200")}\""
+        buildConfigField "String", 'OPBEANS_AUTH_TOKEN', "\"${project.properties.getOrDefault("opbeans_auth_token", "")}\""
+        buildConfigField "String", 'EXPORTER_AUTH_TOKEN', "\"${project.properties.getOrDefault("exporter_auth_token", "")}\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

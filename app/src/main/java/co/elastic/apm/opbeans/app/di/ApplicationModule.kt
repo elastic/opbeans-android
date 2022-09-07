@@ -9,6 +9,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -19,11 +20,29 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit {
+    fun provideRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("${BuildConfig.BASE_URL}/api/")
+            .baseUrl("${BuildConfig.OPBEANS_URL}/api/")
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor {
+                val request = if (BuildConfig.OPBEANS_AUTH_TOKEN.isNotEmpty()) {
+                    it.request().newBuilder()
+                        .addHeader("Authorization", "Bearer ${BuildConfig.OPBEANS_AUTH_TOKEN}")
+                        .build()
+                } else {
+                    it.request()
+                }
+
+                it.proceed(request)
+            }.build()
     }
 
     @Provides
