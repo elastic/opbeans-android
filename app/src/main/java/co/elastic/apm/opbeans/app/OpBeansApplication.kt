@@ -11,7 +11,11 @@ class OpBeansApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        val connectivity = Connectivity.create(BuildConfig.EXPORTER_URL)//.withAuthToken("token")
+        val connectivity = Connectivity.create(BuildConfig.EXPORTER_URL).apply {
+            if (BuildConfig.EXPORTER_AUTH_TOKEN.isNotEmpty()) {
+                withAuthToken(BuildConfig.EXPORTER_AUTH_TOKEN)
+            }
+        }
         ElasticApmAgent.initialize(this, connectivity)
     }
 }
