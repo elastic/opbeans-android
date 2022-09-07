@@ -1,5 +1,6 @@
 # DO NOT RUN IT DIRECTLY, run the "run_load_generator.sh" file instead, which is located in the root
 # dir of this project.
+import argparse
 import os
 import subprocess
 
@@ -52,7 +53,16 @@ def run_tests():
     run_command("./gradlew connectedAndroidTest", "./opbeans-android")
 
 
+def parse_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--exporter-endpoint')
+    parser.add_argument('--exporter-auth-token')
+    parser.add_argument('--opbeans-endpoint')
+    return parser.parse_args()
+
+
 def main():
+    args = parse_arguments()
     build_agent()
     set_opbeans_agent_version(get_agent_version())
     run_tests()
