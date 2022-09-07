@@ -21,7 +21,7 @@ class ApplicationModule {
     @Singleton
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("${BuildConfig.BASE_URL}/api/")
+            .baseUrl("${BuildConfig.OPBEANS_URL}/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
