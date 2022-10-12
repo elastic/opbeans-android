@@ -35,7 +35,7 @@ class ApplicationModule {
             .addInterceptor {
                 val request = if (BuildConfig.OPBEANS_AUTH_TOKEN.isNotEmpty()) {
                     it.request().newBuilder()
-                        .addHeader("Authorization", "Bearer ${BuildConfig.OPBEANS_AUTH_TOKEN}")
+                        .addHeader("Authorization", "Basic ${BuildConfig.OPBEANS_AUTH_TOKEN}")
                         .build()
                 } else {
                     it.request()
