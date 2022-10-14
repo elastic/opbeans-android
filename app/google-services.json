@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "70632910621",
+    "project_id": "opbeans-android",
+    "storage_bucket": "opbeans-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70632910621:android:0cfb8328875136a7a1bbf4",
+        "android_client_info": {
+          "package_name": "co.elastic.apm.opbeans"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "70632910621-q0rrab8u5l0l0veha5mddqm6p97iokg0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKIAgqzTNghgT_DRVyBY_HMhzf29twTnY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "70632910621-q0rrab8u5l0l0veha5mddqm6p97iokg0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
