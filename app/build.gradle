@@ -6,6 +6,7 @@ plugins {
     id 'co.elastic.apm.android' version "${agent_version}"
     id "com.diffplug.spotless" version "6.11.0"
     id 'com.google.gms.google-services' version '4.3.13'
+    id 'com.google.firebase.appdistribution' version '3.0.3'
 }
 
 android {
@@ -30,6 +31,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            firebaseAppDistribution {
+                artifactType = "APK"
+                groups = "elastic-testers"
+            }
         }
     }
     compileOptions {
