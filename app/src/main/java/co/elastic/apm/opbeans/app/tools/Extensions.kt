@@ -19,8 +19,14 @@ under the License.
 package co.elastic.apm.opbeans.app.tools
 
 import android.app.Activity
+import android.graphics.drawable.Drawable
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import co.elastic.apm.opbeans.BuildConfig
+import com.bumptech.glide.RequestBuilder
+import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 
 fun Activity.showToast(message: String, duration: Int = Toast.LENGTH_LONG) {
     Toast.makeText(this, message, duration).show()
@@ -28,4 +34,17 @@ fun Activity.showToast(message: String, duration: Int = Toast.LENGTH_LONG) {
 
 fun Fragment.showToast(message: String, duration: Int = Toast.LENGTH_LONG) {
     Toast.makeText(requireContext(), message, duration).show()
+}
+
+fun RequestManager.loadOpbeans(imageUrl: String): RequestBuilder<Drawable> {
+    val url = if (BuildConfig.OPBEANS_AUTH_TOKEN.isNotEmpty()) {
+        GlideUrl(
+            imageUrl,
+            LazyHeaders.Builder()
+                .addHeader("Authorization", "Basic ${BuildConfig.OPBEANS_AUTH_TOKEN}").build()
+        )
+    } else {
+        GlideUrl(imageUrl)
+    }
+    return load(url)
 }

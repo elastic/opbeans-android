@@ -26,6 +26,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.data.models.CartItem
+import co.elastic.apm.opbeans.app.tools.loadOpbeans
 import com.bumptech.glide.Glide
 
 class CartItemViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -49,6 +50,6 @@ class CartItemViewHolder private constructor(itemView: View) : RecyclerView.View
         title.text = product.name
         description.text = product.type
         quantity.text = cartItem.amount.toString()
-        Glide.with(image).load(product.imageUrl).into(image)
+        Glide.with(image).loadOpbeans(product.imageUrl).into(image)
     }
 }

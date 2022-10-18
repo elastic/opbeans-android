@@ -25,6 +25,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import co.elastic.apm.opbeans.R
+import co.elastic.apm.opbeans.app.tools.loadOpbeans
 import co.elastic.apm.opbeans.modules.orderdetail.data.OrderedProductSateItem
 import com.bumptech.glide.Glide
 
@@ -49,6 +50,6 @@ class OrderedProductViewHolder private constructor(itemView: View) :
         title.text = product.name
         amount.text = product.amount
         price.text = product.price
-        Glide.with(image).load(product.imageUrl).into(image)
+        Glide.with(image).loadOpbeans(product.imageUrl).into(image)
     }
 }
