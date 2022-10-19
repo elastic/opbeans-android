@@ -50,7 +50,7 @@ android {
 }
 
 elasticApm {
-    serviceName = "Opbeans App"
+    serviceName = "opbeans-android"
     serverUrl = project.properties.getOrDefault("exporter_endpoint", "http://10.0.2.2:8200")
     serverToken = project.properties.getOrDefault("exporter_auth_token", null)
 }
