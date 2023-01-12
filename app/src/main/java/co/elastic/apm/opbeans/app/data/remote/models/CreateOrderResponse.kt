@@ -18,6 +18,8 @@ under the License.
 */
 package co.elastic.apm.opbeans.app.data.remote.models
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class CreateOrderResponse(@SerializedName("id") val orderId: Int)
