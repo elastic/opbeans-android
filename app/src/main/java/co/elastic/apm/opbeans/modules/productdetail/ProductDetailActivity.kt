@@ -34,7 +34,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.data.models.ProductDetail
-import co.elastic.apm.opbeans.app.tools.loadOpbeans
 import co.elastic.apm.opbeans.app.tools.showToast
 import co.elastic.apm.opbeans.modules.productdetail.ui.ProductDetailLoadState
 import co.elastic.apm.opbeans.modules.productdetail.ui.ProductDetailViewModel
@@ -138,7 +137,7 @@ class ProductDetailActivity : AppCompatActivity(), MenuProvider {
         title.text = product.name
         type.text = product.type
         description.text = product.description
-        Glide.with(this).loadOpbeans(product.imageUrl).into(image)
+        Glide.with(this).load(product.imageUrl).into(image)
     }
 
     private fun showContent() {
