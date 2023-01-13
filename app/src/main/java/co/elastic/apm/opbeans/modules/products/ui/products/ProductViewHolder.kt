@@ -26,7 +26,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import co.elastic.apm.opbeans.R
 import co.elastic.apm.opbeans.app.data.models.Product
-import co.elastic.apm.opbeans.app.tools.loadOpbeans
 import com.bumptech.glide.Glide
 
 class ProductViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -47,6 +46,6 @@ class ProductViewHolder private constructor(itemView: View) : RecyclerView.ViewH
     fun setData(product: Product) {
         title.text = product.name
         description.text = product.type
-        Glide.with(image).loadOpbeans(product.imageUrl).into(image)
+        Glide.with(image).load(product.imageUrl).into(image)
     }
 }
