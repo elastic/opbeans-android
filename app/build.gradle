@@ -35,6 +35,7 @@ android {
                 appId = System.getenv("OPBEANS_APP_ID")
                 artifactType = "APK"
                 groups = "elastic-testers"
+                releaseNotes = project.properties.getOrDefault("firebase_release_notes", "None")
             }
         }
     }
