@@ -25,8 +25,14 @@ import dagger.hilt.android.HiltAndroidApp
 @HiltAndroidApp
 class OpBeansApplication : Application() {
 
+    companion object {
+        lateinit var INSTANCE: OpBeansApplication
+            private set
+    }
+
     override fun onCreate() {
         super.onCreate()
+        INSTANCE = this
         ElasticApmAgent.initialize(this)
     }
 }
