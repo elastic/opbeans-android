@@ -29,6 +29,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import co.elastic.apm.android.sdk.internal.exceptions.ElasticExceptionHandler
 import co.elastic.apm.opbeans.utils.DispatcherIdlerRule
 import co.elastic.apm.opbeans.utils.EspressoUtils
 import org.junit.Rule
@@ -52,7 +53,15 @@ class HomeActivityTest {
         onView(withId(R.id.customers_item)).perform(click())
         onView(withId(R.id.orders_item)).perform(click())
         onView(withId(R.id.account_item)).perform(click())
-        onView(withId(R.id.crash_item)).perform(click())
+
+        // This is needed because the Android test runner captures the crash, making our handler
+        // to not get executed.
+        try {
+            onView(withId(R.id.crash_item)).perform(click())
+        } catch (t: Throwable) {
+            ElasticExceptionHandler.getInstance()
+                .uncaughtException(Thread.currentThread(), t.cause!!)
+        }
     }
 
     @Test
