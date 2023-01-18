@@ -52,6 +52,7 @@ class HomeActivityTest {
         onView(withId(R.id.customers_item)).perform(click())
         onView(withId(R.id.orders_item)).perform(click())
         onView(withId(R.id.account_item)).perform(click())
+        onView(withId(R.id.crash_item)).perform(click())
     }
 
     @Test
