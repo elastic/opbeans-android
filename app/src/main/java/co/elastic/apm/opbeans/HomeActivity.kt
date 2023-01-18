@@ -66,9 +66,14 @@ class HomeActivity : AppCompatActivity(), MenuProvider {
                 R.id.customers_item -> showCustomers()
                 R.id.orders_item -> showOrders()
                 R.id.account_item -> showMyAccount()
+                R.id.crash_item -> crash()
                 else -> false
             }
         }
+    }
+
+    private fun crash(): Boolean {
+        throw UnsupportedOperationException("This is a crash message")
     }
 
     private fun showMyAccount(): Boolean {
