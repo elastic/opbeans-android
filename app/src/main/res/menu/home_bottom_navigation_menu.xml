@@ -16,4 +16,8 @@
         android:id="@+id/account_item"
         android:icon="@drawable/ic_person"
         android:title="@string/bottom_menu_title_my_account" />
+    <item
+        android:id="@+id/crash_item"
+        android:icon="@drawable/ic_fire"
+        android:title="@string/bottom_menu_title_crash" />
 </menu>

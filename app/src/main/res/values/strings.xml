@@ -5,6 +5,8 @@
     <string name="bottom_menu_title_products">Products</string>
     <string name="bottom_menu_title_orders">Orders</string>
     <string name="bottom_menu_title_customers">Customers</string>
+    <string name="bottom_menu_title_my_account">My account</string>
+    <string name="bottom_menu_title_crash">Crash</string>
     <string name="error_message_products_request">Failed to fetch products: %s</string>
     <string name="cart_empty_message">Your cart is empty</string>
     <string name="product_detail_add_to_cart">Add to cart</string>
@@ -14,7 +16,6 @@
     <string name="cart_no_items_to_checkout_message">There are no items to checkout</string>
     <string name="cart_items_checked_out_success_message">Items checked out successfully!</string>
     <string name="cart_error_checking_out_message">Error while checking out: %s</string>
-    <string name="bottom_menu_title_my_account">My account</string>
     <string name="account_my_orders_title">My orders</string>
     <string name="order_detail_total_title">Total:</string>
     <string name="order_detail_title">Order #%d</string>
