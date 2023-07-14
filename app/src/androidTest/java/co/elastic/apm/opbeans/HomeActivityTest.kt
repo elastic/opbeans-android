@@ -59,7 +59,11 @@ class HomeActivityTest {
         try {
             onView(withId(R.id.crash_item)).perform(click())
         } catch (t: Throwable) {
-            ElasticExceptionHandler.getInstance()
+            val exceptionHandler = ElasticExceptionHandler.getInstance()
+            val field = ElasticExceptionHandler::class.java.getDeclaredField("wrapped")
+            field.isAccessible = true
+            field.set(exceptionHandler, null)
+            exceptionHandler
                 .uncaughtException(Thread.currentThread(), t.cause!!)
         }
     }
