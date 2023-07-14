@@ -34,10 +34,8 @@ object EspressoUtils {
 
     fun waitForView(
         viewMatcher: Matcher<View>,
-        waitMillis: Int = 5000,
-        waitMillisPerTry: Long = 100
+        maxTries: Int = 2
     ): ViewInteraction {
-        val maxTries = waitMillis / waitMillisPerTry.toInt()
         var tries = 0
 
         for (i in 0..maxTries)
@@ -49,7 +47,7 @@ object EspressoUtils {
                 if (tries == maxTries) {
                     throw e
                 }
-                sleep(waitMillisPerTry)
+                sleep(100)
             }
         throw Exception("Error finding a view matching $viewMatcher")
     }
