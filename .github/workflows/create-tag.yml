@@ -1,0 +1,28 @@
+---
+# Creates a new GitHub release if the version in gradle.properties changed in the main branch.
+name: create-tag
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - gradle.properties
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Create release
+        run: |
+          APM_AGENT_ANDROID_VERSION="v$(grep agent_version gradle.properties | cut -d'=' -f2)"
+          gh release create "${APM_AGENT_ANDROID_VERSION}" \
+            --title="${APM_AGENT_ANDROID_VERSION}" \
+            --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+
