@@ -4,6 +4,8 @@ name: OpenTelemetry Export Trace
 on:
   workflow_run:
     workflows:
+      - create-tag
+      - test
       - updatecli
     types: [completed]
 
