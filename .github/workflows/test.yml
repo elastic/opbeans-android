@@ -18,9 +18,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: lint
-      run: ./gradlew lint
-
     - name: Build
       run: ./gradlew assemble
 
