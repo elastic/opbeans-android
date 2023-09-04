@@ -1,0 +1,35 @@
+name: test
+
+on:
+  create:
+    tags: [ "v*" ]
+  push:
+    branches: [ "main" ]
+  pull_request: ~
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: lint
+      run: ./gradlew lint
+
+    - name: Build
+      run: ./gradlew assemble
+
+    - name: Test
+      run: ./gradlew test
+
+    - name: Store test results
+      if: success() || failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: target/*.xml
