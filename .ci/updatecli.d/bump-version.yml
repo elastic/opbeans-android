@@ -1,0 +1,54 @@
+---
+# yaml-language-server: $schema=https://www.updatecli.io/schema/latest/config.json
+## Workflow to periodically check if there is an available newer APM agent version, e.g.
+## "1.2.3". If so, then update to it.
+name: Bump apm-agent-android to latest version
+
+title: Bump apm-agent android to latest version
+
+scms:
+  githubConfig:
+    kind: github
+    spec:
+      user: '{{ requiredEnv "GIT_USER" }}'
+      email: '{{ requiredEnv "GIT_EMAIL" }}'
+      owner: elastic
+      repository: opbeans-android
+      token: '{{ requiredEnv "GITHUB_TOKEN" }}'
+      username: '{{ requiredEnv "GIT_USER" }}'
+      branch: main
+
+actions:
+  opbeans-android:
+    kind: github/pullrequest
+    scmid: githubConfig
+    sourceid: elastic-apm-agent-android
+    title: '[Automation] Update APM Agent Android version {{ source "elastic-apm-agent-android" }}'
+    spec:
+      automerge: false
+      labels:
+        - dependencies
+
+sources:
+  elastic-apm-agent-android:
+    kind: githubrelease
+    spec:
+      owner: elastic
+      repository: apm-agent-android
+      token: '{{ requiredEnv "GITHUB_TOKEN" }}'
+      username: '{{ requiredEnv "GIT_USER" }}'
+      versionfilter:
+        kind: semver
+    transformers:
+      - trimprefix: "v"
+
+targets:
+  version:
+    name: Update gradle.properties file
+    sourceid: elastic-apm-agent-android
+    scmid: githubConfig
+    kind: file
+    spec:
+      file: gradle.properties
+      matchpattern: '(agent_version)=.+'
+      replacepattern: '$1={{ source `elastic-apm-agent-android` }}'
