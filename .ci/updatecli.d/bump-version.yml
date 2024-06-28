@@ -4,8 +4,6 @@
 ## "1.2.3". If so, then update to it.
 name: Bump apm-agent-android to latest version
 
-title: Bump apm-agent android to latest version
-
 scms:
   githubConfig:
     kind: github
