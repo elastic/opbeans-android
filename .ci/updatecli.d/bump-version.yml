@@ -4,8 +4,6 @@
 ## "1.2.3". If so, then update to it.
 name: Bump apm-agent-android to latest version
 
-title: Bump apm-agent android to latest version
-
 scms:
   githubConfig:
     kind: github
@@ -16,6 +14,7 @@ scms:
       token: '{{ requiredEnv "GITHUB_TOKEN" }}'
       username: '{{ requiredEnv "GITHUB_ACTOR" }}'
       branch: main
+      commitusingapi: true
 
 actions:
   opbeans-android:
