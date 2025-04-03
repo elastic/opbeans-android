@@ -26,11 +26,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import co.elastic.apm.opbeans.app.OpBeansApplication
 import co.elastic.apm.opbeans.modules.account.AccountFragment
 import co.elastic.apm.opbeans.modules.cart.CartActivity
 import co.elastic.apm.opbeans.modules.customers.CustomersFragment
 import co.elastic.apm.opbeans.modules.orders.OrdersFragment
 import co.elastic.apm.opbeans.modules.products.ProductsFragment
+import co.elastic.otel.android.extensions.span
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -49,10 +51,12 @@ class HomeActivity : AppCompatActivity(), MenuProvider {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        initViews()
-        initMenu()
-        setUpBottomNavigation()
-        showProducts()
+        OpBeansApplication.INSTANCE.agent.span("Home onCreate") {
+            initViews()
+            initMenu()
+            setUpBottomNavigation()
+            showProducts()
+        }
     }
 
     private fun initMenu() {
