@@ -5,6 +5,7 @@ plugins {
     id 'kotlin-kapt'
     id "com.google.devtools.ksp"
     id 'co.elastic.otel.android.agent' version "${agent_version}"
+    id("co.elastic.otel.android.instrumentation.okhttp") version "${agent_version}"
     id "com.diffplug.spotless" version "6.11.0"
     id 'com.google.firebase.appdistribution' version '3.0.3'
 }
