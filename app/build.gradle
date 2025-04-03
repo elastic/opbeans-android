@@ -10,6 +10,7 @@ plugins {
 
 android {
     compileSdk 34
+    namespace "co.elastic.apm.opbeans"
 
     defaultConfig {
         applicationId "co.elastic.apm.opbeans"
