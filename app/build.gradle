@@ -3,18 +3,21 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'dagger.hilt.android.plugin'
     id 'kotlin-kapt'
-    id 'co.elastic.apm.android' version "${agent_version}"
+    id "com.google.devtools.ksp"
+    id 'co.elastic.otel.android.agent' version "${agent_version}"
+    id("co.elastic.otel.android.instrumentation.okhttp") version "${agent_version}"
     id "com.diffplug.spotless" version "6.11.0"
     id 'com.google.firebase.appdistribution' version '3.0.3'
 }
 
 android {
-    compileSdk 34
+    compileSdk 35
+    namespace "co.elastic.apm.opbeans"
+    buildFeatures.buildConfig true
 
     defaultConfig {
         applicationId "co.elastic.apm.opbeans"
         minSdk 26
-        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -40,21 +43,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
     testOptions {
         animationsDisabled = true
     }
-}
-
-elasticApm {
-    serviceName = "opbeans-android"
-    serverUrl = project.properties.getOrDefault("exporter_endpoint", "http://10.0.2.2:8200")
-    secretToken = project.properties.getOrDefault("exporter_auth_token", null)
 }
 
 dependencies {
@@ -74,14 +71,18 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation "androidx.paging:paging-runtime:3.1.1"
     implementation "com.github.bumptech.glide:okhttp3-integration:$glide_version"
+    ksp "androidx.room:room-compiler:$room_version"
     kapt "com.github.bumptech.glide:compiler:$glide_version"
-    kapt "androidx.room:room-compiler:$room_version"
     kapt "com.github.bumptech.glide:compiler:$glide_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_version"
+}
+
+kapt {
+    correctErrorTypes true
 }
 
 spotless {
