@@ -16,7 +16,7 @@ jobs:
   tag:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Create release
         run: |
           APM_AGENT_ANDROID_VERSION="v$(grep agent_version gradle.properties | cut -d'=' -f2)"
