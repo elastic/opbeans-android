@@ -1,12 +1,12 @@
 plugins {
-    id 'com.android.application' version '8.11.0'
-    id 'org.jetbrains.kotlin.android' version '2.2.21'
-    id("com.google.devtools.ksp") version "2.3.0"
-    id 'com.google.dagger.hilt.android' version "${hilt_version}"
+    alias(libs.plugins.android.app)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.spotless)
+    alias(libs.plugins.firebase.appDistribution)
     id 'co.elastic.otel.android.agent' version "${agent_version}"
     id("co.elastic.otel.android.instrumentation.okhttp") version "${agent_version}"
-    id "com.diffplug.spotless" version "6.11.0"
-    id 'com.google.firebase.appdistribution' version '3.0.3'
 }
 
 android {
@@ -54,27 +54,21 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.4.2'
-    implementation 'com.google.android.material:material:1.6.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    implementation "androidx.activity:activity-ktx:$activity_version"
-    implementation "androidx.fragment:fragment-ktx:$fragment_version"
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-    implementation "com.github.bumptech.glide:glide:$glide_version"
-    implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    implementation "androidx.paging:paging-runtime:3.1.1"
-    implementation "com.github.bumptech.glide:okhttp3-integration:$glide_version"
-    ksp "androidx.room:room-compiler:$room_version"
-    ksp "com.github.bumptech.glide:compiler:$glide_version"
-    ksp "com.github.bumptech.glide:compiler:$glide_version"
-    ksp "com.google.dagger:hilt-compiler:$hilt_version"
-    testImplementation 'junit:junit:4.13.2'
+    implementation(libs.android.material)
+    implementation(libs.android.fragment)
+    implementation(libs.hilt)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+    implementation(libs.glide)
+    implementation(libs.glide.okhttp)
+    implementation(libs.android.room)
+    implementation(libs.android.room.ktx)
+    implementation(libs.android.swiperefresh)
+    implementation(libs.android.paging)
+    ksp(libs.android.room.compiler)
+    ksp(libs.glide.compiler)
+    ksp(libs.hilt.compiler)
+    testImplementation(libs.junit)
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_version"
