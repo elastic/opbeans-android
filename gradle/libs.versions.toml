@@ -1,0 +1,32 @@
+[versions]
+android = "8.13.0"
+kotlin = "2.4.0"
+hilt = "2.58"
+retrofit = "3.0.0"
+room = "2.8.3"
+glide = "5.0.5"
+
+[libraries]
+android-material = "com.google.android.material:material:1.13.0"
+android-fragment = "androidx.fragment:fragment-ktx:1.8.9"
+hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+glide-okhttp = { module = "com.github.bumptech.glide:okhttp3-integration", version.ref = "glide" }
+glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
+android-room = { module = "androidx.room:room-runtime", version.ref = "room" }
+android-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+android-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+android-swiperefresh = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+android-paging = "androidx.paging:paging-runtime:3.3.6"
+junit = "junit:junit:4.13.2"
+
+[plugins]
+android-app = { id = "com.android.application", version.ref = "android" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version = "2.3.9" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+spotless = { id = "com.diffplug.spotless", version = "8.0.0" }
+firebase-appDistribution = { id = "com.google.firebase.appdistribution", version = "5.3.0" }

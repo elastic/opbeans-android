@@ -19,7 +19,9 @@ under the License.
 package co.elastic.apm.opbeans.app
 
 import android.app.Application
-import co.elastic.apm.android.sdk.ElasticApmAgent
+import co.elastic.otel.android.ElasticApmAgent
+import co.elastic.otel.android.api.ElasticOtelAgent
+import co.elastic.otel.android.connectivity.Authentication
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -30,9 +32,17 @@ class OpBeansApplication : Application() {
             private set
     }
 
+    lateinit var agent: ElasticOtelAgent
+
     override fun onCreate() {
         super.onCreate()
         INSTANCE = this
-        ElasticApmAgent.initialize(this)
+
+        // Check out the docs for more details: https://www.elastic.co/guide/en/apm/agent/android/current/index.html
+        agent = ElasticApmAgent.builder(this)
+            .setServiceName("opbeans-android")
+            .setExportUrl("my_export_url")
+            .setExportAuthentication(Authentication.ApiKey("my_api_key"))
+            .build()
     }
 }
