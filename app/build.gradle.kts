@@ -12,7 +12,7 @@ plugins {
 }
 
 android {
-    compileSdk = 36
+    compileSdk = 37
     namespace = "co.elastic.apm.opbeans"
     buildFeatures.buildConfig = true
 

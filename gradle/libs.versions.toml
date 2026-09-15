@@ -1,5 +1,5 @@
 [versions]
-android = "8.13.0"
+android = "9.1.1"
 kotlin = "2.4.0"
 hilt = "2.58"
 retrofit = "3.0.0"
